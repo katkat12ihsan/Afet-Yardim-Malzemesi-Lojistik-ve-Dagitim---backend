@@ -8,7 +8,7 @@ import os
 from pathlib import Path
 
 UYGULAMA_ADI = "Afet Yardım Malzemesi Lojistik ve Dağıtım"
-SURUM = "0.1.0 (Hafta 3 - iskelet)"
+SURUM = "0.2.0 (Hafta 4 - veritabanı)"
 
 PROJE_KOKU = Path(__file__).resolve().parent.parent
 VERI_KLASORU = PROJE_KOKU / "data"

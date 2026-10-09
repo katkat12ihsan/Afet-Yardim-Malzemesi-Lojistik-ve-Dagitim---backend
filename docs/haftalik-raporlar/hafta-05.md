@@ -77,3 +77,14 @@
 ## Yapay zekâ kullanımı özeti
 
 Güvenli parola saklama, oturum yönetimi ve OWASP açıkları için Claude'dan araştırma ve kod önerisi alındı. Doğrulama testlerle yapıldı. Ayrıntı: [AI kullanım günlüğü](../ai-kullanim-gunlugu.md) (Kayıt 7–9).
+
+## Ekler — commit bağlantıları
+
+Dal: [hafta-05](https://github.com/katkat12ihsan/Afet-Yardim-Malzemesi-Lojistik-ve-Dagitim/tree/hafta-05)
+
+- [4163752](https://github.com/katkat12ihsan/Afet-Yardim-Malzemesi-Lojistik-ve-Dagitim/commit/4163752) backend: kullanıcı ve oturum şeması (002 migration), Kullanici/Oturum/Rol varlıkları ve repository'leri
+- [ac3318b](https://github.com/katkat12ihsan/Afet-Yardim-Malzemesi-Lojistik-ve-Dagitim/commit/ac3318b) backend: PBKDF2 parola hash, oturum token'ı, kimlik servisi, rol tabanlı yetki (RBAC), hesap kilitleme
+- [92507b2](https://github.com/katkat12ihsan/Afet-Yardim-Malzemesi-Lojistik-ve-Dagitim/commit/92507b2) backend: her rolden test kullanıcısı ve kurulum komutu güncellemesi
+- [d7c4580](https://github.com/katkat12ihsan/Afet-Yardim-Malzemesi-Lojistik-ve-Dagitim/commit/d7c4580) frontend: giriş/kayıt penceresi, kullanıcı-rol bilgisi, çıkış, rol bazlı menü ve Kullanıcılar sayfası
+- [97b3e87](https://github.com/katkat12ihsan/Afet-Yardim-Malzemesi-Lojistik-ve-Dagitim/commit/97b3e87) test: kimlik doğrulama, oturum ve yetkilendirme testleri (19 test)
+- [e15b7ff](https://github.com/katkat12ihsan/Afet-Yardim-Malzemesi-Lojistik-ve-Dagitim/commit/e15b7ff) docs: hafta 5 güvenlik notu, ilerleme raporu, sözlü hazırlık, AI günlüğü, öz değerlendirme, formlar, ekran görüntüleri

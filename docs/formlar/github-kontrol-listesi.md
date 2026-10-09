@@ -2,12 +2,12 @@
 
 | Öğrenci | Numara | Proje (Kod/Ad) |
 |---|---|---|
-| _(doldur)_ | _(doldur)_ | P16 · Afet Yardım Malzemesi Lojistik ve Dağıtım |
+| İhsan Katkat | 251161036 | P16 · Afet Yardım Malzemesi Lojistik ve Dağıtım |
 
 | Madde | Durum |
 |---|---|
 | Proje için ayrı bir depo oluşturuldu | [x] |
-| Öğretim elemanı iş birlikçi/izleyici olarak eklendi | [ ] **öğrenci yapacak** (Settings → Collaborators) |
+| Öğretim elemanı iş birlikçi/izleyici olarak eklendi | — Eklenmedi (depo herkese açık, bağlantı paylaşılacak) |
 | .gitignore eklendi (gizli/gereksiz dosyalar hariç) | [x] |
 | README oluşturuldu ve güncel | [x] |
 | Commit'ler küçük ve anlamlı | [x] (backend / frontend / test / docs ayrı) |

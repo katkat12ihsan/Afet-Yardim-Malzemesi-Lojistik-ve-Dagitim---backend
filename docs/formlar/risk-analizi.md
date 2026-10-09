@@ -2,7 +2,7 @@
 
 | Öğrenci | Numara | Proje (Kod/Ad) | Tarih |
 |---|---|---|---|
-| _(doldur)_ | _(doldur)_ | P16 · Afet Yardım Malzemesi Lojistik ve Dağıtım | 09.10.2026 |
+| İhsan Katkat | 251161036 | P16 · Afet Yardım Malzemesi Lojistik ve Dağıtım | 09.10.2026 |
 
 **Skor:** Olasılık (1–3) × Etki (1–3). 1–2 düşük, 3–4 orta, 6–9 yüksek risk. Yüksek riskler için mutlaka önlem tanımlanır.
 

@@ -2,7 +2,7 @@
 
 | Öğrenci | Numara | Proje (Kod/Ad) |
 |---|---|---|
-| _(doldur)_ | _(doldur)_ | P16 · Afet Yardım Malzemesi Lojistik ve Dağıtım |
+| İhsan Katkat | 251161036 | P16 · Afet Yardım Malzemesi Lojistik ve Dağıtım |
 
 `[x]` tamam · `[ ]` öğrencinin yapması gereken
 
@@ -13,7 +13,7 @@
 | Kodun tamamı açıklanabiliyor (AI dahil) | [ ] | [ ] |
 | Çalışmalar GitHub'a düzenli commit'lerle yüklendi | [x] | [x] |
 | Commit mesajları açıklayıcı | [x] | [x] |
-| Yapay Zekâ Kullanım Günlüğü güncellendi | [ ] öğrenci kararları eksik | [ ] öğrenci kararları eksik |
+| Yapay Zekâ Kullanım Günlüğü güncellendi | [x] | [x] |
 | Gizli anahtar/parola depoya yüklenmedi | [x] | [x] |
 | Haftalık İlerleme Raporu hazırlandı | [x] | [x] |
 | Bir sonraki haftanın ön koşulları hazır | [x] varlıklar + bağlantı | [x] migration sistemi + repository'ler |

@@ -15,13 +15,15 @@ from datetime import date, datetime
 
 from backend.models import (
     Bagis, Bagisci, BagisKalemi, Dagitim, DagitimDurumu, DagitimKalemi, Depo,
-    IhtiyacNoktasi, IhtiyacTalebi, Kategori, Malzeme, OncelikSeviyesi, Stok, TalepDurumu,
+    IhtiyacNoktasi, IhtiyacTalebi, Kategori, Kullanici, Malzeme, OncelikSeviyesi, Rol, Stok,
+    TalepDurumu,
 )
 from backend.data.repositories import (
     BagisciRepository, BagisKalemiRepository, BagisRepository, DagitimKalemiRepository,
     DagitimRepository, DepoRepository, IhtiyacNoktasiRepository, IhtiyacTalebiRepository,
-    KategoriRepository, MalzemeRepository, StokRepository,
+    KategoriRepository, KullaniciRepository, MalzemeRepository, StokRepository,
 )
+from backend.guvenlik import parola_hashle
 
 KATEGORILER = ["Gıda", "Barınma", "Hijyen", "Sağlık", "Giyim"]
 
@@ -166,4 +168,29 @@ def ornek_veri_yukle(baglanti: sqlite3.Connection) -> bool:
         seviye = kritik[malzeme_adi] if depo_id == depo_ids[0] else kritik[malzeme_adi] / 2
         stok_repo.kaydet(Stok(depo_id, malzeme_id[malzeme_adi], miktar, seviye))
 
+    return True
+
+
+# ---------------------------------------------------------------------------
+# Hafta 5 - test kullanıcıları (her rolden bir tane)
+# Yalnızca yerel geliştirme/demo içindir; gerçek kullanımda değiştirilmelidir.
+# (kullanıcı adı, ad soyad, parola, rol, depo sırası)
+# ---------------------------------------------------------------------------
+KULLANICILAR = [
+    ("yonetici", "Örnek Yönetici", "Yonetici123", Rol.YONETICI, None),
+    ("kurum1", "Örnek Kurum Koordinatörü", "Kurum1234", Rol.KURUM, None),
+    ("depo1", "Örnek Depo Görevlisi", "Depo12345", Rol.DEPO, 0),
+]
+
+
+def ornek_kullanicilari_yukle(baglanti: sqlite3.Connection) -> bool:
+    """Hiç kullanıcı yoksa test kullanıcılarını ekler. Depo kaydı gerektirir."""
+    repo = KullaniciRepository(baglanti)
+    if repo.sayi() > 0:
+        return False
+    depolar = DepoRepository(baglanti).listele()
+    depo_id = {d.ad: d.id for d in depolar}
+    for kullanici_adi, ad_soyad, parola, rol, depo_sira in KULLANICILAR:
+        bagli_depo = depo_id[DEPOLAR[depo_sira].ad] if depo_sira is not None else None
+        repo.ekle(Kullanici(kullanici_adi, ad_soyad, parola_hashle(parola), rol, bagli_depo))
     return True

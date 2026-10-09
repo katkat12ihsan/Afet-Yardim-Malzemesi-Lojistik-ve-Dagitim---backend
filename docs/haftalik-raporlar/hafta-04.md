@@ -44,3 +44,17 @@ Kullanıcı yönetimi ve kimlik doğrulama: `002_kullanici.sql` migration'ı (ku
 
 - `docs/ekran-goruntuleri/hafta-04-ana-panel.png`
 - `docs/ekran-goruntuleri/hafta-04-sorgu-ciktisi.txt`
+
+## Yapay zekâ kullanımı özeti
+
+Claude; mimari/şema önerisi, kod iskeleti ve test senaryoları için kullanıldı. Ayrıntı: [AI kullanım günlüğü](../ai-kullanim-gunlugu.md) (Kayıt 4–6). Önerilerin doğrulaması testler ve demo komutlarıyla yapıldı.
+
+## Ekler — commit bağlantıları
+
+- [60fc2ee](https://github.com/karkatihsan/Afet-Yardim-Malzemesi-Lojistik-ve-Dagitim/commit/60fc2ee) backend: ilk şema migration'ı (11 tablo, FK/CHECK/UNIQUE kısıtları, indeksler) ve migration çalıştırıcısı
+- [4b83a2e](https://github.com/karkatihsan/Afet-Yardim-Malzemesi-Lojistik-ve-Dagitim/commit/4b83a2e) backend: CRUD repository'leri (TemelRepository, tablo repository'leri, bileşik anahtarlı StokRepository)
+- [1c6f03d](https://github.com/karkatihsan/Afet-Yardim-Malzemesi-Lojistik-ve-Dagitim/commit/1c6f03d) backend: KVKK uyumlu sentetik örnek veri, kurulum komutu ve sorgu/kısıt demosu
+- [909a71f](https://github.com/karkatihsan/Afet-Yardim-Malzemesi-Lojistik-ve-Dagitim/commit/909a71f) backend: panel özeti servisi (OzetServisi)
+- [faddbbd](https://github.com/karkatihsan/Afet-Yardim-Malzemesi-Lojistik-ve-Dagitim/commit/faddbbd) frontend: ana panelde veritabanı özet kartları; açılışta migration
+- [2cbc2e1](https://github.com/karkatihsan/Afet-Yardim-Malzemesi-Lojistik-ve-Dagitim/commit/2cbc2e1) test: veritabanı, CRUD, kısıt ve transaction testleri (16 test)
+- [c923b57](https://github.com/karkatihsan/Afet-Yardim-Malzemesi-Lojistik-ve-Dagitim/commit/c923b57) docs: hafta 4 veritabanı belgesi, ilerleme raporu, AI günlüğü, sözlü hazırlık, ekran görüntüleri

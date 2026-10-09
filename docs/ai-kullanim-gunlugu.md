@@ -59,3 +59,31 @@ Her kayıt: tarih · araç · istem (prompt) · alınan çıktı · benim yaptı
 - **Çıktı:** `ornek_veri.py`, `kurulum.py`, `sorgu_ornekleri.py`, `tests/test_veritabani.py` (16 test).
 - **Benim kararım / doğrulamam:** Örnek verideki bağışçı adlarının "Anonim Bağışçı" / "Örnek ... A.Ş.", telefonların 0555 000 00 NN ve e-postaların example.com olduğunu, yani gerçek kişi verisi olmadığını kontrol ettim. 19 testin hepsi geçti.
 - **Bu kodu açıklayabiliyor muyum? (E/H):** E
+
+---
+
+## Hafta 5 — Kullanıcı Yönetimi ve Kimlik Doğrulama
+
+### Kayıt 7 — Güvenli parola saklama ve güvenlik açıkları araştırması
+- **Tarih:** 09.10.2026
+- **Araç:** Claude
+- **İstem:** "Python standart kütüphanesiyle güvenli parola saklama nasıl yapılır? bcrypt, PBKDF2 ve düz SHA-256'yı karşılaştır. Kimlik doğrulamada yaygın OWASP açıkları neler?"
+- **Çıktı:** PBKDF2-HMAC-SHA256 (600.000 tur, 16 bayt tuz), `compare_digest`, genel hata mesajı, hesap kilitleme önerileri; `backend/guvenlik.py`.
+- **Benim kararım / doğrulamam:** bcrypt ek paket gerektirdiği için Python'un kendi `hashlib.pbkdf2_hmac` fonksiyonu seçildi. Testte aynı parolanın iki farklı hash ürettiğini ve veritabanında düz parolanın olmadığını gördüm.
+- **Bu kodu açıklayabiliyor muyum? (E/H):** E
+
+### Kayıt 8 — Oturum/token ve rol tabanlı erişim
+- **Tarih:** 09.10.2026
+- **Araç:** Claude
+- **İstem:** "Masaüstü uygulamada oturum/token yönetimi ve Yönetici/Kurum/Depo rolleri için yetkilendirme katmanı tasarla; yetki kontrolü sadece arayüzde olmasın."
+- **Çıktı:** `002_kullanici.sql` (kullanici, oturum), `KimlikServisi`, `yetki.py` (rol → modül tablosu), hata sınıfları.
+- **Benim kararım / doğrulamam:** JWT yerine veritabanında tutulan oturum seçildi; çıkışta oturum hemen kapatılabiliyor. Rol yetkilerini afet senaryosuna göre belirledim: depo görevlisi stok ve bağış, kurum ihtiyaç ve dağıtım. Testlerde Depo rolünün dağıtım modülüne giremediğini gördüm.
+- **Bu kodu açıklayabiliyor muyum? (E/H):** E
+
+### Kayıt 9 — Giriş/kayıt ekranı ve testler
+- **Tarih:** 09.10.2026
+- **Araç:** Claude
+- **İstem:** "Tkinter ile giriş ve kayıt penceresi yaz; çıkış yapınca giriş ekranına dönülsün. Kimlik doğrulama için birim testleri yaz."
+- **Çıktı:** `frontend/giris_penceresi.py`, ana pencerede kullanıcı/rol/çıkış ve Kullanıcılar sayfası, `tests/test_kimlik.py` (19 test).
+- **Benim kararım / doğrulamam:** Uygulamayı üç test kullanıcısıyla açıp kilitli menüleri ve "Erişim engellendi" sayfasını kontrol ettim (ekran görüntüleri). 38 testin hepsi geçti.
+- **Bu kodu açıklayabiliyor muyum? (E/H):** E

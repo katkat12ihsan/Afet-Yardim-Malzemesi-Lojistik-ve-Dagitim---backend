@@ -3,7 +3,7 @@
 Bağış malzemelerinin envanterini yönetip ihtiyaç noktalarına dağıtımı planlayan **Python masaüstü uygulaması**.
 
 > Bilgisayar Uygulamaları I — Proje Tabanlı Öğrenme dersi projesi
-> Durum: **Hafta 4 — Veritabanı ve veri erişim katmanı** (SQLite şema, CRUD, sentetik veri)
+> Durum: **Hafta 5 — Kullanıcı yönetimi ve kimlik doğrulama** (giriş/kayıt, PBKDF2 parola, oturum, rol tabanlı erişim)
 
 ## Problem ve amaç
 
@@ -15,7 +15,7 @@ Bağış malzemeleri envanteri ve dağıtımı düzensiz olduğunda israf ve eks
 |---|---|
 | Kurulum, mimari, ER diyagramı | 3 ✅ |
 | Veritabanı ve veri erişim katmanı | 4 ✅ |
-| Kullanıcı yönetimi ve kimlik doğrulama | 5 |
+| Kullanıcı yönetimi ve kimlik doğrulama | 5 ✅ |
 | Envanter yönetimi | 6 |
 | Bağış girişi ve ihtiyaç eşleştirme | 7 |
 | Harita / rota API entegrasyonu | 9 |
@@ -43,6 +43,14 @@ python -m backend.data.kurulum --ornek-veri
 python main.py
 ```
 
+Açılışta giriş ekranı gelir. `--ornek-veri` her rolden bir test kullanıcısı ekler: `yonetici`, `kurum1`, `depo1` (parolalar `backend/data/ornek_veri.py` → `KULLANICILAR`; yalnızca yerel demo içindir). Hiç kullanıcı yoksa kayıt ekranından ilk Yönetici hesabı açılabilir.
+
+| Rol | Erişebildiği modüller |
+|---|---|
+| Yönetici | Tümü + Kullanıcılar |
+| Kurum | Panel, İhtiyaç, Dağıtım, YZ Önerisi, Takip, Rapor |
+| Depo | Panel, Envanter, Bağış, Takip |
+
 Veritabanı demosu (sorgular + kısıt denemeleri, kalıcı değişiklik yapmaz):
 
 ```bash
@@ -62,6 +70,7 @@ Gizli bilgiler (API anahtarları) koda yazılmaz; `.env.example` dosyasındaki d
 - [ER diyagramı](docs/ER-Diyagrami.md) ([görsel](docs/er-diyagrami.svg))
 - [Mimari şema](docs/Mimari.md) ([görsel](docs/mimari-sema.svg))
 - [Veritabanı tasarımı: migration, kısıtlar, indeksler](docs/Veritabani.md)
+- [Güvenlik notu: parola, oturum, rol tabanlı erişim](docs/Guvenlik-Notu.md)
 - [Haftalık ilerleme raporları](docs/haftalik-raporlar/)
 - [Yapay zekâ kullanım günlüğü](docs/ai-kullanim-gunlugu.md)
 - Formlar: [risk analizi](docs/formlar/risk-analizi.md) · [proje takvimi](docs/formlar/proje-takvimi.md) · [proje izleme](docs/formlar/proje-izleme-formu.md) · [haftalık kontrol listesi](docs/formlar/haftalik-kontrol-listesi.md) · [GitHub kontrol listesi](docs/formlar/github-kontrol-listesi.md)
@@ -74,12 +83,14 @@ Proje iki ana bölüme ayrılmıştır:
 main.py                  başlangıç noktası (frontend'i açar)
 backend/                 arayüzden bağımsız çekirdek
   config.py              ayarlar
+  guvenlik.py            parola hash (PBKDF2), token
   models/                varlık katmanı (ER -> dataclass)
   services/              iş katmanı (iş kuralları, eşleştirme, öneri)
   data/                  veri erişim katmanı (SQLite)
     migrations/          numaralı şema dosyaları (001_ilk_sema.sql)
     repositories/        CRUD sınıfları
 frontend/                masaüstü arayüz (Tkinter)
+  giris_penceresi.py     giriş / kayıt
   main_window.py         ana pencere, menü, sayfalar
 tests/                   birim testleri
 docs/                    ER, mimari, raporlar, AI günlüğü, ekran görüntüleri

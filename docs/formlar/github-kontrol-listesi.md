@@ -15,6 +15,6 @@
 | Her haftanın çalışması ilgili hafta içinde yüklendi | [ ] Hafta 3 ve 4 aynı gün yüklendi; bundan sonra her hafta kendi haftasında |
 | Gizli anahtar/parola/API anahtarı depoda yok (ortam değişkeni) | [x] |
 | Düzenli klasör/katman yapısı | [x] |
-| (Varsa) dal (branch) kullanımı anlamlı | — (öneri: Hafta 5'ten itibaren `hafta-05` gibi dal açıp main'e birleştirmek) |
+| (Varsa) dal (branch) kullanımı anlamlı | [x] Hafta 5 `hafta-05` dalında geliştirilip main'e birleştirildi |
 
 Depo bağlantısı: https://github.com/katkat12ihsan/Afet-Yardim-Malzemesi-Lojistik-ve-Dagitim

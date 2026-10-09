@@ -19,7 +19,7 @@ python -m unittest                                     # 19 test
 2. henüz uygulanmamış dosyaları numara sırasıyla çalıştırır,
 3. her dosyayı ve sürüm kaydını **tek transaction** içinde yapar → yarım kalan migration olmaz.
 
-Uygulama her açılışta (`main.py`) bunu çağırır; şema güncelse hiçbir şey yapmaz. Faydası: şema Git'te izlenir, her bilgisayarda veritabanı aynı adımlarla aynı hale gelir, Hafta 5'teki kullanıcı tablosu yeni bir dosya olarak eklenir (eski veri silinmez).
+Mevcut migration'lar: `001_ilk_sema.sql` (11 tablo, Hafta 4), `002_kullanici.sql` (kullanıcı + oturum, Hafta 5). Uygulama her açılışta (`main.py`) bunu çağırır; şema güncelse hiçbir şey yapmaz. Faydası: şema Git'te izlenir, her bilgisayarda veritabanı aynı adımlarla aynı hale gelir, Hafta 5'teki kullanıcı tablosu yeni bir dosya olarak eklenir (eski veri silinmez).
 
 ## Kısıtlar
 

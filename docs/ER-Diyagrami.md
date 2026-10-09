@@ -16,6 +16,8 @@ erDiagram
     DEPO     ||--o{ DAGITIM : "gönderir"
     IHTIYAC_NOKTASI ||--o{ DAGITIM : "teslim alır"
     DAGITIM  ||--|{ DAGITIM_KALEMI : "içerir"
+    DEPO     |o--o{ KULLANICI : "görevlisi (Depo rolü)"
+    KULLANICI ||--o{ OTURUM : "açar"
     MALZEME  ||--o{ DAGITIM_KALEMI : "dağıtılır"
 
     KATEGORI {
@@ -93,6 +95,27 @@ erDiagram
         string durum
         string arac_plaka
     }
+    KULLANICI {
+        int id PK
+        string kullanici_adi UK
+        string ad_soyad
+        string parola_hash
+        string rol
+        int depo_id FK
+        bool aktif
+        int basarisiz_giris
+        datetime kilitli_bitis
+        datetime olusturma_tarihi
+        datetime son_giris
+    }
+    OTURUM {
+        int id PK
+        int kullanici_id FK
+        string token_hash UK
+        datetime olusturma
+        datetime son_kullanma
+        datetime cikis_zamani
+    }
     DAGITIM_KALEMI {
         int id PK
         int dagitim_id FK
@@ -143,4 +166,4 @@ erDiagram
 - **Başlık + kalem yapısı** (Bağış/BağışKalemi, Dağıtım/DağıtımKalemi): fatura mantığı; bir teslimatta birden çok malzeme olabilir. Şeffaflık raporunda (Hafta 11-12) "bu bağış hangi dağıtımla nereye gitti" sorusu bu tablolar üzerinden izlenecek.
 - **Stok ayrı tablo:** Stok miktarı her seferinde bağış − dağıtım toplamından da hesaplanabilirdi; ama hızlı sorgu ve kritik seviye uyarısı (Hafta 6) için ayrı tutuldu. Tutarlılık, giriş/çıkış işlemlerinin iş katmanında tek yerden yapılmasıyla sağlanacak.
 - **Konum (enlem/boylam)** Depo ve İhtiyaç Noktası'nda tutuldu: Hafta 9 harita/rota API'si ve Hafta 10 yapay zekâ rota önerisi için gerekli.
-- **Kullanıcı/Rol tablosu** Hafta 5'te (kimlik doğrulama) eklenecek.
+- **Kullanıcı ve Oturum tabloları** Hafta 5'te `002_kullanici.sql` migration'ı ile eklendi (görsel SVG ilk 11 tabloyu gösterir). Depo rolündeki kullanıcı `depo_id` ile bir depoya bağlıdır; bir kullanıcının birden çok oturumu olabilir (1-N). Ayrıntı: [Guvenlik-Notu.md](Guvenlik-Notu.md).

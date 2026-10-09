@@ -9,7 +9,7 @@ import argparse
 
 from backend import config
 from backend.data.database import baglanti_ac, islem, migrasyonlari_uygula
-from backend.data.ornek_veri import ornek_veri_yukle
+from backend.data.ornek_veri import KULLANICILAR, ornek_kullanicilari_yukle, ornek_veri_yukle
 
 
 def main() -> None:
@@ -31,6 +31,12 @@ def main() -> None:
             with islem(baglanti):
                 yuklendi = ornek_veri_yukle(baglanti)
             print("Örnek veri yüklendi." if yuklendi else "Veritabanı dolu, örnek veri atlandı.")
+            with islem(baglanti):
+                kullanicilar_eklendi = ornek_kullanicilari_yukle(baglanti)
+            if kullanicilar_eklendi:
+                print("Test kullanıcıları eklendi:", ", ".join(
+                    f"{ad} ({rol.value})" for ad, _, _, rol, _ in KULLANICILAR))
+                print("Parolalar: backend/data/ornek_veri.py -> KULLANICILAR")
     finally:
         baglanti.close()
     print(f"Veritabanı: {config.VERITABANI_YOLU}")

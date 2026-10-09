@@ -12,8 +12,10 @@ from backend.data.repositories import (
 )
 from backend.models import (
     BagisKalemi, Dagitim, DagitimDurumu, IhtiyacTalebi, Kategori, Malzeme, OncelikSeviyesi,
-    Stok,
+    Rol, Stok,
 )
+from backend import config
+from backend.services.kimlik_servisi import KimlikServisi
 from backend.services.ozet_servisi import OzetServisi
 
 
@@ -35,7 +37,8 @@ class MigrasyonTestleri(VeritabaniTesti):
     def test_tum_tablolar_olustu(self):
         tablolar = {s[0] for s in self.db.execute("SELECT name FROM sqlite_master WHERE type='table'")}
         for tablo in ("kategori", "malzeme", "depo", "ihtiyac_noktasi", "bagisci", "bagis",
-                      "bagis_kalemi", "stok", "ihtiyac_talebi", "dagitim", "dagitim_kalemi"):
+                      "bagis_kalemi", "stok", "ihtiyac_talebi", "dagitim", "dagitim_kalemi",
+                      "kullanici", "oturum"):
             self.assertIn(tablo, tablolar)
 
     def test_yabanci_anahtar_kontrolu_acik(self):
@@ -124,7 +127,12 @@ class KisitTestleri(VeritabaniTesti):
 
 class OzetServisiTesti(VeritabaniTesti):
     def test_panel_ozeti(self):
-        ozet = OzetServisi(self.db).panel_ozeti()
+        self.addCleanup(setattr, config, "PAROLA_ITERASYON", config.PAROLA_ITERASYON)
+        config.PAROLA_ITERASYON = 1_000  # testler hızlı olsun
+        kimlik = KimlikServisi(self.db)
+        kimlik.kayit_ol("test_yonetici", "Test", "Parola123", "Parola123", Rol.YONETICI)
+        token = kimlik.giris_yap("test_yonetici", "Parola123")
+        ozet = OzetServisi(self.db, kimlik).panel_ozeti(token)
         self.assertEqual(ozet.depo, 3)
         self.assertEqual(ozet.malzeme_cesidi, 12)
         self.assertGreater(ozet.bekleyen_talep, 0)

@@ -34,6 +34,8 @@ def python_degeri(deger: Any, tip: Any) -> Any:
     if get_origin(tip) is Union:  # Optional[X] -> X
         tip = next(t for t in get_args(tip) if t is not type(None))
     if isinstance(tip, type):
+        if tip is bool:  # SQLite'ta bool yok, 0/1 tamsayı olarak saklanır
+            return bool(deger)
         if issubclass(tip, Enum):
             return tip(deger)
         if issubclass(tip, datetime):

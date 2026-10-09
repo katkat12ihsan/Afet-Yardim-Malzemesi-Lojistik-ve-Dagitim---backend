@@ -1,6 +1,7 @@
 """İş katmanı - ana panel özeti.
 
 Frontend veritabanına doğrudan erişmez; sayıları bu servisten ister.
+Hafta 5: özet yalnızca geçerli oturumu olan kullanıcıya verilir.
 """
 
 import sqlite3
@@ -10,6 +11,8 @@ from backend.data.repositories import (
     DepoRepository, IhtiyacNoktasiRepository, IhtiyacTalebiRepository, MalzemeRepository,
     StokRepository,
 )
+
+from .kimlik_servisi import KimlikServisi
 
 
 @dataclass(frozen=True)
@@ -26,10 +29,12 @@ class PanelOzeti:
 
 
 class OzetServisi:
-    def __init__(self, baglanti: sqlite3.Connection) -> None:
+    def __init__(self, baglanti: sqlite3.Connection, kimlik: KimlikServisi) -> None:
         self._baglanti = baglanti
+        self._kimlik = kimlik
 
-    def panel_ozeti(self) -> PanelOzeti:
+    def panel_ozeti(self, token: str) -> PanelOzeti:
+        self._kimlik.modul_erisimi(token, "panel")
         return PanelOzeti(
             malzeme_cesidi=MalzemeRepository(self._baglanti).sayi(),
             depo=DepoRepository(self._baglanti).sayi(),

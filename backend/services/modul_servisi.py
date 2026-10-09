@@ -31,6 +31,8 @@ _MODULLER = (
                  "Dağıtım kayıtlarının durum takibi (Planlandı/Yolda/Teslim)."),
     ModulBilgisi("rapor", "Şeffaflık Raporu", 12,
                  "Bağıştan teslime izlenebilir dağıtım raporu ve bildirimler."),
+    ModulBilgisi("kullanicilar", "Kullanıcılar", 5,
+                 "Kullanıcı listesi ve rolleri (yalnızca Yönetici)."),
 )
 
 

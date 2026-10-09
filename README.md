@@ -64,6 +64,7 @@ Gizli bilgiler (API anahtarları) koda yazılmaz; `.env.example` dosyasındaki d
 - [Veritabanı tasarımı: migration, kısıtlar, indeksler](docs/Veritabani.md)
 - [Haftalık ilerleme raporları](docs/haftalik-raporlar/)
 - [Yapay zekâ kullanım günlüğü](docs/ai-kullanim-gunlugu.md)
+- Formlar: [risk analizi](docs/formlar/risk-analizi.md) · [proje takvimi](docs/formlar/proje-takvimi.md) · [proje izleme](docs/formlar/proje-izleme-formu.md) · [haftalık kontrol listesi](docs/formlar/haftalik-kontrol-listesi.md) · [GitHub kontrol listesi](docs/formlar/github-kontrol-listesi.md)
 
 ## Klasör yapısı
 

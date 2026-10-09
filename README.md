@@ -3,7 +3,7 @@
 Bağış malzemelerinin envanterini yönetip ihtiyaç noktalarına dağıtımı planlayan **Python masaüstü uygulaması**.
 
 > Bilgisayar Uygulamaları I — Proje Tabanlı Öğrenme dersi projesi
-> Durum: **Hafta 3 — Kurulum, mimari ve veri modeli** (çalışan boş iskelet)
+> Durum: **Hafta 4 — Veritabanı ve veri erişim katmanı** (SQLite şema, CRUD, sentetik veri)
 
 ## Problem ve amaç
 
@@ -14,7 +14,7 @@ Bağış malzemeleri envanteri ve dağıtımı düzensiz olduğunda israf ve eks
 | Modül | Hafta |
 |---|---|
 | Kurulum, mimari, ER diyagramı | 3 ✅ |
-| Veritabanı ve veri erişim katmanı | 4 |
+| Veritabanı ve veri erişim katmanı | 4 ✅ |
 | Kullanıcı yönetimi ve kimlik doğrulama | 5 |
 | Envanter yönetimi | 6 |
 | Bağış girişi ve ihtiyaç eşleştirme | 7 |
@@ -39,7 +39,14 @@ cd Afet-Yardim-Malzemesi-Lojistik-ve-Dagitim
 python -m venv .venv
 .venv\Scripts\activate
 pip install -r requirements.txt
+python -m backend.data.kurulum --ornek-veri
 python main.py
+```
+
+Veritabanı demosu (sorgular + kısıt denemeleri, kalıcı değişiklik yapmaz):
+
+```bash
+python -m backend.data.sorgu_ornekleri
 ```
 
 Testler:
@@ -54,6 +61,7 @@ Gizli bilgiler (API anahtarları) koda yazılmaz; `.env.example` dosyasındaki d
 
 - [ER diyagramı](docs/ER-Diyagrami.md) ([görsel](docs/er-diyagrami.svg))
 - [Mimari şema](docs/Mimari.md) ([görsel](docs/mimari-sema.svg))
+- [Veritabanı tasarımı: migration, kısıtlar, indeksler](docs/Veritabani.md)
 - [Haftalık ilerleme raporları](docs/haftalik-raporlar/)
 - [Yapay zekâ kullanım günlüğü](docs/ai-kullanim-gunlugu.md)
 
@@ -68,6 +76,8 @@ backend/                 arayüzden bağımsız çekirdek
   models/                varlık katmanı (ER -> dataclass)
   services/              iş katmanı (iş kuralları, eşleştirme, öneri)
   data/                  veri erişim katmanı (SQLite)
+    migrations/          numaralı şema dosyaları (001_ilk_sema.sql)
+    repositories/        CRUD sınıfları
 frontend/                masaüstü arayüz (Tkinter)
   main_window.py         ana pencere, menü, sayfalar
 tests/                   birim testleri

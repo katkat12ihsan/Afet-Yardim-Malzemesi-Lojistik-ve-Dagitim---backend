@@ -1,6 +1,6 @@
 # ER Diyagramı — P16 Afet Yardım Malzemesi Lojistik ve Dağıtım
 
-Görsel sürüm: [er-diyagrami.svg](er-diyagrami.svg). Aşağıdaki Mermaid diyagramı GitHub'da otomatik çizilir.
+Görsel sürüm: [er-diyagrami.svg](er-diyagrami.svg). Fiziksel şema (SQL): [001_ilk_sema.sql](../backend/data/migrations/001_ilk_sema.sql), açıklaması: [Veritabani.md](Veritabani.md). Aşağıdaki Mermaid diyagramı GitHub'da otomatik çizilir.
 
 ```mermaid
 erDiagram

@@ -1,0 +1,58 @@
+﻿
+=== 1) Tablo kayıt sayıları ===========================================
+  kategori            5
+  malzeme            12
+  depo                3
+  ihtiyac_noktasi     5
+  bagisci             5
+  bagis               6
+  bagis_kalemi       16
+  stok               16
+  ihtiyac_talebi     10
+  dagitim             4
+  dagitim_kalemi      6
+
+=== 2) Merkez depo stokları (JOIN: stok + malzeme + kategori) =========
+  Depo: Bingöl Merkez Lojistik Deposu
+  Barınma  Battaniye                  400 adet
+  Giyim    Mont (yetişkin)            250 adet
+  Giyim    Çocuk giysi seti           120 paket
+  Gıda     Konserve                   150 koli
+  Gıda     Kuru gıda kolisi           280 koli
+  Gıda     İçme suyu (5 L)            800 adet
+
+=== 3) Bekleyen talepler - önceliğe göre (JOIN + WHERE + ORDER BY) ====
+  öncelik 4  Karlıova Çadır Kent        Çadır (4 kişilik)       60 adet   Kısmen karşılandı
+  öncelik 4  Karlıova Çadır Kent        Battaniye              500 adet   Kısmen karşılandı
+  öncelik 4  Karlıova Çadır Kent        Kuru gıda kolisi       300 koli   Bekliyor
+  öncelik 4  Karlıova Çadır Kent        Bebek maması            60 paket  Bekliyor
+  öncelik 3  Kiğı Okul Toplanma Alanı   Hijyen kiti            100 paket  Bekliyor
+  öncelik 3  Adaklı Konteyner Kent      Uyku tulumu            150 adet   Bekliyor
+  öncelik 3  Adaklı Konteyner Kent      İlk yardım çantası      10 adet   Bekliyor
+  öncelik 2  Yedisu Mahalle Merkezi     Mont (yetişkin)         80 adet   Bekliyor
+
+=== 4) Kritik seviyenin altındaki stoklar =============================
+  Solhan Ara Depo                Battaniye            0 < 75
+
+=== 5) GROUP BY: kategori bazında toplam bağış ========================
+  Gıda      7 kalem  toplam   2500
+  Barınma   4 kalem  toplam   1030
+  Giyim     2 kalem  toplam    370
+  Hijyen    2 kalem  toplam    160
+  Sağlık    1 kalem  toplam     25
+
+=== 6) CRUD (sonunda ROLLBACK yapılır) ================================
+  CREATE  -> id=13
+  READ    -> Malzeme(kategori_id=2, ad='Deneme Malzemesi', birim='adet', aciklama='', id=13)
+  UPDATE  -> True  aciklama='güncellendi'
+  DELETE  -> True  tekrar okuma: None
+
+=== 7) Kısıtlar çalışıyor mu? =========================================
+  [OK] Olmayan malzemeye bağış kalemi (FOREIGN KEY): reddedildi -> FOREIGN KEY constraint failed
+  [OK] Negatif miktarlı talep (CHECK miktar > 0): reddedildi -> CHECK constraint failed: miktar > 0
+  [OK] Aynı adla ikinci kategori (UNIQUE): reddedildi -> UNIQUE constraint failed: kategori.ad
+  [OK] Stoğu olan malzemeyi silmek (ON DELETE RESTRICT): reddedildi -> FOREIGN KEY constraint failed
+  [OK] Teslim tarihi olmadan 'Teslim edildi' (tablo CHECK): reddedildi -> CHECK constraint failed: durum <> 'Teslim edildi' OR teslim_tarihi IS NOT NULL
+  [OK] Bağış silinince kalemleri de silindi (ON DELETE CASCADE): 2 -> 0
+
+Demo değişiklikleri geri alındı (ROLLBACK); veritabanı değişmedi.

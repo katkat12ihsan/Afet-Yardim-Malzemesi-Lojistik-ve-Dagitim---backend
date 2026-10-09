@@ -1,0 +1,203 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 880" width="1200" height="880" font-family="Segoe UI, Arial, sans-serif">
+  <style>
+    .kutu { fill: #ffffff; stroke: #455a64; stroke-width: 1.4; }
+    .baslik { fill: #ffffff; font-size: 13px; font-weight: 700; text-anchor: middle; }
+    .alan { fill: #263238; font-size: 12px; }
+    .anahtar { fill: #6a1b9a; font-size: 10.5px; font-weight: 700; text-anchor: end; }
+    .cizgi { fill: none; stroke: #546e7a; stroke-width: 1.6; }
+    .kard { fill: #b71c1c; font-size: 12px; font-weight: 700; }
+    .fiil { fill: #546e7a; font-size: 10.5px; font-style: italic; }
+  </style>
+  <rect width="1200" height="880" fill="#fafafa"/>
+  <text x="30" y="36" font-size="20" font-weight="700" fill="#263238">P16 · Afet Yardım Malzemesi Lojistik ve Dağıtım — ER Diyagramı</text>
+
+  <!-- ===================== İLİŞKİ ÇİZGİLERİ ===================== -->
+  <!-- Bağışçı 1-N Bağış -->
+  <path class="cizgi" d="M270,110 H330"/>
+  <text class="kard" x="274" y="104">1</text><text class="kard" x="318" y="104">N</text>
+  <text class="fiil" x="300" y="126" text-anchor="middle">yapar</text>
+  <!-- Bağış 1-N BağışKalemi -->
+  <path class="cizgi" d="M570,110 H630"/>
+  <text class="kard" x="574" y="104">1</text><text class="kard" x="618" y="104">N</text>
+  <text class="fiil" x="600" y="126" text-anchor="middle">içerir</text>
+  <!-- BağışKalemi N-1 Malzeme -->
+  <path class="cizgi" d="M700,196 V300"/>
+  <text class="kard" x="706" y="212">N</text><text class="kard" x="706" y="294">1</text>
+  <text class="fiil" x="706" y="262">bağışlanır</text>
+  <!-- Kategori 1-N Malzeme -->
+  <path class="cizgi" d="M1050,136 V250 H800 V300"/>
+  <text class="kard" x="1056" y="152">1</text><text class="kard" x="806" y="294">N</text>
+  <text class="fiil" x="925" y="244" text-anchor="middle">sınıflandırır</text>
+  <!-- Depo 1-N Bağış -->
+  <path class="cizgi" d="M450,196 V250 H210 V300"/>
+  <text class="kard" x="456" y="212">N</text><text class="kard" x="216" y="294">1</text>
+  <text class="fiil" x="330" y="244" text-anchor="middle">teslim alır</text>
+  <!-- Depo 1-N Stok -->
+  <path class="cizgi" d="M270,360 H330"/>
+  <text class="kard" x="274" y="354">1</text><text class="kard" x="318" y="354">N</text>
+  <text class="fiil" x="300" y="376" text-anchor="middle">tutar</text>
+  <!-- Stok N-1 Malzeme -->
+  <path class="cizgi" d="M570,360 H630"/>
+  <text class="kard" x="574" y="354">N</text><text class="kard" x="620" y="354">1</text>
+  <text class="fiil" x="600" y="376" text-anchor="middle">stoklanır</text>
+  <!-- Malzeme 1-N İhtiyaçTalebi -->
+  <path class="cizgi" d="M870,360 H930"/>
+  <text class="kard" x="874" y="354">1</text><text class="kard" x="918" y="354">N</text>
+  <text class="fiil" x="900" y="376" text-anchor="middle">istenir</text>
+  <!-- İhtiyaçTalebi N-1 İhtiyaçNoktası -->
+  <path class="cizgi" d="M1050,456 V560"/>
+  <text class="kard" x="1056" y="472">N</text><text class="kard" x="1056" y="554">1</text>
+  <text class="fiil" x="1056" y="516">talep eder</text>
+  <!-- Depo 1-N Dağıtım -->
+  <path class="cizgi" d="M150,476 V560"/>
+  <text class="kard" x="156" y="492">1</text><text class="kard" x="156" y="554">N</text>
+  <text class="fiil" x="156" y="522">gönderir</text>
+  <!-- Dağıtım 1-N DağıtımKalemi -->
+  <path class="cizgi" d="M270,620 H630"/>
+  <text class="kard" x="274" y="614">1</text><text class="kard" x="618" y="614">N</text>
+  <text class="fiil" x="450" y="614" text-anchor="middle">içerir</text>
+  <!-- Malzeme 1-N DağıtımKalemi -->
+  <path class="cizgi" d="M750,436 V560"/>
+  <text class="kard" x="756" y="452">1</text><text class="kard" x="756" y="554">N</text>
+  <text class="fiil" x="756" y="502">dağıtılır</text>
+  <!-- İhtiyaçNoktası 1-N Dağıtım -->
+  <path class="cizgi" d="M1050,776 V815 H120 V736"/>
+  <text class="kard" x="1056" y="796">1</text><text class="kard" x="126" y="754">N</text>
+  <text class="fiil" x="585" y="808" text-anchor="middle">teslim alır</text>
+
+  <!-- ===================== VARLIKLAR ===================== -->
+  <!-- BAĞIŞÇI -->
+  <g transform="translate(30,60)">
+    <rect class="kutu" width="240" height="136" rx="6"/>
+    <path d="M0,6 a6,6 0 0 1 6,-6 h228 a6,6 0 0 1 6,6 v22 h-240 z" fill="#2e7d32"/>
+    <text class="baslik" x="120" y="19">BAĞIŞÇI</text>
+    <text class="alan" x="10" y="46">id</text><text class="anahtar" x="230" y="46">PK</text>
+    <text class="alan" x="10" y="66">ad</text>
+    <text class="alan" x="10" y="86">tur</text>
+    <text class="alan" x="10" y="106">telefon</text>
+    <text class="alan" x="10" y="126">eposta</text>
+  </g>
+  <!-- BAĞIŞ -->
+  <g transform="translate(330,60)">
+    <rect class="kutu" width="240" height="136" rx="6"/>
+    <path d="M0,6 a6,6 0 0 1 6,-6 h228 a6,6 0 0 1 6,6 v22 h-240 z" fill="#2e7d32"/>
+    <text class="baslik" x="120" y="19">BAĞIŞ</text>
+    <text class="alan" x="10" y="46">id</text><text class="anahtar" x="230" y="46">PK</text>
+    <text class="alan" x="10" y="66">bagisci_id</text><text class="anahtar" x="230" y="66">FK</text>
+    <text class="alan" x="10" y="86">depo_id</text><text class="anahtar" x="230" y="86">FK</text>
+    <text class="alan" x="10" y="106">tarih</text>
+    <text class="alan" x="10" y="126">aciklama</text>
+  </g>
+  <!-- BAĞIŞ KALEMİ -->
+  <g transform="translate(630,60)">
+    <rect class="kutu" width="240" height="136" rx="6"/>
+    <path d="M0,6 a6,6 0 0 1 6,-6 h228 a6,6 0 0 1 6,6 v22 h-240 z" fill="#2e7d32"/>
+    <text class="baslik" x="120" y="19">BAĞIŞ_KALEMİ</text>
+    <text class="alan" x="10" y="46">id</text><text class="anahtar" x="230" y="46">PK</text>
+    <text class="alan" x="10" y="66">bagis_id</text><text class="anahtar" x="230" y="66">FK</text>
+    <text class="alan" x="10" y="86">malzeme_id</text><text class="anahtar" x="230" y="86">FK</text>
+    <text class="alan" x="10" y="106">miktar</text>
+    <text class="alan" x="10" y="126">son_kullanma_tarihi</text>
+  </g>
+  <!-- KATEGORİ -->
+  <g transform="translate(930,60)">
+    <rect class="kutu" width="240" height="76" rx="6"/>
+    <path d="M0,6 a6,6 0 0 1 6,-6 h228 a6,6 0 0 1 6,6 v22 h-240 z" fill="#1565c0"/>
+    <text class="baslik" x="120" y="19">KATEGORİ</text>
+    <text class="alan" x="10" y="46">id</text><text class="anahtar" x="230" y="46">PK</text>
+    <text class="alan" x="10" y="66">ad</text><text class="anahtar" x="230" y="66">UNIQUE</text>
+  </g>
+  <!-- DEPO -->
+  <g transform="translate(30,300)">
+    <rect class="kutu" width="240" height="176" rx="6"/>
+    <path d="M0,6 a6,6 0 0 1 6,-6 h228 a6,6 0 0 1 6,6 v22 h-240 z" fill="#ef6c00"/>
+    <text class="baslik" x="120" y="19">DEPO</text>
+    <text class="alan" x="10" y="46">id</text><text class="anahtar" x="230" y="46">PK</text>
+    <text class="alan" x="10" y="66">ad</text>
+    <text class="alan" x="10" y="86">il</text>
+    <text class="alan" x="10" y="106">ilce</text>
+    <text class="alan" x="10" y="126">adres</text>
+    <text class="alan" x="10" y="146">enlem</text>
+    <text class="alan" x="10" y="166">boylam</text>
+  </g>
+  <!-- STOK -->
+  <g transform="translate(330,300)">
+    <rect class="kutu" width="240" height="116" rx="6"/>
+    <path d="M0,6 a6,6 0 0 1 6,-6 h228 a6,6 0 0 1 6,6 v22 h-240 z" fill="#ef6c00"/>
+    <text class="baslik" x="120" y="19">STOK</text>
+    <text class="alan" x="10" y="46">depo_id</text><text class="anahtar" x="230" y="46">PK, FK</text>
+    <text class="alan" x="10" y="66">malzeme_id</text><text class="anahtar" x="230" y="66">PK, FK</text>
+    <text class="alan" x="10" y="86">miktar</text>
+    <text class="alan" x="10" y="106">kritik_seviye</text>
+  </g>
+  <!-- MALZEME -->
+  <g transform="translate(630,300)">
+    <rect class="kutu" width="240" height="136" rx="6"/>
+    <path d="M0,6 a6,6 0 0 1 6,-6 h228 a6,6 0 0 1 6,6 v22 h-240 z" fill="#1565c0"/>
+    <text class="baslik" x="120" y="19">MALZEME</text>
+    <text class="alan" x="10" y="46">id</text><text class="anahtar" x="230" y="46">PK</text>
+    <text class="alan" x="10" y="66">kategori_id</text><text class="anahtar" x="230" y="66">FK</text>
+    <text class="alan" x="10" y="86">ad</text>
+    <text class="alan" x="10" y="106">birim</text>
+    <text class="alan" x="10" y="126">aciklama</text>
+  </g>
+  <!-- İHTİYAÇ TALEBİ -->
+  <g transform="translate(930,300)">
+    <rect class="kutu" width="240" height="156" rx="6"/>
+    <path d="M0,6 a6,6 0 0 1 6,-6 h228 a6,6 0 0 1 6,6 v22 h-240 z" fill="#c62828"/>
+    <text class="baslik" x="120" y="19">İHTİYAÇ_TALEBİ</text>
+    <text class="alan" x="10" y="46">id</text><text class="anahtar" x="230" y="46">PK</text>
+    <text class="alan" x="10" y="66">ihtiyac_noktasi_id</text><text class="anahtar" x="230" y="66">FK</text>
+    <text class="alan" x="10" y="86">malzeme_id</text><text class="anahtar" x="230" y="86">FK</text>
+    <text class="alan" x="10" y="106">miktar</text>
+    <text class="alan" x="10" y="126">talep_tarihi</text>
+    <text class="alan" x="10" y="146">durum</text>
+  </g>
+  <!-- DAĞITIM -->
+  <g transform="translate(30,560)">
+    <rect class="kutu" width="240" height="176" rx="6"/>
+    <path d="M0,6 a6,6 0 0 1 6,-6 h228 a6,6 0 0 1 6,6 v22 h-240 z" fill="#c62828"/>
+    <text class="baslik" x="120" y="19">DAĞITIM (dağıtım kaydı)</text>
+    <text class="alan" x="10" y="46">id</text><text class="anahtar" x="230" y="46">PK</text>
+    <text class="alan" x="10" y="66">depo_id</text><text class="anahtar" x="230" y="66">FK</text>
+    <text class="alan" x="10" y="86">ihtiyac_noktasi_id</text><text class="anahtar" x="230" y="86">FK</text>
+    <text class="alan" x="10" y="106">planlanan_tarih</text>
+    <text class="alan" x="10" y="126">teslim_tarihi</text>
+    <text class="alan" x="10" y="146">durum</text>
+    <text class="alan" x="10" y="166">arac_plaka</text>
+  </g>
+  <!-- DAĞITIM KALEMİ -->
+  <g transform="translate(630,560)">
+    <rect class="kutu" width="240" height="116" rx="6"/>
+    <path d="M0,6 a6,6 0 0 1 6,-6 h228 a6,6 0 0 1 6,6 v22 h-240 z" fill="#c62828"/>
+    <text class="baslik" x="120" y="19">DAĞITIM_KALEMİ</text>
+    <text class="alan" x="10" y="46">id</text><text class="anahtar" x="230" y="46">PK</text>
+    <text class="alan" x="10" y="66">dagitim_id</text><text class="anahtar" x="230" y="66">FK</text>
+    <text class="alan" x="10" y="86">malzeme_id</text><text class="anahtar" x="230" y="86">FK</text>
+    <text class="alan" x="10" y="106">miktar</text>
+  </g>
+  <!-- İHTİYAÇ NOKTASI -->
+  <g transform="translate(930,560)">
+    <rect class="kutu" width="240" height="216" rx="6"/>
+    <path d="M0,6 a6,6 0 0 1 6,-6 h228 a6,6 0 0 1 6,6 v22 h-240 z" fill="#c62828"/>
+    <text class="baslik" x="120" y="19">İHTİYAÇ_NOKTASI</text>
+    <text class="alan" x="10" y="46">id</text><text class="anahtar" x="230" y="46">PK</text>
+    <text class="alan" x="10" y="66">ad</text>
+    <text class="alan" x="10" y="86">il</text>
+    <text class="alan" x="10" y="106">ilce</text>
+    <text class="alan" x="10" y="126">adres</text>
+    <text class="alan" x="10" y="146">enlem</text>
+    <text class="alan" x="10" y="166">boylam</text>
+    <text class="alan" x="10" y="186">nufus_tahmini</text>
+    <text class="alan" x="10" y="206">oncelik</text>
+  </g>
+
+  <!-- ===================== AÇIKLAMA ===================== -->
+  <g transform="translate(30,852)" font-size="11.5">
+    <rect width="12" height="12" y="-10" fill="#2e7d32"/><text x="18" fill="#37474f">Bağış (giriş)</text>
+    <rect x="120" width="12" height="12" y="-10" fill="#ef6c00"/><text x="138" fill="#37474f">Depo / stok</text>
+    <rect x="235" width="12" height="12" y="-10" fill="#1565c0"/><text x="253" fill="#37474f">Tanım tabloları</text>
+    <rect x="370" width="12" height="12" y="-10" fill="#c62828"/><text x="388" fill="#37474f">İhtiyaç ve dağıtım (çıkış)</text>
+    <text x="580" fill="#37474f">PK birincil · FK yabancı anahtar · N-N ilişkiler ara tablolarla çözüldü</text>
+  </g>
+</svg>

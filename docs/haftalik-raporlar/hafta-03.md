@@ -46,10 +46,10 @@ Claude; mimari/şema önerisi, kod iskeleti ve test senaryoları için kullanıl
 
 ## Ekler — commit bağlantıları
 
-- [be91e82](https://github.com/karkatihsan/Afet-Yardim-Malzemesi-Lojistik-ve-Dagitim/commit/be91e82) chore: proje kurulumu (.gitignore, README, requirements, .env.example)
-- [673e281](https://github.com/karkatihsan/Afet-Yardim-Malzemesi-Lojistik-ve-Dagitim/commit/673e281) backend: varlık katmanı - ER tablolarının dataclass karşılıkları
-- [ed889dc](https://github.com/karkatihsan/Afet-Yardim-Malzemesi-Lojistik-ve-Dagitim/commit/ed889dc) backend: ayarlar, veri erişim (SQLite bağlantısı) ve iş katmanı iskeleti
-- [b4fbd76](https://github.com/karkatihsan/Afet-Yardim-Malzemesi-Lojistik-ve-Dagitim/commit/b4fbd76) frontend: Tkinter ana pencere iskeleti ve başlangıç noktası
-- [99c03f3](https://github.com/karkatihsan/Afet-Yardim-Malzemesi-Lojistik-ve-Dagitim/commit/99c03f3) test: backend iskelet birim testleri
-- [a2eb8ce](https://github.com/karkatihsan/Afet-Yardim-Malzemesi-Lojistik-ve-Dagitim/commit/a2eb8ce) docs: ER diyagramı ve mimari şema (frontend/backend ayrımı)
-- [4e1ee30](https://github.com/karkatihsan/Afet-Yardim-Malzemesi-Lojistik-ve-Dagitim/commit/4e1ee30) docs: hafta 3 ilerleme raporu, AI kullanım günlüğü, sözlü hazırlık, ekran görüntüsü
+- [be91e82](https://github.com/katkat12ihsan/Afet-Yardim-Malzemesi-Lojistik-ve-Dagitim/commit/be91e82) chore: proje kurulumu (.gitignore, README, requirements, .env.example)
+- [673e281](https://github.com/katkat12ihsan/Afet-Yardim-Malzemesi-Lojistik-ve-Dagitim/commit/673e281) backend: varlık katmanı - ER tablolarının dataclass karşılıkları
+- [ed889dc](https://github.com/katkat12ihsan/Afet-Yardim-Malzemesi-Lojistik-ve-Dagitim/commit/ed889dc) backend: ayarlar, veri erişim (SQLite bağlantısı) ve iş katmanı iskeleti
+- [b4fbd76](https://github.com/katkat12ihsan/Afet-Yardim-Malzemesi-Lojistik-ve-Dagitim/commit/b4fbd76) frontend: Tkinter ana pencere iskeleti ve başlangıç noktası
+- [99c03f3](https://github.com/katkat12ihsan/Afet-Yardim-Malzemesi-Lojistik-ve-Dagitim/commit/99c03f3) test: backend iskelet birim testleri
+- [a2eb8ce](https://github.com/katkat12ihsan/Afet-Yardim-Malzemesi-Lojistik-ve-Dagitim/commit/a2eb8ce) docs: ER diyagramı ve mimari şema (frontend/backend ayrımı)
+- [4e1ee30](https://github.com/katkat12ihsan/Afet-Yardim-Malzemesi-Lojistik-ve-Dagitim/commit/4e1ee30) docs: hafta 3 ilerleme raporu, AI kullanım günlüğü, sözlü hazırlık, ekran görüntüsü

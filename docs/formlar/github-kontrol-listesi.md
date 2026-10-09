@@ -17,4 +17,4 @@
 | Düzenli klasör/katman yapısı | [x] |
 | (Varsa) dal (branch) kullanımı anlamlı | — (öneri: Hafta 5'ten itibaren `hafta-05` gibi dal açıp main'e birleştirmek) |
 
-Depo bağlantısı: https://github.com/karkatihsan/Afet-Yardim-Malzemesi-Lojistik-ve-Dagitim
+Depo bağlantısı: https://github.com/katkat12ihsan/Afet-Yardim-Malzemesi-Lojistik-ve-Dagitim

@@ -34,7 +34,7 @@ Bağış malzemeleri envanteri ve dağıtımı düzensiz olduğunda israf ve eks
 ## Kurulum ve çalıştırma
 
 ```bash
-git clone <depo-adresi>
+git clone https://github.com/katkat12ihsan/Afet-Yardim-Malzemesi-Lojistik-ve-Dagitim.git
 cd Afet-Yardim-Malzemesi-Lojistik-ve-Dagitim
 python -m venv .venv
 .venv\Scripts\activate

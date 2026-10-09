@@ -7,7 +7,7 @@ iş ve arayüz katmanları bu sınıfları ortak "dil" olarak kullanır.
 Not: id alanları veritabanına kaydedilene kadar None kalır (Hafta 4).
 """
 
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from datetime import date, datetime
 from enum import Enum
 from typing import Optional
@@ -36,6 +36,12 @@ class DagitimDurumu(Enum):
     YOLDA = "Yolda"
     TESLIM_EDILDI = "Teslim edildi"
     IPTAL = "İptal"
+
+
+class Rol(Enum):
+    YONETICI = "Yönetici"   # tüm modüller + kullanıcı yönetimi
+    KURUM = "Kurum"         # yardım kuruluşu koordinatörü: ihtiyaç, dağıtım, rapor
+    DEPO = "Depo"           # depo görevlisi: envanter, bağış girişi (kendi deposu)
 
 
 # ---------------------------------------------------------------------------
@@ -157,4 +163,34 @@ class DagitimKalemi:
     dagitim_id: int                          # FK -> Dagitim
     malzeme_id: int                          # FK -> Malzeme
     miktar: float
+    id: Optional[int] = None
+
+
+# ---------------------------------------------------------------------------
+# Kullanıcı ve oturum (Hafta 5)
+# ---------------------------------------------------------------------------
+
+@dataclass
+class Kullanici:
+    kullanici_adi: str
+    ad_soyad: str
+    parola_hash: str = field(repr=False)     # loglara/ekrana yanlışlıkla basılmasın
+    rol: Rol
+    depo_id: Optional[int] = None            # FK -> Depo (yalnızca Depo rolü için zorunlu)
+    aktif: bool = True
+    basarisiz_giris: int = 0
+    kilitli_bitis: Optional[datetime] = None
+    olusturma_tarihi: datetime = field(default_factory=lambda: datetime.now().replace(microsecond=0))
+    son_giris: Optional[datetime] = None
+    id: Optional[int] = None
+
+
+@dataclass
+class Oturum:
+    """Giriş yapan kullanıcının oturumu. Token'ın kendisi değil SHA-256 özeti saklanır."""
+    kullanici_id: int                        # FK -> Kullanici
+    token_hash: str = field(repr=False)
+    olusturma: datetime
+    son_kullanma: datetime
+    cikis_zamani: Optional[datetime] = None
     id: Optional[int] = None

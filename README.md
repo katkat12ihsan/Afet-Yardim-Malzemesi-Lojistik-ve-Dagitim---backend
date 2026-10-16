@@ -1,0 +1,1 @@
+# Afet-Yardim-Malzemesi-Lojistik-ve-Dagitim---backend

@@ -23,7 +23,7 @@ def baglanti_ac(yol: Optional[str] = None) -> sqlite3.Connection:
     yol=":memory:" verilirse bellekte geçici veritabanı açılır (testler için).
     """
     if yol is None:
-        config.VERI_KLASORU.mkdir(parents=True, exist_ok=True)
+        config.VERITABANI_YOLU.parent.mkdir(parents=True, exist_ok=True)
         yol = str(config.VERITABANI_YOLU)
     baglanti = sqlite3.connect(yol)
     baglanti.execute("PRAGMA foreign_keys = ON")  # SQLite'ta varsayılan kapalıdır

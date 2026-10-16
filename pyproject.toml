@@ -1,0 +1,24 @@
+# Backend'in kurulabilir Python paketi tanımı.
+# Frontend deposu bu paketi doğrudan GitHub'dan kurar:
+#   pip install "afet-lojistik-backend @ git+https://github.com/katkat12ihsan/Afet-Yardim-Malzemesi-Lojistik-ve-Dagitim---backend.git@main"
+# Geliştirirken (iki depo yan yana klonluyken) düzenlenebilir kurulum:
+#   pip install -e ../Afet-Yardim-Malzemesi-Lojistik-ve-Dagitim---backend
+
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "afet-lojistik-backend"
+version = "0.3.0"
+description = "P16 Afet Yardım Malzemesi Lojistik ve Dağıtım - backend (varlık, iş ve veri erişim katmanları)"
+readme = "README.md"
+requires-python = ">=3.10"
+authors = [{ name = "İhsan Katkat" }]
+dependencies = []   # yalnızca Python standart kütüphanesi (sqlite3, hashlib, secrets)
+
+[tool.setuptools.packages.find]
+include = ["backend*"]
+
+[tool.setuptools.package-data]
+"backend.data" = ["migrations/*.sql"]   # şema dosyaları paketle birlikte kurulsun

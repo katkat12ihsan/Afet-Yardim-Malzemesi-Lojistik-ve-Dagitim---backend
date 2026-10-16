@@ -43,22 +43,36 @@ Görsel sürüm: [mimari-sema.svg](mimari-sema.svg)
 
 **Bağımlılık yönü tek yönlüdür:** Sunum → İş → Veri. Alt katman üst katmanı tanımaz. Bu sayede ör. arayüz Tkinter'dan başka bir kütüphaneye geçse iş ve veri katmanı değişmez; iş kuralları arayüz açılmadan `unittest` ile test edilebilir.
 
-## Klasör yapısı
+## Depo ve klasör yapısı
+
+Proje iki ayrı GitHub deposundan oluşur. Ayrım, katmanların bağımlılık yönüyle aynıdır: frontend backend'e bağımlıdır, backend frontend'i tanımaz.
+
+| Depo | İçerik | Bağımlılık |
+|---|---|---|
+| [Backend](https://github.com/katkat12ihsan/Afet-Yardim-Malzemesi-Lojistik-ve-Dagitim---backend) | Varlık, iş ve veri erişim katmanları; şema; testler; dokümantasyon | Yalnızca Python standart kütüphanesi |
+| [Frontend](https://github.com/katkat12ihsan/Afet-Yardim-Malzemesi-Lojistik-ve-Dagitim---fronted) | Tkinter arayüzü ve başlangıç noktası | Backend paketi (`requirements.txt` → GitHub) |
 
 ```
-Afet-Yardim-Malzemesi-Lojistik-ve-Dagitim/
-├── main.py                  # Başlangıç noktası (python main.py)
+Afet-Yardim-Malzemesi-Lojistik-ve-Dagitim---backend/
+├── pyproject.toml           # Paket tanımı: frontend bunu pip ile kurar
 ├── backend/                 # BACKEND: arayüzden bağımsız çekirdek
 │   ├── config.py            # Ayarlar; gizli anahtarlar ortam değişkeninden
+│   ├── guvenlik.py          # Parola hash, token
 │   ├── models/entities.py   # Varlık katmanı (ER → dataclass)
 │   ├── services/            # İş katmanı
-│   └── data/database.py     # Veri erişim katmanı (SQLite bağlantısı)
-├── frontend/                # FRONTEND: masaüstü arayüz
-│   └── main_window.py       # Sunum katmanı (Tkinter)
+│   └── data/                # Veri erişim katmanı (SQLite, migration'lar, repository'ler)
 ├── tests/                   # Birim testleri (unittest)
-├── docs/                    # ER, mimari, haftalık raporlar, AI günlüğü
-├── .gitignore  .env.example  requirements.txt  README.md
+└── docs/                    # ER, mimari, haftalık raporlar, formlar, AI günlüğü
+
+Afet-Yardim-Malzemesi-Lojistik-ve-Dagitim---fronted/
+├── main.py                  # Başlangıç noktası (python main.py)
+├── frontend/                # FRONTEND: masaüstü arayüz
+│   ├── giris_penceresi.py   # Giriş / kayıt
+│   └── main_window.py       # Ana pencere (Tkinter)
+└── requirements.txt         # afet-lojistik-backend @ git+...backend.git
 ```
+
+> Hafta 3–5 boyunca proje tek depoda geliştirildi ([eski tek depo](https://github.com/katkat12ihsan/Afet-Yardim-Malzemesi-Lojistik-ve-Dagitim)); Hafta 6 öncesinde commit geçmişi korunarak iki depoya ayrıldı.
 
 ## Neden bu teknolojiler?
 

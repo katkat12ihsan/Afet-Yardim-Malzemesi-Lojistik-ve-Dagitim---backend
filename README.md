@@ -1,6 +1,13 @@
-# P16 · Afet Yardım Malzemesi Lojistik ve Dağıtım
+# P16 · Afet Yardım Malzemesi Lojistik ve Dağıtım — **Backend**
 
-Bağış malzemelerinin envanterini yönetip ihtiyaç noktalarına dağıtımı planlayan **Python masaüstü uygulaması**.
+Bağış malzemelerinin envanterini yönetip ihtiyaç noktalarına dağıtımı planlayan **Python masaüstü uygulaması**nın backend'i: varlık, iş ve veri erişim katmanları, veritabanı şeması, kimlik doğrulama ve testler.
+
+| Depo | İçerik |
+|---|---|
+| **Backend (bu depo)** | `backend/` paketi, `tests/`, proje dokümantasyonu (`docs/`) |
+| [Frontend](https://github.com/katkat12ihsan/Afet-Yardim-Malzemesi-Lojistik-ve-Dagitim---fronted) | Tkinter masaüstü arayüzü (`frontend/`, `main.py`) |
+
+Proje dokümantasyonu (haftalık raporlar, formlar, AI günlüğü) bu depodadır.
 
 > Bilgisayar Uygulamaları I — Proje Tabanlı Öğrenme dersi projesi
 > Durum: **Hafta 5 — Kullanıcı yönetimi ve kimlik doğrulama** (giriş/kayıt, PBKDF2 parola, oturum, rol tabanlı erişim)
@@ -27,23 +34,28 @@ Bağış malzemeleri envanteri ve dağıtımı düzensiz olduğunda israf ve eks
 ## Teknolojiler
 
 - Python 3.12
-- Tkinter / ttk — masaüstü arayüz (Python ile birlikte gelir)
+- Tkinter / ttk — masaüstü arayüz ([frontend deposu](https://github.com/katkat12ihsan/Afet-Yardim-Malzemesi-Lojistik-ve-Dagitim---fronted))
 - SQLite (`sqlite3`) — ilişkisel veritabanı (Python ile birlikte gelir)
 - unittest — birim testleri
 
-## Kurulum ve çalıştırma
+## Kurulum
+
+Backend kurulabilir bir Python paketidir (`pyproject.toml`); ek bağımlılığı yoktur.
 
 ```bash
-git clone https://github.com/katkat12ihsan/Afet-Yardim-Malzemesi-Lojistik-ve-Dagitim.git
-cd Afet-Yardim-Malzemesi-Lojistik-ve-Dagitim
+git clone https://github.com/katkat12ihsan/Afet-Yardim-Malzemesi-Lojistik-ve-Dagitim---backend.git
+cd Afet-Yardim-Malzemesi-Lojistik-ve-Dagitim---backend
 python -m venv .venv
 .venv\Scripts\activate
-pip install -r requirements.txt
+pip install -e .
 python -m backend.data.kurulum --ornek-veri
-python main.py
 ```
 
-Açılışta giriş ekranı gelir. `--ornek-veri` her rolden bir test kullanıcısı ekler: `yonetici`, `kurum1`, `depo1` (parolalar `backend/data/ornek_veri.py` → `KULLANICILAR`; yalnızca yerel demo içindir). Hiç kullanıcı yoksa kayıt ekranından ilk Yönetici hesabı açılabilir.
+Uygulamanın arayüzü için [frontend deposunun](https://github.com/katkat12ihsan/Afet-Yardim-Malzemesi-Lojistik-ve-Dagitim---fronted) kurulum adımlarını izleyin; frontend bu paketi `requirements.txt` üzerinden GitHub'dan kurar.
+
+Veritabanı varsayılan olarak `%LOCALAPPDATA%\AfetLojistik\afet_lojistik.db` dosyasındadır (Linux/macOS: `~/.local/share/AfetLojistik`). Böylece backend ve frontend aynı veritabanını kullanır; yol `AFET_DB_YOLU` ortam değişkeniyle değiştirilebilir.
+
+Uygulama açılışında giriş ekranı gelir. `--ornek-veri` her rolden bir test kullanıcısı ekler: `yonetici`, `kurum1`, `depo1` (parolalar `backend/data/ornek_veri.py` → `KULLANICILAR`; yalnızca yerel demo içindir). Hiç kullanıcı yoksa kayıt ekranından ilk Yönetici hesabı açılabilir.
 
 | Rol | Erişebildiği modüller |
 |---|---|
@@ -77,26 +89,21 @@ Gizli bilgiler (API anahtarları) koda yazılmaz; `.env.example` dosyasındaki d
 
 ## Klasör yapısı
 
-Proje iki ana bölüme ayrılmıştır:
-
 ```
-main.py                  başlangıç noktası (frontend'i açar)
+pyproject.toml           paket tanımı (pip install)
 backend/                 arayüzden bağımsız çekirdek
   config.py              ayarlar
   guvenlik.py            parola hash (PBKDF2), token
   models/                varlık katmanı (ER -> dataclass)
-  services/              iş katmanı (iş kuralları, eşleştirme, öneri)
+  services/              iş katmanı (kimlik, yetki, özet, modül planı)
   data/                  veri erişim katmanı (SQLite)
-    migrations/          numaralı şema dosyaları (001_ilk_sema.sql)
+    migrations/          numaralı şema dosyaları (001_ilk_sema.sql, 002_kullanici.sql)
     repositories/        CRUD sınıfları
-frontend/                masaüstü arayüz (Tkinter)
-  giris_penceresi.py     giriş / kayıt
-  main_window.py         ana pencere, menü, sayfalar
-tests/                   birim testleri
-docs/                    ER, mimari, raporlar, AI günlüğü, ekran görüntüleri
+tests/                   birim testleri (38 test)
+docs/                    ER, mimari, raporlar, formlar, AI günlüğü, ekran görüntüleri
 ```
 
-**Kural:** `frontend` yalnızca `backend.services` ve `backend.models` kullanır; `backend` hiçbir zaman `frontend`'i import etmez. Bu yüzden backend testleri pencere açmadan çalışır.
+**Kural:** Frontend yalnızca `backend.services` ve `backend.models` kullanır; backend frontend'i hiç tanımaz. Bu yüzden backend ayrı bir depoda durabilir ve testleri pencere açmadan çalışır.
 
 ## Veri gizliliği
 

@@ -10,9 +10,17 @@ from pathlib import Path
 UYGULAMA_ADI = "Afet Yardım Malzemesi Lojistik ve Dağıtım"
 SURUM = "0.3.0 (Hafta 5 - kimlik doğrulama)"
 
-PROJE_KOKU = Path(__file__).resolve().parent.parent
-VERI_KLASORU = PROJE_KOKU / "data"
-VERITABANI_YOLU = Path(os.getenv("AFET_DB_YOLU", VERI_KLASORU / "afet_lojistik.db"))
+# Backend ayrı bir paket olarak (pip ile) kurulabildiği için veritabanı proje
+# klasöründe değil, kullanıcının uygulama verisi klasöründe tutulur. Böylece
+# frontend hangi klasörden çalıştırılırsa çalıştırılsın aynı veritabanını kullanır.
+#   Windows: %LOCALAPPDATA%\AfetLojistik     Linux/macOS: ~/.local/share/AfetLojistik
+# AFET_VERI_KLASORU veya AFET_DB_YOLU ortam değişkeniyle değiştirilebilir.
+_VARSAYILAN_VERI_KLASORU = (
+    Path(os.environ["LOCALAPPDATA"]) if os.getenv("LOCALAPPDATA")
+    else Path.home() / ".local" / "share"
+) / "AfetLojistik"
+VERI_KLASORU = Path(os.getenv("AFET_VERI_KLASORU") or _VARSAYILAN_VERI_KLASORU)
+VERITABANI_YOLU = Path(os.getenv("AFET_DB_YOLU") or VERI_KLASORU / "afet_lojistik.db")
 
 # Kimlik doğrulama (Hafta 5)
 PAROLA_ITERASYON = 600_000          # PBKDF2 tur sayısı (OWASP 2023 önerisi); testlerde düşürülür

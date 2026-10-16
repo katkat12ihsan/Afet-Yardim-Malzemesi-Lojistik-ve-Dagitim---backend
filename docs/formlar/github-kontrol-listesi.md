@@ -6,7 +6,7 @@
 
 | Madde | Durum |
 |---|---|
-| Proje için ayrı bir depo oluşturuldu | [x] |
+| Proje için ayrı bir depo oluşturuldu | [x] Backend ve frontend için iki ayrı depo |
 | Öğretim elemanı iş birlikçi/izleyici olarak eklendi | — Eklenmedi (depo herkese açık, bağlantı paylaşılacak) |
 | .gitignore eklendi (gizli/gereksiz dosyalar hariç) | [x] |
 | README oluşturuldu ve güncel | [x] |
@@ -17,4 +17,7 @@
 | Düzenli klasör/katman yapısı | [x] |
 | (Varsa) dal (branch) kullanımı anlamlı | [x] Hafta 5 `hafta-05` dalında geliştirilip main'e birleştirildi |
 
-Depo bağlantısı: https://github.com/katkat12ihsan/Afet-Yardim-Malzemesi-Lojistik-ve-Dagitim
+Depo bağlantıları:
+- Backend: https://github.com/katkat12ihsan/Afet-Yardim-Malzemesi-Lojistik-ve-Dagitim---backend
+- Frontend: https://github.com/katkat12ihsan/Afet-Yardim-Malzemesi-Lojistik-ve-Dagitim---fronted
+- Hafta 3–5 tek depo (geçmiş): https://github.com/katkat12ihsan/Afet-Yardim-Malzemesi-Lojistik-ve-Dagitim

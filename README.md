@@ -5,7 +5,7 @@ Bağış malzemelerinin envanterini yönetip ihtiyaç noktalarına dağıtımı 
 | Depo | İçerik |
 |---|---|
 | **Backend (bu depo)** | `backend/` paketi, `tests/`, proje dokümantasyonu (`docs/`) |
-| [Frontend](https://github.com/katkat12ihsan/Afet-Yardim-Malzemesi-Lojistik-ve-Dagitim---fronted) | Tkinter masaüstü arayüzü (`frontend/`, `main.py`) |
+| [Frontend](https://github.com/katkat12ihsan/Afet-Yardim-Malzemesi-Lojistik-ve-Dagitim---frontend) | Tkinter masaüstü arayüzü (`frontend/`, `main.py`) |
 
 Proje dokümantasyonu (haftalık raporlar, formlar, AI günlüğü) bu depodadır.
 
@@ -34,7 +34,7 @@ Bağış malzemeleri envanteri ve dağıtımı düzensiz olduğunda israf ve eks
 ## Teknolojiler
 
 - Python 3.12
-- Tkinter / ttk — masaüstü arayüz ([frontend deposu](https://github.com/katkat12ihsan/Afet-Yardim-Malzemesi-Lojistik-ve-Dagitim---fronted))
+- Tkinter / ttk — masaüstü arayüz ([frontend deposu](https://github.com/katkat12ihsan/Afet-Yardim-Malzemesi-Lojistik-ve-Dagitim---frontend))
 - SQLite (`sqlite3`) — ilişkisel veritabanı (Python ile birlikte gelir)
 - unittest — birim testleri
 
@@ -51,7 +51,7 @@ pip install -e .
 python -m backend.data.kurulum --ornek-veri
 ```
 
-Uygulamanın arayüzü için [frontend deposunun](https://github.com/katkat12ihsan/Afet-Yardim-Malzemesi-Lojistik-ve-Dagitim---fronted) kurulum adımlarını izleyin; frontend bu paketi `requirements.txt` üzerinden GitHub'dan kurar.
+Uygulamanın arayüzü için [frontend deposunun](https://github.com/katkat12ihsan/Afet-Yardim-Malzemesi-Lojistik-ve-Dagitim---frontend) kurulum adımlarını izleyin; frontend bu paketi `requirements.txt` üzerinden GitHub'dan kurar.
 
 Veritabanı varsayılan olarak `%LOCALAPPDATA%\AfetLojistik\afet_lojistik.db` dosyasındadır (Linux/macOS: `~/.local/share/AfetLojistik`). Böylece backend ve frontend aynı veritabanını kullanır; yol `AFET_DB_YOLU` ortam değişkeniyle değiştirilebilir.
 

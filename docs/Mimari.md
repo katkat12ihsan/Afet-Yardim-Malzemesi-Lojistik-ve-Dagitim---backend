@@ -50,7 +50,7 @@ Proje iki ayrı GitHub deposundan oluşur. Ayrım, katmanların bağımlılık y
 | Depo | İçerik | Bağımlılık |
 |---|---|---|
 | [Backend](https://github.com/katkat12ihsan/Afet-Yardim-Malzemesi-Lojistik-ve-Dagitim---backend) | Varlık, iş ve veri erişim katmanları; şema; testler; dokümantasyon | Yalnızca Python standart kütüphanesi |
-| [Frontend](https://github.com/katkat12ihsan/Afet-Yardim-Malzemesi-Lojistik-ve-Dagitim---fronted) | Tkinter arayüzü ve başlangıç noktası | Backend paketi (`requirements.txt` → GitHub) |
+| [Frontend](https://github.com/katkat12ihsan/Afet-Yardim-Malzemesi-Lojistik-ve-Dagitim---frontend) | Tkinter arayüzü ve başlangıç noktası | Backend paketi (`requirements.txt` → GitHub) |
 
 ```
 Afet-Yardim-Malzemesi-Lojistik-ve-Dagitim---backend/
@@ -64,7 +64,7 @@ Afet-Yardim-Malzemesi-Lojistik-ve-Dagitim---backend/
 ├── tests/                   # Birim testleri (unittest)
 └── docs/                    # ER, mimari, haftalık raporlar, formlar, AI günlüğü
 
-Afet-Yardim-Malzemesi-Lojistik-ve-Dagitim---fronted/
+Afet-Yardim-Malzemesi-Lojistik-ve-Dagitim---frontend/
 ├── main.py                  # Başlangıç noktası (python main.py)
 ├── frontend/                # FRONTEND: masaüstü arayüz
 │   ├── giris_penceresi.py   # Giriş / kayıt

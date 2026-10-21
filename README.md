@@ -10,7 +10,7 @@ Bağış malzemelerinin envanterini yönetip ihtiyaç noktalarına dağıtımı 
 Proje dokümantasyonu (haftalık raporlar, formlar, AI günlüğü) bu depodadır.
 
 > Bilgisayar Uygulamaları I — Proje Tabanlı Öğrenme dersi projesi
-> Durum: **Hafta 5 — Kullanıcı yönetimi ve kimlik doğrulama** (giriş/kayıt, PBKDF2 parola, oturum, rol tabanlı erişim)
+> Durum: **Hafta 6 — Envanter Yönetimi** (malzeme/kategori, giriş/çıkış/sayım, stok seviyesi, hareket geçmişi)
 
 ## Problem ve amaç
 
@@ -23,7 +23,7 @@ Bağış malzemeleri envanteri ve dağıtımı düzensiz olduğunda israf ve eks
 | Kurulum, mimari, ER diyagramı | 3 ✅ |
 | Veritabanı ve veri erişim katmanı | 4 ✅ |
 | Kullanıcı yönetimi ve kimlik doğrulama | 5 ✅ |
-| Envanter yönetimi | 6 |
+| Envanter yönetimi | 6 ✅ |
 | Bağış girişi ve ihtiyaç eşleştirme | 7 |
 | Harita / rota API entegrasyonu | 9 |
 | Yapay zekâ: dağıtım önceliği ve rota önerisi | 10 |
@@ -83,6 +83,7 @@ Gizli bilgiler (API anahtarları) koda yazılmaz; `.env.example` dosyasındaki d
 - [Mimari şema](docs/Mimari.md) ([görsel](docs/mimari-sema.svg))
 - [Veritabanı tasarımı: migration, kısıtlar, indeksler](docs/Veritabani.md)
 - [Güvenlik notu: parola, oturum, rol tabanlı erişim](docs/Guvenlik-Notu.md)
+- [Envanter Yönetimi: veri modeli, iş kuralları K1–K8, akış](docs/Envanter.md)
 - [Haftalık ilerleme raporları](docs/haftalik-raporlar/)
 - [Yapay zekâ kullanım günlüğü](docs/ai-kullanim-gunlugu.md)
 - Formlar: [risk analizi](docs/formlar/risk-analizi.md) · [proje takvimi](docs/formlar/proje-takvimi.md) · [proje izleme](docs/formlar/proje-izleme-formu.md) · [haftalık kontrol listesi](docs/formlar/haftalik-kontrol-listesi.md) · [GitHub kontrol listesi](docs/formlar/github-kontrol-listesi.md)
@@ -95,11 +96,11 @@ backend/                 arayüzden bağımsız çekirdek
   config.py              ayarlar
   guvenlik.py            parola hash (PBKDF2), token
   models/                varlık katmanı (ER -> dataclass)
-  services/              iş katmanı (kimlik, yetki, özet, modül planı)
+  services/              iş katmanı (kimlik, yetki, envanter, özet, modül planı)
   data/                  veri erişim katmanı (SQLite)
-    migrations/          numaralı şema dosyaları (001_ilk_sema.sql, 002_kullanici.sql)
+    migrations/          numaralı şema dosyaları (001 ilk şema, 002 kullanıcı, 003 stok hareketi)
     repositories/        CRUD sınıfları
-tests/                   birim testleri (38 test)
+tests/                   birim testleri (60 test)
 docs/                    ER, mimari, raporlar, formlar, AI günlüğü, ekran görüntüleri
 ```
 

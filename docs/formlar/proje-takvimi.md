@@ -11,7 +11,7 @@ Durum: Planlandı / Devam / Tamamlandı / Gecikti
 | 3 | Kurulum, mimari, veri modeli | Depo + ER diyagramı + mimari şema + çalışan iskelet | Tamamlandı |
 | 4 | Veritabanı ve veri erişimi | Şema (migration) + sentetik veri + CRUD | Tamamlandı |
 | 5 | Kimlik doğrulama | Kayıt/giriş, parola hash, rol tabanlı erişim (depo/kurum) | Tamamlandı |
-| 6 | Çekirdek Modül A: Envanter Yönetimi | Malzeme/kategori, giriş/çıkış, stok seviyesi | Planlandı |
+| 6 | Çekirdek Modül A: Envanter Yönetimi | Malzeme/kategori, giriş/çıkış, stok seviyesi | Tamamlandı |
 | 7 | Çekirdek Modül B: Bağış girişi + ihtiyaç eşleştirme | Ara demo, modüllerin entegrasyonu | Planlandı |
 | 8 | VİZE: ara sürüm + sözlü | Etiketli sürüm (`v0.5-vize`) | Planlandı |
 | 9 | Harici API: harita / rota | Depo → ihtiyaç noktası rota/mesafe | Planlandı |

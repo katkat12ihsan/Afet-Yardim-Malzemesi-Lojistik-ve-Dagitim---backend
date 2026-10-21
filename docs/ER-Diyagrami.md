@@ -18,6 +18,9 @@ erDiagram
     DAGITIM  ||--|{ DAGITIM_KALEMI : "içerir"
     DEPO     |o--o{ KULLANICI : "görevlisi (Depo rolü)"
     KULLANICI ||--o{ OTURUM : "açar"
+    DEPO     ||--o{ STOK_HAREKETI : "hareket görür"
+    MALZEME  ||--o{ STOK_HAREKETI : "hareket görür"
+    KULLANICI |o--o{ STOK_HAREKETI : "yapar"
     MALZEME  ||--o{ DAGITIM_KALEMI : "dağıtılır"
 
     KATEGORI {
@@ -108,6 +111,18 @@ erDiagram
         datetime olusturma_tarihi
         datetime son_giris
     }
+    STOK_HAREKETI {
+        int id PK
+        int depo_id FK
+        int malzeme_id FK
+        string tur
+        float degisim
+        float onceki_miktar
+        float sonraki_miktar
+        string aciklama
+        int kullanici_id FK
+        datetime tarih
+    }
     OTURUM {
         int id PK
         int kullanici_id FK
@@ -167,3 +182,4 @@ erDiagram
 - **Stok ayrı tablo:** Stok miktarı her seferinde bağış − dağıtım toplamından da hesaplanabilirdi; ama hızlı sorgu ve kritik seviye uyarısı (Hafta 6) için ayrı tutuldu. Tutarlılık, giriş/çıkış işlemlerinin iş katmanında tek yerden yapılmasıyla sağlanacak.
 - **Konum (enlem/boylam)** Depo ve İhtiyaç Noktası'nda tutuldu: Hafta 9 harita/rota API'si ve Hafta 10 yapay zekâ rota önerisi için gerekli.
 - **Kullanıcı ve Oturum tabloları** Hafta 5'te `002_kullanici.sql` migration'ı ile eklendi (görsel SVG ilk 11 tabloyu gösterir). Depo rolündeki kullanıcı `depo_id` ile bir depoya bağlıdır; bir kullanıcının birden çok oturumu olabilir (1-N). Ayrıntı: [Guvenlik-Notu.md](Guvenlik-Notu.md).
+- **Stok Hareketi tablosu** Hafta 6'da `003_stok_hareketi.sql` ile eklendi: stoğu değiştiren her işlemin silinmeyen kaydı (denetim izi). Depo, malzeme ve kullanıcıya 1-N bağlıdır. Ayrıntı: [Envanter.md](Envanter.md).

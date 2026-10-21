@@ -12,10 +12,10 @@
 | README oluşturuldu ve güncel | [x] |
 | Commit'ler küçük ve anlamlı | [x] (backend / frontend / test / docs ayrı) |
 | Commit mesajları açıklayıcı | [x] |
-| Her haftanın çalışması ilgili hafta içinde yüklendi | [ ] Hafta 3 ve 4 aynı gün yüklendi; bundan sonra her hafta kendi haftasında |
+| Her haftanın çalışması ilgili hafta içinde yüklendi | [ ] Hafta 3 ve 4 aynı gün yüklendi; Hafta 5'ten itibaren her hafta kendi haftasında |
 | Gizli anahtar/parola/API anahtarı depoda yok (ortam değişkeni) | [x] |
 | Düzenli klasör/katman yapısı | [x] |
-| (Varsa) dal (branch) kullanımı anlamlı | [x] Hafta 5 `hafta-05` dalında geliştirilip main'e birleştirildi |
+| (Varsa) dal (branch) kullanımı anlamlı | [x] Her hafta ayrı dal (`hafta-05`, `hafta-06`); iki depoda da main'e birleştirildi |
 
 Depo bağlantıları:
 - Backend: https://github.com/katkat12ihsan/Afet-Yardim-Malzemesi-Lojistik-ve-Dagitim---backend

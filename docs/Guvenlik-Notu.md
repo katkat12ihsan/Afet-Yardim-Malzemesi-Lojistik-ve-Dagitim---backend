@@ -47,5 +47,5 @@ Menüde yetkisiz modüller "(kilitli)" olarak soluk gösterilir; bu yalnızca ku
 
 - Kayıt olan Kurum/Depo hesapları hemen aktif olur. Gerçek kullanımda Yönetici onayı (`aktif = 0` ile başlayıp onaylanınca 1) eklenmeli.
 - Parola değiştirme / sıfırlama ekranı henüz yok.
-- Depo görevlisinin yalnızca **kendi deposunun** kayıtlarını görmesi (satır düzeyi yetki) Hafta 6–7'de envanter ve bağış modülleriyle birlikte uygulanacak; `kullanici.depo_id` bunun için şimdiden tutuluyor.
+- ~~Depo görevlisinin yalnızca kendi deposunu görmesi~~ → **Hafta 6'da envanterde uygulandı** (satır düzeyi yetki, `EnvanterServisi._depo_kontrol`, kural K5; bkz. [Envanter.md](Envanter.md)). Bağış modülüne Hafta 7'de uygulanacak.
 - Test kullanıcılarının parolaları `backend/data/ornek_veri.py` içinde açıktır; yalnızca yerel demo içindir.

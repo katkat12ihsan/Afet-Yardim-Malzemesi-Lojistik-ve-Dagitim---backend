@@ -87,3 +87,31 @@ Her kayıt: tarih · araç · istem (prompt) · alınan çıktı · benim yaptı
 - **Çıktı:** `frontend/giris_penceresi.py`, ana pencerede kullanıcı/rol/çıkış ve Kullanıcılar sayfası, `tests/test_kimlik.py` (19 test).
 - **Benim kararım / doğrulamam:** Uygulamayı üç test kullanıcısıyla açıp kilitli menüleri ve "Erişim engellendi" sayfasını kontrol ettim (ekran görüntüleri). 38 testin hepsi geçti.
 - **Bu kodu açıklayabiliyor muyum? (E/H):** E
+
+---
+
+## Hafta 6 — Çekirdek Modül A: Envanter Yönetimi
+
+### Kayıt 10 — Envanter veri modeli (hareket tablosu)
+- **Tarih:** 21.10.2026
+- **Araç:** Claude
+- **İstem:** "Envanter için stok hareketlerini nasıl modellemeliyim? Anlık stok ile hareket geçmişi ayrı mı tutulmalı, tutarlılık nasıl sağlanır? Hafta 5'ten kalan veritabanlarındaki stoklar ne olacak?"
+- **Çıktı:** `003_stok_hareketi.sql` (CHECK ile `sonraki = önceki + değişim`, açılış devri), `StokHareketi`, `HareketTuru`, `StokHareketiRepository`.
+- **Benim kararım / doğrulamam:** Stoğu ayrı tutmaya (hızlı ekran), hareketleri silinmeyen kayıt yapmaya karar verdim. Mevcut veritabanımda migration'ın açılış hareketlerini oluşturduğunu Hareket Geçmişi ekranında gördüm.
+- **Bu kodu açıklayabiliyor muyum? (E/H):** E
+
+### Kayıt 11 — İş kuralları ve doğrulama
+- **Tarih:** 21.10.2026
+- **Araç:** Claude
+- **İstem:** "Envanter modülü için hangi iş kuralları ve doğrulamalar gerekli? Depo görevlisi sadece kendi deposunu görsün; stok eksiye düşmesin; her kural için test yaz."
+- **Çıktı:** `EnvanterServisi` (K1–K8), `tests/test_envanter.py` (22 test).
+- **Benim kararım / doğrulamam:** Birime göre tam sayı kuralını (battaniye 2,5 olmaz) ve sayımda açıklama zorunluluğunu afet deposu senaryosuna göre ekledik. Test sırasında "GIDA" ile "Gıda"nın farklı sayıldığı hata bulundu ve Türkçe karşılaştırma ile düzeltildi.
+- **Bu kodu açıklayabiliyor muyum? (E/H):** E
+
+### Kayıt 12 — Envanter ekranı ve refaktör
+- **Tarih:** 21.10.2026
+- **Araç:** Claude
+- **İstem:** "Tkinter ile 3 sekmeli envanter ekranı yaz (stok, hareket geçmişi, malzeme tanımları); hata mesajı pencereyi kapatmasın. Listeler Türkçe alfabeye göre sıralansın."
+- **Çıktı:** `frontend/envanter_sayfasi.py` (frontend deposu), `tr_sirala()` refaktörü, ana pencere bağlantısı.
+- **Benim kararım / doğrulamam:** `depo1` ve `yonetici` ile ekranı açıp çıkış, giriş, sayım ve yetersiz stok uyarısını denedim (ekran görüntüleri). Depo görevlisinde depo seçiminin kilitli olduğunu kontrol ettim.
+- **Bu kodu açıklayabiliyor muyum? (E/H):** E

@@ -69,3 +69,25 @@ Hash, salt ve rol kontrolünü anlatabiliyorum. Hesap kilitleme ve oturum süres
 
 **Bir sonraki adım için planım:**
 Envanter modülü: malzeme ve kategori ekranları, depoya giriş-çıkış, stok seviyesi.
+
+---
+
+## Hafta 6
+
+**Bu hafta tamamladığım işler:**
+Envanter modülünü bitirdim. Depoya giriş, çıkış, sayım düzeltmesi ve kritik seviye artık ekrandan yapılabiliyor. Her işlem hareket geçmişine düşüyor; kim yaptı, ne zaman yaptı, neden yaptı görünüyor. Depo görevlisi sadece kendi deposunu görüyor. Malzeme ve kategori ekleme yalnızca yöneticide.
+
+**Yeni öğrendiğim kavram/teknoloji:**
+Anlık stok ile hareket geçmişini ayrı tutmanın mantığı, iki kaydı tek transaction'da yazmak, iş kuralı ile basit doğrulama arasındaki fark. Bir de Python'un Türkçe "I/ı" harfini yanlış küçülttüğünü öğrendim.
+
+**Yapay zekâdan nerede ve nasıl yararlandım:**
+Veri modeli, iş kuralları, testler ve ekran Claude ile yazıldı. Kuralları afet deposu senaryosuna göre birlikte seçtik (örneğin battaniye kesirli olamaz). Ekranı kendi hesaplarımla açıp denedim. Ayrıntılar AI günlüğünde (Kayıt 10–12).
+
+**En çok zorlandığım nokta ve nasıl aştım:**
+Eski veritabanındaki stokların hareket kaydı yoktu ve "stok = hareket toplamı" kuralı bozuluyordu. Migration'a açılış hareketi ekleyerek çözdük.
+
+**Kendi kodumu açıklama düzeyim (1–5) ve gerekçesi:** 3
+Stok çıkışının adım adım nasıl çalıştığını ve neden tek transaction olduğunu anlatabiliyorum. Ekran kodundaki pencere ve sekme ayrıntılarına daha çok çalışmam lazım.
+
+**Bir sonraki adım için planım:**
+Bağış girişi ve ihtiyaç eşleştirme. Bağışlar stoğa envanterin giriş yolundan girecek.

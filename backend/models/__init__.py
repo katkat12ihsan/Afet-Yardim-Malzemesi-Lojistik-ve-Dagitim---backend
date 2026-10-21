@@ -6,6 +6,7 @@ from .entities import (
     DagitimDurumu,
     DagitimKalemi,
     Depo,
+    HareketTuru,
     IhtiyacNoktasi,
     IhtiyacTalebi,
     Kategori,
@@ -15,11 +16,12 @@ from .entities import (
     Oturum,
     Rol,
     Stok,
+    StokHareketi,
     TalepDurumu,
 )
 
 __all__ = [
     "Bagis", "Bagisci", "BagisKalemi", "Dagitim", "DagitimDurumu",
-    "DagitimKalemi", "Depo", "IhtiyacNoktasi", "IhtiyacTalebi", "Kategori", "Kullanici",
-    "Malzeme", "OncelikSeviyesi", "Oturum", "Rol", "Stok", "TalepDurumu",
+    "DagitimKalemi", "Depo", "HareketTuru", "IhtiyacNoktasi", "IhtiyacTalebi", "Kategori", "Kullanici",
+    "Malzeme", "OncelikSeviyesi", "Oturum", "Rol", "Stok", "StokHareketi", "TalepDurumu",
 ]

@@ -38,6 +38,13 @@ class DagitimDurumu(Enum):
     IPTAL = "İptal"
 
 
+class HareketTuru(Enum):
+    ACILIS = "Açılış"       # sisteme ilk devir
+    GIRIS = "Giriş"         # depoya malzeme girişi (+)
+    CIKIS = "Çıkış"         # depodan malzeme çıkışı (-)
+    SAYIM = "Sayım"         # fiili sayım sonrası düzeltme (+/-)
+
+
 class Rol(Enum):
     YONETICI = "Yönetici"   # tüm modüller + kullanıcı yönetimi
     KURUM = "Kurum"         # yardım kuruluşu koordinatörü: ihtiyaç, dağıtım, rapor
@@ -193,4 +200,23 @@ class Oturum:
     olusturma: datetime
     son_kullanma: datetime
     cikis_zamani: Optional[datetime] = None
+    id: Optional[int] = None
+
+
+# ---------------------------------------------------------------------------
+# Stok hareketi (Hafta 6)
+# ---------------------------------------------------------------------------
+
+@dataclass
+class StokHareketi:
+    """Bir depodaki bir malzemenin stoğunu değiştiren tek işlem (silinmeyen denetim kaydı)."""
+    depo_id: int                             # FK -> Depo
+    malzeme_id: int                          # FK -> Malzeme
+    tur: HareketTuru
+    degisim: float                           # + giriş, - çıkış
+    onceki_miktar: float
+    sonraki_miktar: float
+    aciklama: str = ""
+    kullanici_id: Optional[int] = None       # FK -> Kullanici (None = sistem)
+    tarih: datetime = field(default_factory=lambda: datetime.now().replace(microsecond=0))
     id: Optional[int] = None

@@ -1,4 +1,4 @@
-"""Stok repository'si.
+"""Stok ve stok hareketi repository'leri.
 
 Stok tablosunun birincil anahtarı bileşiktir: (depo_id, malzeme_id).
 Bu yüzden `id` kullanan TemelRepository yerine ayrı yazıldı.
@@ -7,7 +7,9 @@ Bu yüzden `id` kullanan TemelRepository yerine ayrı yazıldı.
 import sqlite3
 from typing import Optional
 
-from backend.models import Stok
+from backend.models import Stok, StokHareketi
+
+from .temel import TemelRepository
 
 
 class StokRepository:
@@ -48,7 +50,8 @@ class StokRepository:
         """Bir deponun stokları; malzeme ve kategori adlarıyla (JOIN)."""
         return self.baglanti.execute(
             """
-            SELECT m.ad AS malzeme, k.ad AS kategori, s.miktar, m.birim, s.kritik_seviye
+            SELECT s.malzeme_id, m.ad AS malzeme, m.kategori_id, k.ad AS kategori,
+                   s.miktar, m.birim, s.kritik_seviye
             FROM stok s
             JOIN malzeme m  ON m.id = s.malzeme_id
             JOIN kategori k ON k.id = m.kategori_id
@@ -58,11 +61,30 @@ class StokRepository:
             (depo_id,),
         ).fetchall()
 
+    def depo_envanteri(self, depo_id: int) -> list[sqlite3.Row]:
+        """Tüm malzemeler + bu depodaki miktarları (LEFT JOIN).
+
+        Depoda hiç stoğu olmayan malzeme de 0 miktarla gelir; böylece yeni bir
+        malzemenin ilk girişi de envanter ekranından yapılabilir.
+        """
+        return self.baglanti.execute(
+            """
+            SELECT m.id AS malzeme_id, m.ad AS malzeme, m.kategori_id, k.ad AS kategori, m.birim,
+                   COALESCE(s.miktar, 0) AS miktar, COALESCE(s.kritik_seviye, 0) AS kritik_seviye
+            FROM malzeme m
+            JOIN kategori k  ON k.id = m.kategori_id
+            LEFT JOIN stok s ON s.malzeme_id = m.id AND s.depo_id = ?
+            ORDER BY k.ad, m.ad
+            """,
+            (depo_id,),
+        ).fetchall()
+
     def kritik_stoklar(self) -> list[sqlite3.Row]:
         """Miktarı kritik seviyenin altına düşmüş stoklar (Hafta 6 uyarıları için)."""
         return self.baglanti.execute(
             """
-            SELECT d.ad AS depo, m.ad AS malzeme, s.miktar, s.kritik_seviye, m.birim
+            SELECT s.depo_id, d.ad AS depo, s.malzeme_id, m.ad AS malzeme, s.miktar,
+                   s.kritik_seviye, m.birim
             FROM stok s
             JOIN depo d    ON d.id = s.depo_id
             JOIN malzeme m ON m.id = s.malzeme_id
@@ -77,3 +99,35 @@ class StokRepository:
             "DELETE FROM stok WHERE depo_id = ? AND malzeme_id = ?", (depo_id, malzeme_id)
         )
         return imlec.rowcount == 1
+
+
+class StokHareketiRepository(TemelRepository[StokHareketi]):
+    """Hareketler yalnızca eklenir; güncelleme/silme iş katmanında kullanılmaz (denetim izi)."""
+
+    tablo, varlik, siralama = "stok_hareketi", StokHareketi, "tarih DESC, id DESC"
+
+    def gecmis(self, depo_id: int, malzeme_id: Optional[int] = None,
+               limit: int = 100) -> list[sqlite3.Row]:
+        """Bir deponun son hareketleri; malzeme ve kullanıcı adlarıyla (JOIN)."""
+        sql = """
+            SELECT h.id, h.tarih, m.ad AS malzeme, m.birim, h.tur, h.degisim,
+                   h.onceki_miktar, h.sonraki_miktar, h.aciklama,
+                   COALESCE(k.kullanici_adi, 'sistem') AS kullanici
+            FROM stok_hareketi h
+            JOIN malzeme m        ON m.id = h.malzeme_id
+            LEFT JOIN kullanici k ON k.id = h.kullanici_id
+            WHERE h.depo_id = ?
+        """
+        parametreler: tuple = (depo_id,)
+        if malzeme_id is not None:
+            sql += " AND h.malzeme_id = ?"
+            parametreler += (malzeme_id,)
+        sql += " ORDER BY h.tarih DESC, h.id DESC LIMIT ?"
+        return self.baglanti.execute(sql, parametreler + (limit,)).fetchall()
+
+    def toplam_degisim(self, depo_id: int, malzeme_id: int) -> float:
+        """Hareketlerin toplamı; stok tablosundaki miktarla aynı olmalıdır."""
+        return self.baglanti.execute(
+            "SELECT COALESCE(SUM(degisim), 0) FROM stok_hareketi WHERE depo_id = ? AND malzeme_id = ?",
+            (depo_id, malzeme_id),
+        ).fetchone()[0]

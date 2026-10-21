@@ -15,13 +15,14 @@ from datetime import date, datetime
 
 from backend.models import (
     Bagis, Bagisci, BagisKalemi, Dagitim, DagitimDurumu, DagitimKalemi, Depo,
-    IhtiyacNoktasi, IhtiyacTalebi, Kategori, Kullanici, Malzeme, OncelikSeviyesi, Rol, Stok,
-    TalepDurumu,
+    HareketTuru, IhtiyacNoktasi, IhtiyacTalebi, Kategori, Kullanici, Malzeme, OncelikSeviyesi,
+    Rol, Stok, StokHareketi, TalepDurumu,
 )
 from backend.data.repositories import (
     BagisciRepository, BagisKalemiRepository, BagisRepository, DagitimKalemiRepository,
     DagitimRepository, DepoRepository, IhtiyacNoktasiRepository, IhtiyacTalebiRepository,
-    KategoriRepository, KullaniciRepository, MalzemeRepository, StokRepository,
+    KategoriRepository, KullaniciRepository, MalzemeRepository, StokHareketiRepository,
+    StokRepository,
 )
 from backend.guvenlik import parola_hashle
 
@@ -111,6 +112,9 @@ DAGITIMLAR = [
 # Bu durumlardaki dağıtımların malzemesi depodan çıkmış sayılır
 STOKTAN_DUSEN = {DagitimDurumu.YOLDA, DagitimDurumu.TESLIM_EDILDI}
 
+# Açılış hareketlerinin tarihi: örnek verideki son bağış/dağıtımdan sonra
+ACILIS_TARIHI = datetime(2026, 10, 9, 18, 0)
+
 
 def _zaman(metin: str) -> datetime:
     return datetime.fromisoformat(metin)
@@ -162,11 +166,16 @@ def ornek_veri_yukle(baglanti: sqlite3.Connection) -> bool:
             if durum in STOKTAN_DUSEN:
                 stok[(depo_ids[depo_sira], malzeme_adi)] -= miktar
 
-    stok_repo = StokRepository(baglanti)
+    stok_repo, hareket_repo = StokRepository(baglanti), StokHareketiRepository(baglanti)
     for (depo_id, malzeme_adi), miktar in stok.items():
         # Kritik seviye ana depoda tam, ara depolarda yarı değer
         seviye = kritik[malzeme_adi] if depo_id == depo_ids[0] else kritik[malzeme_adi] / 2
         stok_repo.kaydet(Stok(depo_id, malzeme_id[malzeme_adi], miktar, seviye))
+        # Hafta 6: stok = hareketlerin toplamı kuralı için açılış (devir) hareketi
+        if miktar > 0:
+            hareket_repo.ekle(StokHareketi(depo_id, malzeme_id[malzeme_adi], HareketTuru.ACILIS,
+                                           miktar, 0, miktar, "Örnek veri açılış devri",
+                                           None, ACILIS_TARIHI))
 
     return True
 

@@ -80,3 +80,19 @@
 ## Yapay zekâ kullanımı özeti
 
 Veri modeli (hareket tablosu), doğrulama örnekleri ve refaktör önerileri için Claude kullanıldı. Doğrulama testlerle yapıldı. Ayrıntı: [AI kullanım günlüğü](../ai-kullanim-gunlugu.md) (Kayıt 10–12).
+
+## Ekler — commit bağlantıları
+
+**Backend** — dal: [hafta-06](https://github.com/katkat12ihsan/Afet-Yardim-Malzemesi-Lojistik-ve-Dagitim---backend/tree/hafta-06)
+
+- [926a439](https://github.com/katkat12ihsan/Afet-Yardim-Malzemesi-Lojistik-ve-Dagitim---backend/commit/926a439) backend: stok hareketi şeması (003 migration), StokHareketi/HareketTuru ve repository
+- [b456da0](https://github.com/katkat12ihsan/Afet-Yardim-Malzemesi-Lojistik-ve-Dagitim---backend/commit/b456da0) backend: EnvanterServisi - giriş/çıkış/sayım, 8 iş kuralı, depo sahipliği, Türkçe karşılaştırma ve sıralama
+- [aa1a21f](https://github.com/katkat12ihsan/Afet-Yardim-Malzemesi-Lojistik-ve-Dagitim---backend/commit/aa1a21f) backend: örnek veriye açılış (devir) hareketleri
+- [7a0bcc0](https://github.com/katkat12ihsan/Afet-Yardim-Malzemesi-Lojistik-ve-Dagitim---backend/commit/7a0bcc0) test: envanter iş kuralları, yetki/sahiplik ve migration testleri (22 test)
+- [8b5bf9c](https://github.com/katkat12ihsan/Afet-Yardim-Malzemesi-Lojistik-ve-Dagitim---backend/commit/8b5bf9c) docs: hafta 6 envanter açıklaması, ilerleme raporu, sözlü hazırlık, AI günlüğü, formlar, ekran görüntüleri
+
+**Frontend** — dal: [hafta-06](https://github.com/katkat12ihsan/Afet-Yardim-Malzemesi-Lojistik-ve-Dagitim---frontend/tree/hafta-06)
+
+- [5ce1efa](https://github.com/katkat12ihsan/Afet-Yardim-Malzemesi-Lojistik-ve-Dagitim---frontend/commit/5ce1efa) frontend: envanter sayfası - stok durumu, giriş/çıkış/sayım/kritik seviye pencereleri, hareket geçmişi, malzeme tanımları
+- [d570153](https://github.com/katkat12ihsan/Afet-Yardim-Malzemesi-Lojistik-ve-Dagitim---frontend/commit/d570153) frontend: envanter sayfasını ana pencereye bağla; oturum bitince güvenli kapanış
+- [de957ab](https://github.com/katkat12ihsan/Afet-Yardim-Malzemesi-Lojistik-ve-Dagitim---frontend/commit/de957ab) docs: README hafta 6 (envanter ekranı)

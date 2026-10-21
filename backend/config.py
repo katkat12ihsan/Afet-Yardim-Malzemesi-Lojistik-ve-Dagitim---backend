@@ -8,7 +8,7 @@ import os
 from pathlib import Path
 
 UYGULAMA_ADI = "Afet Yardım Malzemesi Lojistik ve Dağıtım"
-SURUM = "0.4.0 (Hafta 6 - envanter yönetimi)"
+SURUM = "0.4.1 (Hafta 6 - envanter yönetimi)"
 
 # Backend ayrı bir paket olarak (pip ile) kurulabildiği için veritabanı proje
 # klasöründe değil, kullanıcının uygulama verisi klasöründe tutulur. Böylece

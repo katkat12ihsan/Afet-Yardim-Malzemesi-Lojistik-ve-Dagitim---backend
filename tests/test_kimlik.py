@@ -69,8 +69,16 @@ class KayitTestleri(KimlikTesti):
 
     def test_kullanici_adi_buyuk_kucuk_harf_duyarsiz_benzersiz(self):
         self.kayit(kadi="ali")
-        with self.assertRaises(DogrulamaHatasi):
-            self.kayit(kadi="ALI")
+        for ayni in ("ALI", "alı", "ALİ"):                  # Türkçe I/ı/İ aynı kullanıcı adı
+            with self.assertRaises(DogrulamaHatasi):
+                self.kayit(kadi=ayni)
+
+    def test_turkce_klavyeyle_yazilan_kullanici_adiyla_giris(self):
+        """Hata kaydı: 'katkat_ihsan' hesabına Türkçe klavyede 'Katkat_İhsan' yazınca girilemiyordu."""
+        self.kayit(kadi="katkat_ihsan")
+        for yazim in ("katkat_ihsan", "Katkat_İhsan", "KATKAT_İHSAN", "KATKAT_IHSAN", "katkat_ıhsan", " katkat_ihsan "):
+            token = self.kimlik.giris_yap(yazim, PAROLA)
+            self.assertEqual(self.kimlik.oturum_dogrula(token).kullanici_adi, "katkat_ihsan", yazim)
 
     def test_ikinci_yonetici_kayit_ekranindan_acilamaz(self):
         with self.assertRaises(DogrulamaHatasi):

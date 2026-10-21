@@ -7,13 +7,26 @@ from backend.models import Kullanici, Oturum
 from .temel import TemelRepository
 
 
+def kullanici_adi_anahtari(kullanici_adi: str) -> str:
+    """Kullanıcı adı karşılaştırma anahtarı.
+
+    SQLite'ın COLLATE NOCASE'i yalnızca İngilizce harfleri eşler: Türkçe klavyede
+    "katkat_İhsan" (büyük İ) veya "ıhsan" yazan kullanıcı "katkat_ihsan" hesabını
+    bulamıyordu. Kullanıcı adında İ, I, ı ve i aynı kabul edilir; büyük/küçük harf
+    ve baştaki/sondaki boşluk fark etmez.
+    """
+    for harf in "İIı":
+        kullanici_adi = kullanici_adi.replace(harf, "i")
+    return kullanici_adi.strip().lower()
+
+
 class KullaniciRepository(TemelRepository[Kullanici]):
     tablo, varlik, siralama = "kullanici", Kullanici, "ad_soyad"
 
     def kullanici_adi_ile_getir(self, kullanici_adi: str) -> Optional[Kullanici]:
-        # Kolon COLLATE NOCASE tanımlı: büyük/küçük harf duyarsız eşleşir
-        sonuc = self._sorgula("SELECT * FROM kullanici WHERE kullanici_adi = ?", (kullanici_adi,))
-        return sonuc[0] if sonuc else None
+        # Kullanıcı tablosu küçük olduğu için karşılaştırma Python'da, Türkçe'ye uygun yapılır
+        aranan = kullanici_adi_anahtari(kullanici_adi)
+        return next((k for k in self.listele() if kullanici_adi_anahtari(k.kullanici_adi) == aranan), None)
 
 
 class OturumRepository(TemelRepository[Oturum]):

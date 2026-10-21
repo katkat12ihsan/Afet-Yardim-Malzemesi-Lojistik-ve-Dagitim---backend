@@ -8,17 +8,17 @@ import os
 from pathlib import Path
 
 UYGULAMA_ADI = "Afet Yardım Malzemesi Lojistik ve Dağıtım"
-SURUM = "0.4.1 (Hafta 6 - envanter yönetimi)"
+SURUM = "0.4.2 (Hafta 6 - envanter yönetimi)"
 
 # Backend ayrı bir paket olarak (pip ile) kurulabildiği için veritabanı proje
-# klasöründe değil, kullanıcının uygulama verisi klasöründe tutulur. Böylece
-# frontend hangi klasörden çalıştırılırsa çalıştırılsın aynı veritabanını kullanır.
-#   Windows: %LOCALAPPDATA%\AfetLojistik     Linux/macOS: ~/.local/share/AfetLojistik
+# klasöründe değil, kullanıcının ev klasöründe tutulur. Böylece frontend hangi
+# klasörden çalıştırılırsa çalıştırılsın aynı veritabanını kullanır.
+#   Windows: C:\Users\<kullanıcı>\AfetLojistik     Linux/macOS: ~/AfetLojistik
+# AppData kullanılmaz: Windows, paket olarak kurulmuş uygulamaların (ör. Microsoft
+# Store uygulamaları) içinden çalışan programların AppData'ya yazdıklarını gizlice
+# paketin kendi klasörüne yönlendirir; aynı bilgisayarda iki farklı veritabanı oluşur.
 # AFET_VERI_KLASORU veya AFET_DB_YOLU ortam değişkeniyle değiştirilebilir.
-_VARSAYILAN_VERI_KLASORU = (
-    Path(os.environ["LOCALAPPDATA"]) if os.getenv("LOCALAPPDATA")
-    else Path.home() / ".local" / "share"
-) / "AfetLojistik"
+_VARSAYILAN_VERI_KLASORU = Path.home() / "AfetLojistik"
 VERI_KLASORU = Path(os.getenv("AFET_VERI_KLASORU") or _VARSAYILAN_VERI_KLASORU)
 VERITABANI_YOLU = Path(os.getenv("AFET_DB_YOLU") or VERI_KLASORU / "afet_lojistik.db")
 

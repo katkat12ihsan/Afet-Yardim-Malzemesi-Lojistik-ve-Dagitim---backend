@@ -53,7 +53,7 @@ python -m backend.data.kurulum --ornek-veri
 
 Uygulamanın arayüzü için [frontend deposunun](https://github.com/katkat12ihsan/Afet-Yardim-Malzemesi-Lojistik-ve-Dagitim---frontend) kurulum adımlarını izleyin; frontend bu paketi `requirements.txt` üzerinden GitHub'dan kurar.
 
-Veritabanı varsayılan olarak `%LOCALAPPDATA%\AfetLojistik\afet_lojistik.db` dosyasındadır (Linux/macOS: `~/.local/share/AfetLojistik`). Böylece backend ve frontend aynı veritabanını kullanır; yol `AFET_DB_YOLU` ortam değişkeniyle değiştirilebilir.
+Veritabanı varsayılan olarak ev klasöründe, `C:\Users\<kullanıcı>\AfetLojistik\afet_lojistik.db` dosyasındadır (Linux/macOS: `~/AfetLojistik`). Böylece backend ve frontend, hangi klasörden çalıştırılırsa çalıştırılsın aynı veritabanını kullanır; yol `AFET_DB_YOLU` ortam değişkeniyle değiştirilebilir. (AppData bilerek kullanılmaz: Windows, paket olarak kurulmuş uygulamaların içinden çalışan programların AppData'ya yazdıklarını başka bir klasöre yönlendirir ve aynı bilgisayarda iki ayrı veritabanı oluşur.)
 
 Uygulama açılışında giriş ekranı gelir. `--ornek-veri` her rolden bir test kullanıcısı ekler: `yonetici`, `kurum1`, `depo1` (parolalar `backend/data/ornek_veri.py` → `KULLANICILAR`; yalnızca yerel demo içindir). Hiç kullanıcı yoksa kayıt ekranından ilk Yönetici hesabı açılabilir.
 

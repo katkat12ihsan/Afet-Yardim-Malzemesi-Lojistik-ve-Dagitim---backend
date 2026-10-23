@@ -84,7 +84,7 @@ Gizli bilgiler (API anahtarları) koda yazılmaz; `.env.example` dosyasındaki d
 - [Veritabanı tasarımı: migration, kısıtlar, indeksler](docs/Veritabani.md)
 - [Güvenlik notu: parola, oturum, rol tabanlı erişim](docs/Guvenlik-Notu.md)
 - [Envanter Yönetimi: veri modeli, iş kuralları K1–K8, akış](docs/Envanter.md)
-- [Haftalık ilerleme raporları](docs/haftalik-raporlar/)
+- [Haftalık ilerleme raporları](docs/haftalik-raporlar/) — Word sürümleri: [docs/haftalik-raporlar/word/](docs/haftalik-raporlar/word/)
 - [Yapay zekâ kullanım günlüğü](docs/ai-kullanim-gunlugu.md)
 - Formlar: [risk analizi](docs/formlar/risk-analizi.md) · [proje takvimi](docs/formlar/proje-takvimi.md) · [proje izleme](docs/formlar/proje-izleme-formu.md) · [haftalık kontrol listesi](docs/formlar/haftalik-kontrol-listesi.md) · [GitHub kontrol listesi](docs/formlar/github-kontrol-listesi.md)
 

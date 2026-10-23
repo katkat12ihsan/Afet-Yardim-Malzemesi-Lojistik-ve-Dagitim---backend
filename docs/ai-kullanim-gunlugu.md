@@ -115,3 +115,11 @@ Her kayıt: tarih · araç · istem (prompt) · alınan çıktı · benim yaptı
 - **Çıktı:** `frontend/envanter_sayfasi.py` (frontend deposu), `tr_sirala()` refaktörü, ana pencere bağlantısı.
 - **Benim kararım / doğrulamam:** `depo1` ve `yonetici` ile ekranı açıp çıkış, giriş, sayım ve yetersiz stok uyarısını denedim (ekran görüntüleri). Depo görevlisinde depo seçiminin kilitli olduğunu kontrol ettim.
 - **Bu kodu açıklayabiliyor muyum? (E/H):** E
+
+### Kayıt 13 — Kullanıcılar sayfası: rolü düzenle
+- **Tarih:** 23.10.2026
+- **Araç:** Claude
+- **İstem:** "Kullanıcılar sayfasına rol düzenleme ekle. Yalnızca Yönetici yapabilsin, kontrol backend'de olsun; kimin kimi ne zaman değiştirdiği kaydedilsin."
+- **Çıktı:** `004_rol_degisikligi.sql`, `RolDegisikligi`, `RolDegisikligiRepository`, `KimlikServisi.rol_degistir / rol_gecmisi`, 7 test; frontend'de `frontend/kullanicilar_sayfasi.py` (rolü düzenle penceresi, son değişiklikler tablosu).
+- **Benim kararım / doğrulamam:** Kendi rolünü değiştirmeyi yasakladık; son yönetici yanlışlıkla kendini düşürürse sistem yöneticisiz kalırdı. Rolü değişen kişinin oturumunu kapatma kuralını yetkisi düşen birinin çalışmaya devam etmemesi için ekledik. Ekranı gerçek veritabanının bir kopyası üzerinde denedim.
+- **Bu kodu açıklayabiliyor muyum? (E/H):** E

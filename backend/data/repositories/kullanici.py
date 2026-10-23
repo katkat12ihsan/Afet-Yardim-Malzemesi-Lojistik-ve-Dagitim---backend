@@ -1,8 +1,9 @@
-"""Kullanıcı ve oturum repository'leri (Hafta 5)."""
+"""Kullanıcı, oturum ve rol değişikliği repository'leri (Hafta 5)."""
 
+import sqlite3
 from typing import Optional
 
-from backend.models import Kullanici, Oturum
+from backend.models import Kullanici, Oturum, RolDegisikligi
 
 from .temel import TemelRepository
 
@@ -42,3 +43,26 @@ class OturumRepository(TemelRepository[Oturum]):
             (zaman, kullanici_id),
         )
         return imlec.rowcount
+
+
+class RolDegisikligiRepository(TemelRepository[RolDegisikligi]):
+    """Kayıtlar yalnızca eklenir; güncelleme/silme iş katmanında kullanılmaz."""
+
+    tablo, varlik, siralama = "rol_degisikligi", RolDegisikligi, "tarih DESC, id DESC"
+
+    def gecmis(self, limit: int = 50) -> list[sqlite3.Row]:
+        """Son rol değişiklikleri; kullanıcı ve depo adlarıyla (JOIN)."""
+        return self.baglanti.execute(
+            """
+            SELECT r.tarih, k.kullanici_adi, r.eski_rol, r.yeni_rol,
+                   ed.ad AS eski_depo, yd.ad AS yeni_depo, d.kullanici_adi AS degistiren
+            FROM rol_degisikligi r
+            JOIN kullanici k  ON k.id = r.kullanici_id
+            JOIN kullanici d  ON d.id = r.degistiren_id
+            LEFT JOIN depo ed ON ed.id = r.eski_depo_id
+            LEFT JOIN depo yd ON yd.id = r.yeni_depo_id
+            ORDER BY r.tarih DESC, r.id DESC
+            LIMIT ?
+            """,
+            (limit,),
+        ).fetchall()

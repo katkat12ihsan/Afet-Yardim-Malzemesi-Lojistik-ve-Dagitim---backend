@@ -21,6 +21,8 @@ erDiagram
     DEPO     ||--o{ STOK_HAREKETI : "hareket görür"
     MALZEME  ||--o{ STOK_HAREKETI : "hareket görür"
     KULLANICI |o--o{ STOK_HAREKETI : "yapar"
+    KULLANICI ||--o{ ROL_DEGISIKLIGI : "rolü değişir"
+    KULLANICI ||--o{ ROL_DEGISIKLIGI : "değiştirir"
     MALZEME  ||--o{ DAGITIM_KALEMI : "dağıtılır"
 
     KATEGORI {
@@ -123,6 +125,16 @@ erDiagram
         int kullanici_id FK
         datetime tarih
     }
+    ROL_DEGISIKLIGI {
+        int id PK
+        int kullanici_id FK
+        string eski_rol
+        string yeni_rol
+        int eski_depo_id FK
+        int yeni_depo_id FK
+        int degistiren_id FK
+        datetime tarih
+    }
     OTURUM {
         int id PK
         int kullanici_id FK
@@ -183,3 +195,4 @@ erDiagram
 - **Konum (enlem/boylam)** Depo ve İhtiyaç Noktası'nda tutuldu: Hafta 9 harita/rota API'si ve Hafta 10 yapay zekâ rota önerisi için gerekli.
 - **Kullanıcı ve Oturum tabloları** Hafta 5'te `002_kullanici.sql` migration'ı ile eklendi (görsel SVG ilk 11 tabloyu gösterir). Depo rolündeki kullanıcı `depo_id` ile bir depoya bağlıdır; bir kullanıcının birden çok oturumu olabilir (1-N). Ayrıntı: [Guvenlik-Notu.md](Guvenlik-Notu.md).
 - **Stok Hareketi tablosu** Hafta 6'da `003_stok_hareketi.sql` ile eklendi: stoğu değiştiren her işlemin silinmeyen kaydı (denetim izi). Depo, malzeme ve kullanıcıya 1-N bağlıdır. Ayrıntı: [Envanter.md](Envanter.md).
+- **Rol Değişikliği tablosu** `004_rol_degisikligi.sql` ile eklendi: Yönetici'nin yaptığı her rol/depo değişikliğinin silinmeyen kaydı. Kullanıcıya iki ayrı ilişkiyle bağlıdır: rolü değişen (`kullanici_id`) ve değiştiren (`degistiren_id`). Ayrıntı: [Guvenlik-Notu.md](Guvenlik-Notu.md).

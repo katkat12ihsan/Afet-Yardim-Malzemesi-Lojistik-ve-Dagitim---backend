@@ -1,5 +1,6 @@
 """Hafta 5 - kimlik doğrulama, oturum ve yetkilendirme testleri."""
 
+import sqlite3
 import unittest
 from datetime import datetime, timedelta
 
@@ -161,6 +162,58 @@ class YetkiTestleri(KimlikTesti):
     def test_oturumsuz_panel_ozeti_alinamaz(self):
         with self.assertRaises(OturumGecersiz):
             OzetServisi(self.db, self.kimlik).panel_ozeti(None)
+
+
+class RolDuzenlemeTestleri(KimlikTesti):
+    """Kullanıcılar sayfası: rolü düzenle."""
+
+    def setUp(self):
+        super().setUp()
+        self.yonetici = self.kimlik.giris_yap("yonetici", PAROLA)
+        self.kurum = self.kayit(kadi="kurum1")
+
+    def test_yonetici_rol_degistirir_ve_gecmise_yazilir(self):
+        k = self.kimlik.rol_degistir(self.yonetici, self.kurum.id, Rol.DEPO, self.depo_id)
+        self.assertEqual((k.rol, k.depo_id), (Rol.DEPO, self.depo_id))
+        kayit = self.kimlik.rol_gecmisi(self.yonetici)[0]
+        self.assertEqual((kayit["kullanici_adi"], kayit["eski_rol"], kayit["yeni_rol"], kayit["degistiren"]),
+                         ("kurum1", "Kurum", "Depo", "yonetici"))
+
+    def test_yonetici_disindaki_rol_degistiremez(self):
+        kurum_token = self.kimlik.giris_yap("kurum1", PAROLA)
+        diger = self.kayit(kadi="kurum2")
+        with self.assertRaises(YetkisizErisim):
+            self.kimlik.rol_degistir(kurum_token, diger.id, Rol.YONETICI)
+
+    def test_kendi_rolunu_degistiremez(self):
+        kendisi = self.kimlik.oturum_dogrula(self.yonetici)
+        with self.assertRaises(YetkisizErisim):
+            self.kimlik.rol_degistir(self.yonetici, kendisi.id, Rol.KURUM)
+
+    def test_depo_rolu_icin_depo_zorunlu_diger_rollerde_depo_bosalir(self):
+        with self.assertRaises(DogrulamaHatasi):
+            self.kimlik.rol_degistir(self.yonetici, self.kurum.id, Rol.DEPO)
+        self.kimlik.rol_degistir(self.yonetici, self.kurum.id, Rol.DEPO, self.depo_id)
+        k = self.kimlik.rol_degistir(self.yonetici, self.kurum.id, Rol.YONETICI, self.depo_id)
+        self.assertIsNone(k.depo_id)
+
+    def test_degisiklik_yoksa_hata_ve_kayit_yok(self):
+        with self.assertRaises(DogrulamaHatasi):
+            self.kimlik.rol_degistir(self.yonetici, self.kurum.id, Rol.KURUM)
+        self.assertEqual(self.kimlik.rol_gecmisi(self.yonetici), [])
+
+    def test_rolu_degisenin_acik_oturumu_kapanir(self):
+        kurum_token = self.kimlik.giris_yap("kurum1", PAROLA)
+        self.kimlik.rol_degistir(self.yonetici, self.kurum.id, Rol.YONETICI)
+        with self.assertRaises(OturumGecersiz):
+            self.kimlik.oturum_dogrula(kurum_token)
+        yeni = self.kimlik.giris_yap("kurum1", PAROLA)          # yeni rolle tekrar giriş
+        self.assertEqual(self.kimlik.oturum_dogrula(yeni).rol, Rol.YONETICI)
+
+    def test_gecmis_tablosu_kendi_kendine_kaydi_reddeder(self):
+        with self.assertRaises(sqlite3.IntegrityError):
+            self.db.execute("INSERT INTO rol_degisikligi (kullanici_id, eski_rol, yeni_rol, degistiren_id, tarih)"
+                            " VALUES (1, 'Kurum', 'Yönetici', 1, '2026-10-23T10:00:00')")
 
 
 if __name__ == "__main__":

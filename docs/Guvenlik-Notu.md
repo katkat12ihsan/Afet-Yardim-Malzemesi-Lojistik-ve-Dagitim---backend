@@ -43,9 +43,24 @@ Menüde yetkisiz modüller "(kilitli)" olarak soluk gösterilir; bu yalnızca ku
 | A03 Injection | Parametreli sorgular |
 | A07 Identification and Authentication Failures | Parola politikası, hesap kilitleme, genel hata mesajı, oturum süresi ve çıkış |
 
+## Rol düzenleme (Kullanıcılar sayfası)
+
+Yönetici, Kullanıcılar sayfasında bir hesabı seçip **Rolü Düzenle** ile rolünü (Depo rolünde bağlı deposunu da) değiştirebilir. Kurallar backend'de, `KimlikServisi.rol_degistir` içindedir:
+
+| Kural | Neden |
+|---|---|
+| Yalnızca Yönetici (`yetki_gerekli(..., "kullanicilar")`) | Arayüz atlansa bile yetkisiz rol değişikliği olmasın |
+| Kişi **kendi rolünü** değiştiremez | Son Yönetici kendini düşürüp sistemi yöneticisiz bırakamasın; değişikliği her zaman başka biri yapar |
+| Depo rolü için geçerli depo zorunlu; diğer rollerde depo boşaltılır | Veritabanındaki `CHECK (rol <> 'Depo' OR depo_id IS NOT NULL)` ile tutarlı |
+| Rolü değişen kişinin **açık oturumları kapatılır** | Yetkisi düşen biri eski menüyle çalışmaya devam edemez; yeni rol sonraki girişte geçerli |
+| Her değişiklik `rol_degisikligi` tablosuna yazılır (kim, kimi, ne zaman, eski → yeni rol/depo) | Denetim izi; değişiklik ve kayıt tek transaction'da |
+
+Tablo seviyesinde de korunur (`004_rol_degisikligi.sql`): kendi kendine değişiklik kaydı ve değişiklik içermeyen kayıt `CHECK` ile reddedilir. Testler: `tests/test_kimlik.py → RolDuzenlemeTestleri` (7 test).
+
 ## Bilinen sınırlamalar / sonraki adımlar
 
 - Kayıt olan Kurum/Depo hesapları hemen aktif olur. Gerçek kullanımda Yönetici onayı (`aktif = 0` ile başlayıp onaylanınca 1) eklenmeli.
 - Parola değiştirme / sıfırlama ekranı henüz yok.
+- ~~Rol değiştirme ekranı yok~~ → **eklendi** (yukarıdaki "Rol düzenleme" bölümü). Hesabı pasifleştirme (aktif = 0) ekranı henüz yok.
 - ~~Depo görevlisinin yalnızca kendi deposunu görmesi~~ → **Hafta 6'da envanterde uygulandı** (satır düzeyi yetki, `EnvanterServisi._depo_kontrol`, kural K5; bkz. [Envanter.md](Envanter.md)). Bağış modülüne Hafta 7'de uygulanacak.
 - Test kullanıcılarının parolaları `backend/data/ornek_veri.py` içinde açıktır; yalnızca yerel demo içindir.

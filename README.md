@@ -82,7 +82,7 @@ Gizli bilgiler (API anahtarları) koda yazılmaz; `.env.example` dosyasındaki d
 - [ER diyagramı](docs/ER-Diyagrami.md) ([görsel](docs/er-diyagrami.svg))
 - [Mimari şema](docs/Mimari.md) ([görsel](docs/mimari-sema.svg))
 - [Veritabanı tasarımı: migration, kısıtlar, indeksler](docs/Veritabani.md)
-- [Güvenlik notu: parola, oturum, rol tabanlı erişim](docs/Guvenlik-Notu.md)
+- [Güvenlik notu: parola, oturum, rol tabanlı erişim, rol düzenleme](docs/Guvenlik-Notu.md)
 - [Envanter Yönetimi: veri modeli, iş kuralları K1–K8, akış](docs/Envanter.md)
 - [Haftalık ilerleme raporları](docs/haftalik-raporlar/) — Word sürümleri: [docs/haftalik-raporlar/word/](docs/haftalik-raporlar/word/)
 - [Yapay zekâ kullanım günlüğü](docs/ai-kullanim-gunlugu.md)
@@ -98,9 +98,9 @@ backend/                 arayüzden bağımsız çekirdek
   models/                varlık katmanı (ER -> dataclass)
   services/              iş katmanı (kimlik, yetki, envanter, özet, modül planı)
   data/                  veri erişim katmanı (SQLite)
-    migrations/          numaralı şema dosyaları (001 ilk şema, 002 kullanıcı, 003 stok hareketi)
+    migrations/          numaralı şema dosyaları (001 ilk şema, 002 kullanıcı, 003 stok hareketi, 004 rol değişikliği)
     repositories/        CRUD sınıfları
-tests/                   birim testleri (60 test)
+tests/                   birim testleri (68 test)
 docs/                    ER, mimari, raporlar, formlar, AI günlüğü, ekran görüntüleri
 ```
 

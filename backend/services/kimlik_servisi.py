@@ -5,6 +5,7 @@ Akış:
   giris_yap -> kilit kontrolü, parola doğrulama, oturum açılır, token döner
   oturum_dogrula(token) -> her korumalı işlemden önce: token geçerli mi?
   cikis_yap(token) -> oturum kapatılır, token bir daha kullanılamaz
+  rol_degistir(token, kullanici_id, yeni_rol, depo_id) -> yalnızca Yönetici; geçmişe yazılır
 
 Frontend token'ı yalnızca bellekte tutar (dosyaya yazmaz); her istekte
 servise verir. Servis token'ın özetini veritabanında arar.
@@ -16,10 +17,12 @@ from typing import Optional
 
 from backend import config, guvenlik
 from backend.data.database import islem
-from backend.data.repositories import DepoRepository, KullaniciRepository, OturumRepository
-from backend.models import Kullanici, Oturum, Rol
+from backend.data.repositories import (
+    DepoRepository, KullaniciRepository, OturumRepository, RolDegisikligiRepository,
+)
+from backend.models import Kullanici, Oturum, Rol, RolDegisikligi
 
-from .hatalar import DogrulamaHatasi, GecersizGiris, HesapKilitli, OturumGecersiz
+from .hatalar import DogrulamaHatasi, GecersizGiris, HesapKilitli, OturumGecersiz, YetkisizErisim
 from .yetki import yetki_gerekli
 
 # Var olmayan kullanıcı adında da parola doğrulaması yapılsın diye sahte hash.
@@ -144,6 +147,48 @@ class KimlikServisi:
         """Yalnızca Yönetici. Rol kontrolü backend'de yapılır, arayüze güvenilmez."""
         yetki_gerekli(self.oturum_dogrula(token), "kullanicilar")
         return self._kullanicilar.listele()
+
+    def rol_degistir(self, token: str, kullanici_id: int, yeni_rol: Rol,
+                     depo_id: Optional[int] = None) -> Kullanici:
+        """Bir kullanıcının rolünü (Depo rolünde bağlı deposunu da) değiştirir.
+
+        Kurallar:
+          * Yalnızca Yönetici (rol kontrolü backend'de).
+          * Kişi kendi rolünü değiştiremez: son Yönetici kendini düşürüp sistemi
+            yöneticisiz bırakamasın; rol değişikliğini her zaman başka biri yapar.
+          * Depo rolü için geçerli bir depo seçilmeli; diğer rollerde depo boş olur.
+          * Hiçbir şey değişmiyorsa kayıt yazılmaz.
+          * Rolü değişen kişinin açık oturumları kapatılır: yetkisi düşen biri eski
+            menüyle çalışmaya devam edemez, yeni rol bir sonraki girişte geçerli olur.
+          * Değişiklik ve geçmiş kaydı tek transaction'da yazılır.
+        """
+        yonetici = self.oturum_dogrula(token)
+        yetki_gerekli(yonetici, "kullanicilar")
+        hedef = self._kullanicilar.getir(kullanici_id)
+        if hedef is None:
+            raise DogrulamaHatasi("Kullanıcı bulunamadı.")
+        if hedef.id == yonetici.id:
+            raise YetkisizErisim("Kendi rolünüzü değiştiremezsiniz; bunu başka bir Yönetici yapmalı.")
+        if yeni_rol is Rol.DEPO:
+            if depo_id is None or DepoRepository(self._baglanti).getir(depo_id) is None:
+                raise DogrulamaHatasi("Depo görevlisi için geçerli bir depo seçilmeli.")
+        else:
+            depo_id = None
+        if hedef.rol is yeni_rol and hedef.depo_id == depo_id:
+            raise DogrulamaHatasi(f"{hedef.kullanici_adi} zaten bu rolde; değişiklik yapılmadı.")
+
+        kayit = RolDegisikligi(hedef.id, hedef.rol, yeni_rol, hedef.depo_id, depo_id, yonetici.id)
+        hedef.rol, hedef.depo_id = yeni_rol, depo_id
+        with islem(self._baglanti):
+            self._kullanicilar.guncelle(hedef)
+            RolDegisikligiRepository(self._baglanti).ekle(kayit)
+            self._oturumlar.kullanicinin_acik_oturumlarini_kapat(hedef.id, _simdi().isoformat())
+        return hedef
+
+    def rol_gecmisi(self, token: str, limit: int = 50) -> list[sqlite3.Row]:
+        """Son rol değişiklikleri (yalnızca Yönetici)."""
+        yetki_gerekli(self.oturum_dogrula(token), "kullanicilar")
+        return RolDegisikligiRepository(self._baglanti).gecmis(limit)
 
     # ------------------------------------------------------------- yardımcı
     @staticmethod

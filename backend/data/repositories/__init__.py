@@ -1,6 +1,6 @@
 """CRUD veri erişim sınıfları (repository deseni)."""
 
-from .kullanici import KullaniciRepository, OturumRepository
+from .kullanici import KullaniciRepository, OturumRepository, RolDegisikligiRepository
 from .stok import StokHareketiRepository, StokRepository
 from .varliklar import (
     BagisciRepository,
@@ -19,6 +19,6 @@ __all__ = [
     "BagisciRepository", "BagisKalemiRepository", "BagisRepository",
     "DagitimKalemiRepository", "DagitimRepository", "DepoRepository",
     "IhtiyacNoktasiRepository", "IhtiyacTalebiRepository", "KategoriRepository",
-    "KullaniciRepository", "MalzemeRepository", "OturumRepository", "StokHareketiRepository",
+    "KullaniciRepository", "MalzemeRepository", "OturumRepository", "RolDegisikligiRepository", "StokHareketiRepository",
     "StokRepository",
 ]

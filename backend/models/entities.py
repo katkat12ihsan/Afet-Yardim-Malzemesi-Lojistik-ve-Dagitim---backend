@@ -220,3 +220,16 @@ class StokHareketi:
     kullanici_id: Optional[int] = None       # FK -> Kullanici (None = sistem)
     tarih: datetime = field(default_factory=lambda: datetime.now().replace(microsecond=0))
     id: Optional[int] = None
+
+
+@dataclass
+class RolDegisikligi:
+    """Bir kullanıcının rol/depo değişikliğinin silinmeyen kaydı (denetim izi)."""
+    kullanici_id: int                        # FK -> Kullanici (rolü değişen)
+    eski_rol: Rol
+    yeni_rol: Rol
+    eski_depo_id: Optional[int]
+    yeni_depo_id: Optional[int]
+    degistiren_id: int                       # FK -> Kullanici (işlemi yapan Yönetici)
+    tarih: datetime = field(default_factory=lambda: datetime.now().replace(microsecond=0))
+    id: Optional[int] = None

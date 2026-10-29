@@ -123,3 +123,31 @@ Her kayıt: tarih · araç · istem (prompt) · alınan çıktı · benim yaptı
 - **Çıktı:** `004_rol_degisikligi.sql`, `RolDegisikligi`, `RolDegisikligiRepository`, `KimlikServisi.rol_degistir / rol_gecmisi`, 7 test; frontend'de `frontend/kullanicilar_sayfasi.py` (rolü düzenle penceresi, son değişiklikler tablosu).
 - **Benim kararım / doğrulamam:** Kendi rolünü değiştirmeyi yasakladık; son yönetici yanlışlıkla kendini düşürürse sistem yöneticisiz kalırdı. Rolü değişen kişinin oturumunu kapatma kuralını yetkisi düşen birinin çalışmaya devam etmemesi için ekledik. Ekranı gerçek veritabanının bir kopyası üzerinde denedim.
 - **Bu kodu açıklayabiliyor muyum? (E/H):** E
+
+---
+
+## Hafta 7 — Çekirdek Modül B: Bağış Girişi ve İhtiyaç Eşleştirme
+
+### Kayıt 14 — Bağış ve eşleştirme veri modeli
+- **Tarih:** 29.10.2026
+- **Araç:** Claude
+- **İstem:** "Bağışları ihtiyaç noktalarıyla eşleştirmek için veri modeli öner. Talebin ne kadarının karşılandığı nasıl hesaplanır? Talep durumu elle mi tutulmalı, hesaplanmalı mı?"
+- **Çıktı:** `005_eslestirme.sql` (dağıtım kalemi → talep bağı, eski verinin bağlanması, durumların yeniden hesaplanması); karşılanan / kalan / rezerve / uygun stok kavramları.
+- **Benim kararım / doğrulamam:** Talep durumunun hesaplanmasına karar verdik; örnek veride kuru gıda yolda olduğu hâlde talebin "Bekliyor" görünmesi bunun gerekçesi oldu. Migration'ı gerçek veritabanımın bir kopyasında denedim; durumlar doğru hesaplandı.
+- **Bu kodu açıklayabiliyor muyum? (E/H):** E
+
+### Kayıt 15 — İş kuralları, fazla/eksik ve durum güncelleme
+- **Tarih:** 29.10.2026
+- **Araç:** Claude
+- **İstem:** "Bağış girişi ve ihtiyaç eşleştirme için iş kuralları yaz: fazla gönderim engellensin, stok yetmezse eksik raporlansın, en yakın depo önerilsin, dağıtım durumları kontrollü değişsin. Her kural için test yaz."
+- **Çıktı:** `BagisServisi` (B1–B8), `EslestirmeServisi` (E1–E9), Haversine mesafe, Stok–Talep Dengesi, `tests/test_bagis_eslestirme.py` (26 test).
+- **Benim kararım / doğrulamam:** Gıdada son kullanma tarihinin zorunlu olmasını afet senaryosu için ekledik. Stoğun planlamada değil "Yolda" adımında düşmesine, planlanan miktarın rezerve sayılmasına karar verdik. 94 testin geçtiğini gördüm.
+- **Bu kodu açıklayabiliyor muyum? (E/H):** E
+
+### Kayıt 16 — Entegrasyon refaktörü ve ekranlar
+- **Tarih:** 29.10.2026
+- **Araç:** Claude
+- **İstem:** "Bağış birden çok kalemi stoğa eklerken hepsi tek transaction'da olsun; Envanter'in kurallarını tekrar yazmadan kullan. Bağış ve İhtiyaç Eşleştirme ekranlarını yaz."
+- **Çıktı:** `EnvanterServisi.stok_hareketi_uygula / miktari_dogrula / depo_sahipligi`; frontend'de `bagis_sayfasi.py`, `ihtiyac_sayfasi.py`, `ortak.py`.
+- **Benim kararım / doğrulamam:** Ekranları gerçek veritabanının kopyasında `depo1` ve `kurum1` hesaplarıyla denedim. Tablolar ekran ölçeklemesinde taşıyordu, sütunları daralttık. Eksik uyarısını hijyen kiti talebinde gördüm.
+- **Bu kodu açıklayabiliyor muyum? (E/H):** E

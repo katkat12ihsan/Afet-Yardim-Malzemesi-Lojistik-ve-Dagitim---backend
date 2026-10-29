@@ -85,7 +85,7 @@ Gizli bilgiler (API anahtarları) koda yazılmaz; `.env.example` dosyasındaki d
 - [Güvenlik notu: parola, oturum, rol tabanlı erişim, rol düzenleme](docs/Guvenlik-Notu.md)
 - [Envanter Yönetimi: veri modeli, iş kuralları K1–K8, akış](docs/Envanter.md)
 - [Bağış Girişi ve İhtiyaç Eşleştirme: B1–B8, E1–E9, fazla/eksik, dağıtım durumu](docs/Bagis-ve-Eslestirme.md)
-- [Haftalık ilerleme raporları](docs/haftalik-raporlar/) — Word sürümleri: [docs/haftalik-raporlar/word/](docs/haftalik-raporlar/word/)
+- [Haftalık ilerleme raporları](docs/haftalik-raporlar/) — [Word](docs/haftalik-raporlar/word/) ve [PDF](docs/haftalik-raporlar/pdf/) sürümleri
 - [Yapay zekâ kullanım günlüğü](docs/ai-kullanim-gunlugu.md)
 - Formlar: [risk analizi](docs/formlar/risk-analizi.md) · [proje takvimi](docs/formlar/proje-takvimi.md) · [proje izleme](docs/formlar/proje-izleme-formu.md) · [haftalık kontrol listesi](docs/formlar/haftalik-kontrol-listesi.md) · [GitHub kontrol listesi](docs/formlar/github-kontrol-listesi.md)
 

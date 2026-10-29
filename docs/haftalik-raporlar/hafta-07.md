@@ -80,3 +80,22 @@
 ## Yapay zekâ kullanımı özeti
 
 Bağış ve eşleştirme veri modeli, doğrulama örnekleri ve refaktör önerileri (transaction açmayan stok yolu) için Claude kullanıldı. Doğrulama testlerle ve gerçek veritabanının bir kopyası üzerinde ekranlar denenerek yapıldı. Ayrıntı: [AI kullanım günlüğü](../ai-kullanim-gunlugu.md) (Kayıt 14–16).
+
+## Ekler — commit bağlantıları
+
+**Backend** — dal: [hafta-07](https://github.com/katkat12ihsan/Afet-Yardim-Malzemesi-Lojistik-ve-Dagitim---backend/tree/hafta-07)
+
+- [03d9ec7](https://github.com/katkat12ihsan/Afet-Yardim-Malzemesi-Lojistik-ve-Dagitim---backend/commit/03d9ec7) backend: dağıtım kalemi -> ihtiyaç talebi bağı (005 migration), eşleştirme ve bağış sorguları
+- [00961d9](https://github.com/katkat12ihsan/Afet-Yardim-Malzemesi-Lojistik-ve-Dagitim---backend/commit/00961d9) backend: Envanter'e diğer modüller için transaction açmayan stok yolu ve ortak doğrulama
+- [59a32fb](https://github.com/katkat12ihsan/Afet-Yardim-Malzemesi-Lojistik-ve-Dagitim---backend/commit/59a32fb) backend: BagisServisi - bağış girişi, 8 iş kuralı (B1-B8), stoğa tek transaction'da giriş
+- [a5452d8](https://github.com/katkat12ihsan/Afet-Yardim-Malzemesi-Lojistik-ve-Dagitim---backend/commit/a5452d8) backend: EslestirmeServisi - en yakın depo önerisi, fazla/eksik, rezerve stok, dağıtım durumu (E1-E9)
+- [8326aef](https://github.com/katkat12ihsan/Afet-Yardim-Malzemesi-Lojistik-ve-Dagitim---backend/commit/8326aef) backend: örnek veride dağıtımlar taleplere bağlandı, talep durumları tutarlı
+- [31bb67c](https://github.com/katkat12ihsan/Afet-Yardim-Malzemesi-Lojistik-ve-Dagitim---backend/commit/31bb67c) test: bağış ve eşleştirme testleri (26 test)
+- [0effa22](https://github.com/katkat12ihsan/Afet-Yardim-Malzemesi-Lojistik-ve-Dagitim---backend/commit/0effa22) docs: hafta 7 bağış ve eşleştirme açıklaması, rapor, sözlü hazırlık, AI günlüğü, formlar, ekran görüntüleri
+
+**Frontend** — dal: [hafta-07](https://github.com/katkat12ihsan/Afet-Yardim-Malzemesi-Lojistik-ve-Dagitim---frontend/tree/hafta-07)
+
+- [db0ee84](https://github.com/katkat12ihsan/Afet-Yardim-Malzemesi-Lojistik-ve-Dagitim---frontend/commit/db0ee84) frontend: ortak tablo/biçim yardımcıları
+- [8a5c5d6](https://github.com/katkat12ihsan/Afet-Yardim-Malzemesi-Lojistik-ve-Dagitim---frontend/commit/8a5c5d6) frontend: Bağış Girişi sayfası - yeni bağış formu ve bağış geçmişi
+- [05f84c2](https://github.com/katkat12ihsan/Afet-Yardim-Malzemesi-Lojistik-ve-Dagitim---frontend/commit/05f84c2) frontend: İhtiyaç Eşleştirme sayfası - öneri, eksik uyarısı, dağıtımlar, stok-talep dengesi
+- [d5e715f](https://github.com/katkat12ihsan/Afet-Yardim-Malzemesi-Lojistik-ve-Dagitim---frontend/commit/d5e715f) frontend: yeni sayfaları ana pencereye ve main.py'ye bağla; README hafta 7

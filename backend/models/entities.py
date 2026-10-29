@@ -170,6 +170,7 @@ class DagitimKalemi:
     dagitim_id: int                          # FK -> Dagitim
     malzeme_id: int                          # FK -> Malzeme
     miktar: float
+    ihtiyac_talebi_id: Optional[int] = None  # FK -> IhtiyacTalebi (Hafta 7: hangi talebi karşılıyor)
     id: Optional[int] = None
 
 

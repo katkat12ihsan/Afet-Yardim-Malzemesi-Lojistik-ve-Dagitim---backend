@@ -84,16 +84,17 @@ BAGISLAR = [
 ]
 
 # (nokta sırası, malzeme adı, miktar, tarih, durum)
+# Durumlar aşağıdaki dağıtımlarla tutarlıdır (Hafta 7: durum = karşılanan / talep miktarı).
 TALEPLER = [
     (0, "Çadır (4 kişilik)", 60, "2026-10-02T08:00", TalepDurumu.KISMEN_KARSILANDI),
     (0, "Battaniye", 500, "2026-10-02T08:05", TalepDurumu.KISMEN_KARSILANDI),
-    (0, "Kuru gıda kolisi", 300, "2026-10-02T08:10", TalepDurumu.BEKLIYOR),
+    (0, "Kuru gıda kolisi", 300, "2026-10-02T08:10", TalepDurumu.KISMEN_KARSILANDI),
     (0, "Bebek maması", 60, "2026-10-03T09:00", TalepDurumu.BEKLIYOR),
     (1, "İçme suyu (5 L)", 400, "2026-10-03T10:00", TalepDurumu.KARSILANDI),
     (1, "Hijyen kiti", 100, "2026-10-04T10:30", TalepDurumu.BEKLIYOR),
     (2, "Mont (yetişkin)", 80, "2026-10-04T12:00", TalepDurumu.BEKLIYOR),
     (3, "Uyku tulumu", 150, "2026-10-05T09:00", TalepDurumu.BEKLIYOR),
-    (3, "İlk yardım çantası", 10, "2026-10-05T09:20", TalepDurumu.BEKLIYOR),
+    (3, "İlk yardım çantası", 10, "2026-10-05T09:20", TalepDurumu.KARSILANDI),
     (4, "Çocuk giysi seti", 25, "2026-10-06T14:00", TalepDurumu.IPTAL),
 ]
 
@@ -152,9 +153,12 @@ def ornek_veri_yukle(baglanti: sqlite3.Connection) -> bool:
             stok[(depo_ids[depo_sira], malzeme_adi)] += miktar
 
     talep_repo = IhtiyacTalebiRepository(baglanti)
+    talep_id = {}                                  # (nokta sırası, malzeme adı) -> talep id
     for nokta_sira, malzeme_adi, miktar, tarih, durum in TALEPLER:
-        talep_repo.ekle(IhtiyacTalebi(nokta_ids[nokta_sira], malzeme_id[malzeme_adi],
-                                      miktar, _zaman(tarih), durum))
+        talep = talep_repo.ekle(IhtiyacTalebi(nokta_ids[nokta_sira], malzeme_id[malzeme_adi],
+                                              miktar, _zaman(tarih), durum))
+        if durum is not TalepDurumu.IPTAL:
+            talep_id.setdefault((nokta_sira, malzeme_adi), talep.id)
 
     dagitim_repo, dk_repo = DagitimRepository(baglanti), DagitimKalemiRepository(baglanti)
     for depo_sira, nokta_sira, planlanan, teslim, durum, plaka, kalemler in DAGITIMLAR:
@@ -162,7 +166,9 @@ def ornek_veri_yukle(baglanti: sqlite3.Connection) -> bool:
                                             _zaman(planlanan), _zaman(teslim) if teslim else None,
                                             durum, plaka))
         for malzeme_adi, miktar in kalemler:
-            dk_repo.ekle(DagitimKalemi(dagitim.id, malzeme_id[malzeme_adi], miktar))
+            # Hafta 7: kalem, karşıladığı talebe bağlanır
+            dk_repo.ekle(DagitimKalemi(dagitim.id, malzeme_id[malzeme_adi], miktar,
+                                       talep_id.get((nokta_sira, malzeme_adi))))
             if durum in STOKTAN_DUSEN:
                 stok[(depo_ids[depo_sira], malzeme_adi)] -= miktar
 

@@ -136,6 +136,19 @@ class EnvanterServisi:
             raise DogrulamaHatasi(f"'{malzeme.birim}' birimli malzemede {alan.lower()} tam sayı olmalı.")
         return miktar
 
+    # ============================ diğer modüller için (Hafta 7: bağış, eşleştirme)
+    # Aynı kurallar her modülde aynı kalsın diye doğrulama burada tek yerde durur.
+    def malzeme_getir(self, malzeme_id: int) -> Malzeme:
+        return self._malzeme(malzeme_id)
+
+    def miktari_dogrula(self, deger: Sayi, malzeme: Malzeme, alan: str = "Miktar") -> float:
+        """K2 (birime göre tam sayı) ve K3 (0 < miktar <= 100.000, virgüllü giriş)."""
+        return self._miktar(deger, malzeme, alan)
+
+    def depo_sahipligi(self, kullanici: Kullanici, depo_id: int) -> Depo:
+        """K5: Depo görevlisi yalnızca kendi deposunda işlem yapar."""
+        return self._depo_kontrol(kullanici, depo_id)
+
     # ============================================================ okuma
     def erisilebilir_depolar(self, token: str) -> list[Depo]:
         kullanici = self._kullanici(token)
@@ -258,17 +271,29 @@ class EnvanterServisi:
     def _hareket_yaz(self, kullanici: Kullanici, depo_id: int, malzeme: Malzeme,
                      tur: HareketTuru, degisim: float, aciklama: str) -> StokHareketi:
         with islem(self._baglanti):                                               # K8
-            stok = self._stoklar.getir(depo_id, malzeme.id) or Stok(depo_id, malzeme.id, 0, 0)
-            onceki = stok.miktar
-            sonraki = round(onceki + degisim, 3)
-            if sonraki < 0:                                                       # K1
-                raise DogrulamaHatasi(
-                    f"Yetersiz stok: depoda {onceki:g} {malzeme.birim} {malzeme.ad} var, "
-                    f"{-degisim:g} {malzeme.birim} çıkış istendi.")
-            stok.miktar = sonraki
-            self._stoklar.kaydet(stok)
-            return self._hareketler.ekle(StokHareketi(
-                depo_id, malzeme.id, tur, degisim, onceki, sonraki, aciklama.strip(), kullanici.id))
+            return self.stok_hareketi_uygula(kullanici, depo_id, malzeme, tur, degisim, aciklama)
+
+    def stok_hareketi_uygula(self, kullanici: Kullanici, depo_id: int, malzeme: Malzeme,
+                             tur: HareketTuru, degisim: float, aciklama: str) -> StokHareketi:
+        """Stok satırını günceller ve hareket kaydını yazar - transaction AÇMADAN.
+
+        Hafta 7 entegrasyonu: Bağış ve Dağıtım modülleri stoğu kendi SQL'leriyle
+        değiştirmez; bu metodu kendi transaction'larının içinden çağırır. Böylece
+        stok her kaynaktan aynı kurallarla (K1: eksiye düşmez) ve aynı hareket
+        kaydıyla değişir; bağışın tamamı ya da hiçbiri yazılır.
+        Yetki ve miktar doğrulaması çağıran servisin sorumluluğundadır.
+        """
+        stok = self._stoklar.getir(depo_id, malzeme.id) or Stok(depo_id, malzeme.id, 0, 0)
+        onceki = stok.miktar
+        sonraki = round(onceki + degisim, 3)
+        if sonraki < 0:                                                           # K1
+            raise DogrulamaHatasi(
+                f"Yetersiz stok: depoda {onceki:g} {malzeme.birim} {malzeme.ad} var, "
+                f"{-degisim:g} {malzeme.birim} çıkış istendi.")
+        stok.miktar = sonraki
+        self._stoklar.kaydet(stok)
+        return self._hareketler.ekle(StokHareketi(
+            depo_id, malzeme.id, tur, degisim, onceki, sonraki, aciklama.strip(), kullanici.id))
 
     def stok_girisi(self, token: str, depo_id: int, malzeme_id: int, miktar: Sayi,
                     aciklama: str = "") -> StokHareketi:

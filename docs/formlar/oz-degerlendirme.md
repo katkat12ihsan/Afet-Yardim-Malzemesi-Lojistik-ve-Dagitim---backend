@@ -91,3 +91,25 @@ Stok çıkışının adım adım nasıl çalıştığını ve neden tek transact
 
 **Bir sonraki adım için planım:**
 Bağış girişi ve ihtiyaç eşleştirme. Bağışlar stoğa envanterin giriş yolundan girecek.
+
+---
+
+## Hafta 7
+
+**Bu hafta tamamladığım işler:**
+Bağış girişi ve ihtiyaç eşleştirmeyi bitirdim. Bağışçı ve kalemler girilince malzeme depoya stok olarak giriyor. İhtiyaç sayfasında talepler öncelik sırasıyla geliyor; seçince en yakın depodan başlayan bir öneri çıkıyor. Stok yetmezse ne kadar eksik kaldığını gösteriyor. Dağıtımlar Planlandı → Yolda → Teslim edildi diye ilerliyor, talebin durumu da kendiliğinden güncelleniyor.
+
+**Yeni öğrendiğim kavram/teknoloji:**
+Türetilmiş veri (talep durumunu saklamak yerine hesaplamak), rezerve stok, iki koordinat arası mesafe (Haversine) ve bir modülün başka bir modülün servisini kendi transaction'ı içinde kullanması.
+
+**Yapay zekâdan nerede ve nasıl yararlandım:**
+Veri modeli, iş kuralları, testler ve ekranlar Claude ile yazıldı. "Stok ne zaman düşmeli?", "talep durumu elle mi tutulmalı?" gibi kararları birlikte tartışıp verdik. Ekranları gerçek verinin kopyasında denedim. Ayrıntılar AI günlüğünde (Kayıt 14–16).
+
+**En çok zorlandığım nokta ve nasıl aştım:**
+Bir bağışın birden çok kalemi stoğa eklerken Envanter her kalemi ayrı kaydediyordu; bir kalem hatalı olsa öncekiler kalırdı. Envanter'e transaction açmayan bir yol ekleyip bağışın tamamını tek transaction'da yaptık.
+
+**Kendi kodumu açıklama düzeyim (1–5) ve gerekçesi:** 3
+Eşleştirme önerisinin adımlarını, fazla/eksik kurallarını ve stoğun neden "Yolda"da düştüğünü anlatabiliyorum. Ekran kodundaki öneri tablosunun güncellenme ayrıntılarına daha çok çalışmam lazım.
+
+**Bir sonraki adım için planım:**
+Vize haftası: modülleri uçtan uca deneyip hataları gidermek, ara sürümü etiketlemek, demo senaryosunu hazırlamak.

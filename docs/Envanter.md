@@ -43,8 +43,9 @@ erDiagram
 | K4 | Sayım düzeltmesinde açıklama zorunlu | Fark (kayıp, hasar, sayım hatası) belgelenmeli |
 | K5 | Depo görevlisi yalnızca **kendi deposunu** görür/değiştirir | Sahiplik kontrolü (satır düzeyi yetki) |
 | K6 | Malzeme/kategori tanımlarını yalnızca **Yönetici** değiştirir | Tüm depolar aynı kataloğu kullansın |
-| K7 | Stoğu/geçmişi olan malzemenin birimi değişmez, malzeme silinemez | Eski miktarların anlamı bozulmasın |
+| K7 | Stokta, hareket geçmişinde, bağışta, ihtiyaç talebinde ya da dağıtımda geçen malzemenin birimi değişmez, malzeme silinemez *(Hafta 8'de bağış/talep/dağıtım eklendi)* | Eski miktarların anlamı bozulmasın |
 | K8 | Stok güncellemesi + hareket kaydı **tek transaction** | İkisi birlikte yazılır ya da hiçbiri |
+| K9 | Planlanmış dağıtımlara ayrılan (**rezerve**) stok Envanter'den çıkarılamaz; çıkış en fazla *serbest = stok − rezerve* kadar *(Hafta 8)* | Yoksa planlanan dağıtım "Yolda" adımında yetersiz stok hatası alıyordu |
 
 Ayrıca aynı adlı malzeme/kategori eklenemez. Karşılaştırma Türkçe'ye uygun yapılır: "GIDA" = "Gıda" ve "BATTANİYE" = "Battaniye". Listeler Türkçe alfabe sırasıyla gelir (Ç, İ, Ü doğru yerde).
 
@@ -56,6 +57,7 @@ Arayüz (Stok Çıkışı penceresi)
        ├─ modul_erisimi(token, "envanter")      oturum + rol (Kurum → YetkisizErisim)
        ├─ _depo_kontrol                          Depo rolü başka depoya → YetkisizErisim   (K5)
        ├─ _miktar("200", malzeme)                sayı mı, > 0, ≤ 100.000, birim tam sayı?  (K2, K3)
+       ├─ rezerve = planlanmış dağıtımlar          200 > stok − rezerve ise DogrulamaHatasi  (K9)
        └─ _hareket_yaz  ── with islem(): ──────────────────────────────────────────────  (K8)
              ├─ stok oku → önceki = 280
              ├─ sonraki = 80; < 0 ise DogrulamaHatasi ("Yetersiz stok")                 (K1)

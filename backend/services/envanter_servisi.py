@@ -12,9 +12,11 @@ Sorumluluklar:
   K4  Sayım düzeltmesinde açıklama zorunlu (neden fark oluştu?).
   K5  Depo görevlisi yalnızca kendi deposunun stoğunu görür/değiştirir (sahiplik).
   K6  Malzeme/kategori tanımlarını yalnızca Yönetici değiştirir (tutarlı katalog).
-  K7  Stoğu veya geçmişi olan malzemenin birimi değiştirilemez ve malzeme silinemez.
+  K7  Stokta, hareket geçmişinde ya da bağış/talep/dağıtım kayıtlarında geçen malzemenin
+      birimi değiştirilemez ve malzeme silinemez (Hafta 8: kayıt türleri genişletildi).
   K8  Stok güncellemesi ve hareket kaydı tek transaction'dadır; ikisi birlikte yazılır
       ya da hiçbiri yazılmaz. Böylece "stok = hareketlerin toplamı" her zaman doğrudur.
+  K9  (Hafta 8) Planlanmış dağıtımlara ayrılan (rezerve) stok Envanter'den çıkarılamaz.
 """
 
 import sqlite3
@@ -23,7 +25,7 @@ from typing import Optional, Union
 
 from backend.data.database import islem
 from backend.data.repositories import (
-    DepoRepository, KategoriRepository, MalzemeRepository, StokHareketiRepository,
+    DagitimKalemiRepository, DepoRepository, KategoriRepository, MalzemeRepository, StokHareketiRepository,
     StokRepository,
 )
 from backend.models import (
@@ -67,6 +69,12 @@ class StokSatiri:
     birim: str
     miktar: float
     kritik_seviye: float
+    rezerve: float = 0          # Hafta 8: planlanmış dağıtımlara ayrılan (henüz depoda)
+
+    @property
+    def serbest(self) -> float:
+        """Envanter'den çıkış yapılabilecek miktar (stok - rezerve)."""
+        return max(round(self.miktar - self.rezerve, 3), 0)
 
     @property
     def durum(self) -> str:
@@ -171,7 +179,7 @@ class EnvanterServisi:
         self._depo_kontrol(self._kullanici(token), depo_id)
         arama = tr_kucuk(arama.strip())
         satirlar = [StokSatiri(s["malzeme_id"], s["malzeme"], s["kategori_id"], s["kategori"],
-                               s["birim"], s["miktar"], s["kritik_seviye"])
+                               s["birim"], s["miktar"], s["kritik_seviye"], s["rezerve"])
                     for s in self._stoklar.depo_envanteri(depo_id)]
         satirlar.sort(key=lambda s: (tr_sirala(s.kategori), tr_sirala(s.malzeme)))
         return [s for s in satirlar
@@ -232,10 +240,18 @@ class EnvanterServisi:
             return self._malzemeler.ekle(Malzeme(kategori_id, ad, birim, aciklama.strip()))
 
     def _malzeme_kullanimda_mi(self, malzeme_id: int) -> bool:
+        """K7: stokta, hareket geçmişinde, bağış/talep/dağıtım kayıtlarında geçen malzeme.
+
+        Hafta 8 düzeltmesi: önceden yalnızca stok ve hareket bakılıyordu; bir talepte ya
+        da bağışta geçen malzemenin birimi değişirse eski miktarların anlamı bozulurdu.
+        """
         return self._baglanti.execute(
-            "SELECT EXISTS(SELECT 1 FROM stok_hareketi WHERE malzeme_id = ?)"
-            " OR EXISTS(SELECT 1 FROM stok WHERE malzeme_id = ? AND miktar > 0)",
-            (malzeme_id, malzeme_id),
+            "SELECT EXISTS(SELECT 1 FROM stok_hareketi WHERE malzeme_id = :m)"
+            " OR EXISTS(SELECT 1 FROM stok WHERE malzeme_id = :m AND miktar > 0)"
+            " OR EXISTS(SELECT 1 FROM bagis_kalemi WHERE malzeme_id = :m)"
+            " OR EXISTS(SELECT 1 FROM ihtiyac_talebi WHERE malzeme_id = :m)"
+            " OR EXISTS(SELECT 1 FROM dagitim_kalemi WHERE malzeme_id = :m)",
+            {"m": malzeme_id},
         ).fetchone()[0] == 1
 
     def malzeme_guncelle(self, token: str, malzeme_id: int, kategori_id: int, ad: str,
@@ -244,8 +260,8 @@ class EnvanterServisi:
         malzeme = self._malzeme(malzeme_id)
         ad = self._malzeme_alanlari(kategori_id, ad, birim, haric_id=malzeme_id)
         if birim != malzeme.birim and self._malzeme_kullanimda_mi(malzeme_id):    # K7
-            raise DogrulamaHatasi("Stoğu veya hareket geçmişi olan malzemenin birimi değiştirilemez; "
-                                  "eski miktarların anlamı bozulur.")
+            raise DogrulamaHatasi("Stokta, hareket geçmişinde ya da bağış/talep/dağıtım kayıtlarında geçen "
+                                  "malzemenin birimi değiştirilemez; eski miktarların anlamı bozulur.")
         malzeme.kategori_id, malzeme.ad, malzeme.birim, malzeme.aciklama = (
             kategori_id, ad, birim, aciklama.strip())
         with islem(self._baglanti):
@@ -256,7 +272,8 @@ class EnvanterServisi:
         self._tanim_yetkisi(self._kullanici(token))
         self._malzeme(malzeme_id)
         if self._malzeme_kullanimda_mi(malzeme_id):                               # K7
-            raise DogrulamaHatasi("Stoğu veya hareket geçmişi olan malzeme silinemez.")
+            raise DogrulamaHatasi("Stokta, hareket geçmişinde ya da bağış/talep/dağıtım kayıtlarında geçen "
+                                  "malzeme silinemez.")
         try:
             with islem(self._baglanti):
                 self._baglanti.execute(
@@ -308,8 +325,17 @@ class EnvanterServisi:
         kullanici = self._kullanici(token)
         self._depo_kontrol(kullanici, depo_id)
         malzeme = self._malzeme(malzeme_id)
-        return self._hareket_yaz(kullanici, depo_id, malzeme, HareketTuru.CIKIS,
-                                 -self._miktar(miktar, malzeme), aciklama)
+        miktar = self._miktar(miktar, malzeme)
+        # K9 (Hafta 8 entegrasyon düzeltmesi): planlanmış dağıtımlara ayrılan (rezerve) stok
+        # Envanter'den çıkarılamaz; yoksa planlanan dağıtım yola çıkarken "yetersiz stok" olurdu.
+        stok = self._stoklar.getir(depo_id, malzeme_id)
+        rezerve = DagitimKalemiRepository(self._baglanti).rezerve(depo_id, malzeme_id)
+        serbest = max(round((stok.miktar if stok else 0) - rezerve, 3), 0)
+        if rezerve and miktar > serbest:
+            raise DogrulamaHatasi(
+                f"{rezerve:g} {malzeme.birim} {malzeme.ad} planlanmış dağıtımlara ayrılmış (rezerve); "
+                f"en fazla {serbest:g} {malzeme.birim} çıkış yapılabilir. Önce dağıtımı yola çıkarın ya da iptal edin.")
+        return self._hareket_yaz(kullanici, depo_id, malzeme, HareketTuru.CIKIS, -miktar, aciklama)
 
     def sayim_duzeltmesi(self, token: str, depo_id: int, malzeme_id: int, sayilan: Sayi,
                          aciklama: str) -> StokHareketi:

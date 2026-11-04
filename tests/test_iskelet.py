@@ -22,6 +22,12 @@ class ModulServisiTestleri(unittest.TestCase):
         anahtarlar = [m.anahtar for m in modul_servisi.modulleri_getir()]
         self.assertEqual(len(anahtarlar), len(set(anahtarlar)))
 
+    def test_modul_durumlari_gecerli_ve_hazir_moduller_tamamlanmis_haftalardan(self):
+        for m in modul_servisi.modulleri_getir():
+            self.assertIn(m.durum, (modul_servisi.HAZIR, modul_servisi.KISMEN, modul_servisi.PLANLANDI))
+            if m.durum == modul_servisi.HAZIR:
+                self.assertLessEqual(m.hafta, 8, m)
+
     def test_tanimsiz_modul_hata_verir(self):
         with self.assertRaises(KeyError):
             modul_servisi.modul_bul("yok")

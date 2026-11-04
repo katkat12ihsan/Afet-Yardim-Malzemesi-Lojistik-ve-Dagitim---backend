@@ -2,7 +2,7 @@
 
 | Öğrenci | Numara | Proje (Kod/Ad) | Tarih |
 |---|---|---|---|
-| İhsan Katkat | 251161036 | P16 · Afet Yardım Malzemesi Lojistik ve Dağıtım | 09.10.2026 |
+| İhsan Katkat | 251161036 | P16 · Afet Yardım Malzemesi Lojistik ve Dağıtım | 04.11.2026 |
 
 | Modül | Planlanan Hafta | Durum | Tamamlanma % | Not |
 |---|---|---|---|---|
@@ -12,7 +12,8 @@
 | Envanter yönetimi | 6 | Tamamlandı | 100 | Stok hareketi tablosu, 8 iş kuralı, 3 sekmeli ekran, 22 test |
 | Bağış girişi | 7 | Tamamlandı | 100 | 8 iş kuralı (B1–B8); stoğa Envanter'in giriş yolundan, tek transaction |
 | İhtiyaç eşleştirme | 7 | Tamamlandı | 100 | En yakın depo önerisi, fazla/eksik, Stok–Talep Dengesi, dağıtım durumu (E1–E9) |
-| Rota / dağıtım planı (harita API) | 9 | Planlandı | 5 | Depo ve ihtiyaç noktalarında koordinatlar var |
+| **Ara sürüm entegrasyonu (vize)** | 8 | Tamamlandı | 100 | `v0.6.0` etiketi; uçtan uca entegrasyon testi; 2 entegrasyon hatası düzeltildi (K9, K7); 101 + 5 test |
+| Rota / dağıtım planı (harita API) | 9 | Kısmen | 20 | Dağıtım listesi ve durum güncelleme hazır (H7); koordinatlar var; harita/rota H9 |
 | Yapay zekâ önerisi | 10 | Planlandı | 0 | |
 | Takip | 11 | Planlandı | 5 | Dağıtım durumları ve kısıtı hazır |
 | Şeffaflık raporu ve bildirimler | 12 | Planlandı | 0 | |

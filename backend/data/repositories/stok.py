@@ -70,13 +70,17 @@ class StokRepository:
         return self.baglanti.execute(
             """
             SELECT m.id AS malzeme_id, m.ad AS malzeme, m.kategori_id, k.ad AS kategori, m.birim,
-                   COALESCE(s.miktar, 0) AS miktar, COALESCE(s.kritik_seviye, 0) AS kritik_seviye
+                   COALESCE(s.miktar, 0) AS miktar, COALESCE(s.kritik_seviye, 0) AS kritik_seviye,
+                   -- Hafta 8: planlanmış (henüz yola çıkmamış) dağıtımlara ayrılan miktar
+                   COALESCE((SELECT SUM(dk.miktar)
+                             FROM dagitim_kalemi dk JOIN dagitim g ON g.id = dk.dagitim_id
+                             WHERE g.depo_id = ? AND dk.malzeme_id = m.id AND g.durum = 'Planlandı'), 0) AS rezerve
             FROM malzeme m
             JOIN kategori k  ON k.id = m.kategori_id
             LEFT JOIN stok s ON s.malzeme_id = m.id AND s.depo_id = ?
             ORDER BY k.ad, m.ad
             """,
-            (depo_id,),
+            (depo_id, depo_id),
         ).fetchall()
 
     def kritik_stoklar(self) -> list[sqlite3.Row]:

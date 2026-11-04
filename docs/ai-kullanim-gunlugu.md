@@ -151,3 +151,23 @@ Her kayıt: tarih · araç · istem (prompt) · alınan çıktı · benim yaptı
 - **Çıktı:** `EnvanterServisi.stok_hareketi_uygula / miktari_dogrula / depo_sahipligi`; frontend'de `bagis_sayfasi.py`, `ihtiyac_sayfasi.py`, `ortak.py`.
 - **Benim kararım / doğrulamam:** Ekranları gerçek veritabanının kopyasında `depo1` ve `kurum1` hesaplarıyla denedim. Tablolar ekran ölçeklemesinde taşıyordu, sütunları daralttık. Eksik uyarısını hijyen kiti talebinde gördüm.
 - **Bu kodu açıklayabiliyor muyum? (E/H):** E
+
+---
+
+## Hafta 8 — VİZE: Ara Sürüm, Entegrasyon
+
+### Kayıt 17 — Entegrasyon hatalarını ayıklama
+- **Tarih:** 04.11.2026
+- **Araç:** Claude
+- **İstem:** "Modülleri uçtan uca deneyen bir entegrasyon testi yaz: bağış → talep → eşleştirme → yola çıkış → teslim. Modüllerin sınırında hata var mı bul ve nedenini açıkla."
+- **Çıktı:** `tests/test_entegrasyon.py` (uçtan uca senaryo, rol değişikliği, rollback, komut satırı); bulunan iki hata için düzeltme: **K9** (rezerve stok Envanter'den çıkarılamaz, `stok_cikisi` + `depo_envanteri` rezerve sütunu) ve **K7** genişletmesi (bağış/talep/dağıtımda geçen malzeme). İki regresyon testi.
+- **Benim kararım / doğrulamam:** Hatayı kendim adım adım yeniden ürettim: 180 koli planla, 200 koli çıkış yap, dağıtım yola çıkamıyor. Çözüm olarak çıkışı engellemeyi seçtim; alternatif "dağıtımı otomatik azaltmak" sessizce talebi eksik bırakacağı için reddedildi. Sayım düzeltmesine kural koymadık: sayım fiziksel gerçeği yazar. İlk test denemesinde testin kendisi yanlış varsayım yapmıştı (önerinin tek depodan geleceğini sanmıştı); kod değil test düzeltildi. 101 backend testinin geçtiğini gördüm.
+- **Bu kodu açıklayabiliyor muyum? (E/H):** E (satır satır açıklama: `sozlu-hazirlik/hafta-08.md`)
+
+### Kayıt 18 — Refaktör, ara sürüm ve demo hazırlığı
+- **Tarih:** 04.11.2026
+- **Araç:** Claude
+- **İstem:** "Vize için bilinen eksikleri kapat: panelde hangi modülün hazır olduğu görünsün, Rota/Dağıtım menüsü boş sayfa açmasın. Arayüz için her rolde her sayfayı açan bir test yaz. Semantic versioning'e göre ara sürümü etiketle, CHANGELOG ve 7 dakikalık demo senaryosu hazırla."
+- **Çıktı:** `ModulBilgisi.durum` (Hazır/Kısmen/Planlandı), panelde Durum sütunu, Dağıtım menüsü → Dağıtımlar sekmesi (`ilk_sekme`), Envanter'de Rezerve sütunu; frontend `tests/test_arayuz.py` (5 test); `demo.bat`; iki depoda `CHANGELOG.md`; `docs/Demo-Senaryosu.md`; `v0.6.0` etiketi ve frontend'in `@v0.6.0`'a sabitlenmesi.
+- **Benim kararım / doğrulamam:** Sürüm numarası olarak `v0.6.0`'ı seçtim: Hafta 7 `0.5.0` idi ve bu hafta yeni özellik (durum, rezerve gösterimi) de var, yalnızca düzeltme değil. Demo verisini gerçek veritabanından ayırdım ki demo her seferinde aynı sonucu versin. `demo.bat`'ı çalıştırıp gerçek veritabanının değişmediğini dosya tarihinden kontrol ettim; demo senaryosunu baştan sona uygulamada denedim.
+- **Bu kodu açıklayabiliyor muyum? (E/H):** E

@@ -1,0 +1,121 @@
+Hafta 8 - test çıktısı (04.11.2026)
+
+== Backend deposu: python -m unittest -v
+test_B1_kalemsiz_bagis_olmaz ... ok
+test_B2_miktar_envanter_kurallarina_uyar ... ok
+test_B3_ayni_kalem_iki_kez_yazilamaz ... ok
+test_B4_suresi_gecmis_ve_gidada_skt_zorunlu ... ok
+test_B5_depo_gorevlisi_baska_depoya_bagis_giremez_kurum_giremez ... ok
+test_B6_bagisci_dogrulama_ve_tekrar ... ok
+test_B7_gelecek_tarihli_bagis_olmaz ... ok
+test_B8_bir_kalem_hataliysa_hicbir_sey_yazilmaz ... ok
+test_bagis_stogu_artirir_ve_hareket_bagisi_gosterir ... ok
+test_depo_gorevlisi_yalnizca_kendi_bagislarini_gorur ... ok
+test_E1_kapali_talebe_eslestirme_olmaz ... ok
+test_E2_fazla_gonderim_engellenir ... ok
+test_E3_rezerve_dusulmus_uygun_stok_asilamaz ... ok
+test_E5_ayni_nokta_ayni_malzeme_ikinci_acik_talep_olmaz ... ok
+test_E6_dagitimi_olan_talep_iptal_edilemez ... ok
+test_E7_E8_dagitim_yasam_dongusu_stok_ve_talep_durumu ... ok
+test_eksik_durumu_karsilanamayan_miktari_raporlar ... ok
+test_eslestirme_kismen_sonra_tam_karsilar ... ok
+test_mesafe_hesabi ... ok
+test_oneri_en_yakin_depodan_baslar_ve_kalani_asmaz ... ok
+test_ornek_veri_talep_durumlari_dagitimlarla_tutarli ... ok
+test_plaka_bicimi ... ok
+test_stok_talep_dengesi_fazla_eksik ... ok
+test_teslim_edildi_tarih_yazar_ve_son_durumdur ... ok
+test_yetki_depo_rolu_eslestirme_yapamaz ... ok
+test_eski_dagitimlar_taleplere_baglanir_ve_durumlar_hesaplanir ... ok
+test_kurulum_ve_veritabani_demosu ... ok
+test_hata1_rezerve_stok_envanterden_cikarilamaz
+Hafta 8 hatası: planlanan dağıtımın stoğu Envanter'den çıkarılabiliyordu, dağıtım yola çıkamıyordu. ... ok
+test_hata2_talepte_gecen_malzemenin_birimi_degismez
+Hafta 8 hatası: K7 yalnızca stok/hareket bakıyordu; talepte geçen malzemenin birimi değişebiliyordu. ... ok
+test_bagistan_teslime_tam_akis
+Vize demo senaryosunun kendisi: bağış -> talep -> eşleştirme -> yola çıkış -> teslim. ... ok
+test_rol_degisikligi_tum_modullere_yansir
+Kullanıcı modülü ile diğer modüller: rol değişince eski oturum kapanır, yeni yetki geçerli olur. ... ok
+test_yola_cikista_stok_yetmezse_hicbir_sey_degismez ... ok
+test_003_mevcut_stoklar_icin_acilis_hareketi_olusturur
+Hafta 5'te kurulmuş bir veritabanı 003'ü aldığında stok = hareket toplamı olmalı. ... ok
+test_turkce_alfabe_sirasi ... ok
+test_K1_stok_eksiye_dusemez_ve_hicbir_sey_yazilmaz ... ok
+test_K2_adet_birimi_kesirli_olamaz ... ok
+test_K3_sifir_negatif_ve_metin_miktar_reddedilir ... ok
+test_K4_sayim_aciklama_zorunlu_ve_fark_kaydedilir ... ok
+test_K8_stok_her_zaman_hareketlerin_toplamina_esit ... ok
+test_cikis_stogu_azaltir ... ok
+test_giris_stogu_artirir_ve_hareket_kaydeder ... ok
+test_hareket_tablosu_tutarsiz_kaydi_reddeder ... ok
+test_ilk_giris_stok_satiri_olusturur ... ok
+test_kritik_seviye_ve_durum ... ok
+test_panel_kritik_sayisi_depo_gorevlisinin_deposuyla_sinirli ... ok
+test_stok_listesi_tum_malzemeleri_icerir_ve_filtrelenir ... ok
+test_K7_stogu_olan_malzeme_silinemez_birimi_degismez ... ok
+test_ayni_adli_malzeme_ve_kategori_eklenemez ... ok
+test_gecersiz_birim_reddedilir ... ok
+test_kullanilmayan_malzeme_silinir_dolu_kategori_silinemez ... ok
+test_K5_depo_gorevlisi_baska_depoya_dokunamaz ... ok
+test_K6_tanimlari_yalnizca_yonetici_degistirir ... ok
+test_kurum_rolu_envantere_giremez ... ok
+test_yonetici_tum_depolari_gorur ... ok
+test_modul_anahtarlari_benzersiz ... ok
+test_modul_durumlari_gecerli_ve_hazir_moduller_tamamlanmis_haftalardan ... ok
+test_tanimsiz_modul_hata_verir ... ok
+test_yeni_kayitlarin_varsayilan_durumu ... ok
+test_basarili_giris_token_doner_ve_token_duz_saklanmaz ... ok
+test_bes_hatali_denemede_hesap_kilitlenir ... ok
+test_cikis_sonrasi_token_gecersiz ... ok
+test_suresi_dolan_oturum_gecersiz ... ok
+test_uydurma_token_gecersiz ... ok
+test_yanlis_parola_ve_olmayan_kullanici_ayni_mesaj ... ok
+test_depo_rolu_depo_secmeli ... ok
+test_ikinci_yonetici_kayit_ekranindan_acilamaz ... ok
+test_kullanici_adi_buyuk_kucuk_harf_duyarsiz_benzersiz ... ok
+test_parolalar_eslesmeli ... ok
+test_turkce_klavyeyle_yazilan_kullanici_adiyla_giris
+Hata kaydı: 'katkat_ihsan' hesabına Türkçe klavyede 'Katkat_İhsan' yazınca girilemiyordu. ... ok
+test_zayif_parola_reddedilir ... ok
+test_ayni_parola_farkli_tuz_farkli_hash ... ok
+test_parola_dogrulama ... ok
+test_parola_duz_metin_saklanmaz ... ok
+test_parola_hash_ekrana_basilmaz ... ok
+test_degisiklik_yoksa_hata_ve_kayit_yok ... ok
+test_depo_rolu_icin_depo_zorunlu_diger_rollerde_depo_bosalir ... ok
+test_gecmis_tablosu_kendi_kendine_kaydi_reddeder ... ok
+test_kendi_rolunu_degistiremez ... ok
+test_rolu_degisenin_acik_oturumu_kapanir ... ok
+test_yonetici_disindaki_rol_degistiremez ... ok
+test_yonetici_rol_degistirir_ve_gecmise_yazilir ... ok
+test_depo_gorevlisi_dagitim_modulune_giremez ... ok
+test_kullanici_listesi_yalnizca_yonetici ... ok
+test_kurum_envanter_modulune_giremez ... ok
+test_oturumsuz_panel_ozeti_alinamaz ... ok
+test_enum_ve_tarih_donusumu ... ok
+test_malzeme_crud ... ok
+test_stok_upsert_bilesik_anahtar ... ok
+test_bagis_silinince_kalemleri_silinir ... ok
+test_hata_olursa_transaction_geri_alinir ... ok
+test_kullanimdaki_malzeme_silinemez ... ok
+test_negatif_miktar_reddedilir ... ok
+test_olmayan_malzemeye_kalem_eklenemez ... ok
+test_stok_eksiye_dusemez ... ok
+test_teslim_edildi_icin_teslim_tarihi_zorunlu ... ok
+test_migration_tekrar_uygulanmaz ... ok
+test_tum_tablolar_olustu ... ok
+test_yabanci_anahtar_kontrolu_acik ... ok
+test_ikinci_yukleme_atlanir ... ok
+test_stok_eksi_degil_ve_bagislarla_tutarli ... ok
+test_panel_ozeti ... ok
+Ran 101 tests in 1.482s
+OK
+
+== Frontend deposu: python -m unittest -v
+test_dagitim_menusu_dagitimlar_sekmesini_acar ... ok
+test_giris_penceresi_acilir ... ok
+test_her_rolde_her_sayfa_ve_sekme_hatasiz_acilir ... ok
+test_menude_yetkisiz_moduller_kilitli ... ok
+test_panelde_modul_durumlari_gorunur ... ok
+Ran 5 tests in 1.675s
+OK

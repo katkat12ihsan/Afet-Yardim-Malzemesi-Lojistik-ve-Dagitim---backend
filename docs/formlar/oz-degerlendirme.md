@@ -113,3 +113,25 @@ Eşleştirme önerisinin adımlarını, fazla/eksik kurallarını ve stoğun ned
 
 **Bir sonraki adım için planım:**
 Vize haftası: modülleri uçtan uca deneyip hataları gidermek, ara sürümü etiketlemek, demo senaryosunu hazırlamak.
+
+---
+
+## Hafta 8 (Vize)
+
+**Bu hafta tamamladığım işler:**
+Şimdiye kadarki modülleri baştan sona birlikte denedim: bağış girildi, talep eşleştirildi, dağıtım yola çıktı ve teslim edildi. Bu sırada iki hata çıktı, ikisini de düzelttim ve her birine test yazdım. Panelde hangi modülün hazır olduğu artık görünüyor; envanterde rezerve miktar da çıkıyor. Ara sürümü `v0.6.0` olarak etiketledim, değişiklik günlüğünü ve 7 dakikalık demo senaryosunu hazırladım.
+
+**Yeni öğrendiğim kavram/teknoloji:**
+Entegrasyon testi ile birim testi arasındaki fark. Bulduğum hata iki modülün arasındaydı; her modülün kendi testi geçiyordu ama birlikte çalışınca bozuluyordu. Bir de semantic versioning ve Git tag: bir sürüme kalıcı ad vermek ve frontend'i o sürüme sabitlemek.
+
+**Yapay zekâdan nerede ve nasıl yararlandım:**
+Entegrasyon testini, hata ayıklamayı ve küçük refaktörleri Claude ile yaptım. Hatayı kendim adım adım tekrar üretip nedenini anladıktan sonra düzeltmeye karar verdim. Ayrıntılar AI günlüğünde (Kayıt 17–18).
+
+**En çok zorlandığım nokta ve nasıl aştım:**
+Planlanmış bir dağıtımın malzemesi envanterden çıkarılabiliyordu, sonra dağıtım yola çıkamıyordu. Önce hatanın nerede olduğunu bulmak zor oldu, çünkü iki ekran da kendi içinde doğru çalışıyordu. Senaryoyu küçültüp (180 koli planla, 200 koli çıkar) tekrar ürettim. Çözüm, çıkışı "stok eksi rezerve" ile sınırlamak oldu.
+
+**Kendi kodumu açıklama düzeyim (1–5) ve gerekçesi:** 4
+Mimariyi, bir işlemin hangi modülden hangisine gittiğini ve bu haftaki düzeltmeyi satır satır anlatabiliyorum. "Bu satırı silsen ne olur" sorularına hazırlandım. Arayüz kodunun bazı ayrıntılarında (pencere yerleşimi, tablo renkleri) hâlâ eksiğim var.
+
+**Bir sonraki adım için planım:**
+Hafta 9: harita/rota API'si. Depodan ihtiyaç noktasına gerçek yol mesafesini almak, API çalışmazsa kuş uçuşu mesafeye geri dönmek.

@@ -10,7 +10,7 @@ Bağış malzemelerinin envanterini yönetip ihtiyaç noktalarına dağıtımı 
 Proje dokümantasyonu (haftalık raporlar, formlar, AI günlüğü) bu depodadır.
 
 > Bilgisayar Uygulamaları I — Proje Tabanlı Öğrenme dersi projesi
-> Durum: **Hafta 7 — Bağış Girişi ve İhtiyaç Eşleştirme** (bağış → stok, en yakın depo önerisi, fazla/eksik, dağıtım durumu)
+> Durum: **Hafta 8 — VİZE ara sürümü [`v0.6.0`](https://github.com/katkat12ihsan/Afet-Yardim-Malzemesi-Lojistik-ve-Dagitim---backend/tree/v0.6.0)** · kullanıcı + veritabanı + çekirdek modüller uçtan uca entegre · [Değişiklik günlüğü](CHANGELOG.md) · [Demo senaryosu](docs/Demo-Senaryosu.md)
 
 ## Problem ve amaç
 
@@ -25,6 +25,7 @@ Bağış malzemeleri envanteri ve dağıtımı düzensiz olduğunda israf ve eks
 | Kullanıcı yönetimi ve kimlik doğrulama | 5 ✅ |
 | Envanter yönetimi | 6 ✅ |
 | Bağış girişi ve ihtiyaç eşleştirme | 7 ✅ |
+| **Vize: ara sürüm `v0.6.0`, uçtan uca entegrasyon** | 8 ✅ |
 | Harita / rota API entegrasyonu | 9 |
 | Yapay zekâ: dağıtım önceliği ve rota önerisi | 10 |
 | Takip ve şeffaflık modülü | 11 |
@@ -69,11 +70,13 @@ Veritabanı demosu (sorgular + kısıt denemeleri, kalıcı değişiklik yapmaz)
 python -m backend.data.sorgu_ornekleri
 ```
 
-Testler:
+Testler (101 test: birim + uçtan uca entegrasyon + regresyon):
 
 ```bash
 python -m unittest
 ```
+
+Belirli bir sürümün kodu: `git checkout v0.6.0` (vize ara sürümü). Sürümler ve değişiklikler: [CHANGELOG.md](CHANGELOG.md).
 
 Gizli bilgiler (API anahtarları) koda yazılmaz; `.env.example` dosyasındaki değişkenler ortam değişkeni olarak verilir. `.env` dosyası depoya yüklenmez.
 
@@ -83,16 +86,19 @@ Gizli bilgiler (API anahtarları) koda yazılmaz; `.env.example` dosyasındaki d
 - [Mimari şema](docs/Mimari.md) ([görsel](docs/mimari-sema.svg))
 - [Veritabanı tasarımı: migration, kısıtlar, indeksler](docs/Veritabani.md)
 - [Güvenlik notu: parola, oturum, rol tabanlı erişim, rol düzenleme](docs/Guvenlik-Notu.md)
-- [Envanter Yönetimi: veri modeli, iş kuralları K1–K8, akış](docs/Envanter.md)
+- [Envanter Yönetimi: veri modeli, iş kuralları K1–K9, akış](docs/Envanter.md)
 - [Bağış Girişi ve İhtiyaç Eşleştirme: B1–B8, E1–E9, fazla/eksik, dağıtım durumu](docs/Bagis-ve-Eslestirme.md)
+- [Vize demo senaryosu (7 dakika)](docs/Demo-Senaryosu.md) · [Değişiklik günlüğü](CHANGELOG.md)
+- [Sözlü sınav hazırlıkları](docs/sozlu-hazirlik/)
 - [Haftalık ilerleme raporları](docs/haftalik-raporlar/) — [Word](docs/haftalik-raporlar/word/) ve [PDF](docs/haftalik-raporlar/pdf/) sürümleri
 - [Yapay zekâ kullanım günlüğü](docs/ai-kullanim-gunlugu.md)
-- Formlar: [risk analizi](docs/formlar/risk-analizi.md) · [proje takvimi](docs/formlar/proje-takvimi.md) · [proje izleme](docs/formlar/proje-izleme-formu.md) · [haftalık kontrol listesi](docs/formlar/haftalik-kontrol-listesi.md) · [GitHub kontrol listesi](docs/formlar/github-kontrol-listesi.md)
+- Formlar: [öz değerlendirme](docs/formlar/oz-degerlendirme.md) · [risk analizi](docs/formlar/risk-analizi.md) · [proje takvimi](docs/formlar/proje-takvimi.md) · [proje izleme](docs/formlar/proje-izleme-formu.md) · [haftalık kontrol listesi](docs/formlar/haftalik-kontrol-listesi.md) · [GitHub kontrol listesi](docs/formlar/github-kontrol-listesi.md)
 
 ## Klasör yapısı
 
 ```
-pyproject.toml           paket tanımı (pip install)
+pyproject.toml           paket tanımı (pip install), sürüm 0.6.0
+CHANGELOG.md             sürümler ve değişiklikler
 backend/                 arayüzden bağımsız çekirdek
   config.py              ayarlar
   guvenlik.py            parola hash (PBKDF2), token
@@ -101,7 +107,7 @@ backend/                 arayüzden bağımsız çekirdek
   data/                  veri erişim katmanı (SQLite)
     migrations/          numaralı şema dosyaları (001 ilk şema, 002 kullanıcı, 003 stok hareketi, 004 rol değişikliği, 005 eşleştirme)
     repositories/        CRUD sınıfları
-tests/                   birim testleri (94 test)
+tests/                   birim + entegrasyon testleri (101 test)
 docs/                    ER, mimari, raporlar, formlar, AI günlüğü, ekran görüntüleri
 ```
 

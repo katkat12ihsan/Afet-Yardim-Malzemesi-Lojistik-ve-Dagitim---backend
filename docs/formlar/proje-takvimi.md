@@ -13,7 +13,7 @@ Durum: Planlandı / Devam / Tamamlandı / Gecikti
 | 5 | Kimlik doğrulama | Kayıt/giriş, parola hash, rol tabanlı erişim (depo/kurum) | Tamamlandı |
 | 6 | Çekirdek Modül A: Envanter Yönetimi | Malzeme/kategori, giriş/çıkış, stok seviyesi | Tamamlandı |
 | 7 | Çekirdek Modül B: Bağış girişi + ihtiyaç eşleştirme | Ara demo, modüllerin entegrasyonu | Tamamlandı |
-| 8 | VİZE: ara sürüm + sözlü | Etiketli sürüm (`v0.5-vize`) | Planlandı |
+| 8 | VİZE: ara sürüm + sözlü | Etiketli sürüm (`v0.6.0`), uçtan uca entegrasyon, demo senaryosu | Tamamlandı |
 | 9 | Harici API: harita / rota | Depo → ihtiyaç noktası rota/mesafe | Planlandı |
 | 10 | Yapay zekâ bileşeni | Dağıtım önceliği ve rota önerisi | Planlandı |
 | 11 | İleri modül: takip ve şeffaflık | Dağıtım durum takibi, bağıştan teslime izlenebilirlik | Planlandı |

@@ -90,8 +90,8 @@ Gizli bilgiler (API anahtarları) koda yazılmaz; `.env.example` dosyasındaki d
 - [Bağış Girişi ve İhtiyaç Eşleştirme: B1–B8, E1–E9, fazla/eksik, dağıtım durumu](docs/Bagis-ve-Eslestirme.md)
 - [Vize demo senaryosu (7 dakika)](docs/Demo-Senaryosu.md) · [Değişiklik günlüğü](CHANGELOG.md)
 - [Sözlü sınav hazırlıkları](docs/sozlu-hazirlik/)
-- [Haftalık ilerleme raporları](docs/haftalik-raporlar/) — [Word](docs/haftalik-raporlar/word/) ve [PDF](docs/haftalik-raporlar/pdf/) sürümleri
-- [Yapay zekâ kullanım günlüğü](docs/ai-kullanim-gunlugu.md)
+- [Haftalık raporlar](docs/haftalik-raporlar/): her hafta için ilerleme raporu ve AI kullanım günlüğü, [Word](docs/haftalik-raporlar/word/) ve [PDF](docs/haftalik-raporlar/pdf/) olarak
+- [Yapay zekâ kullanım günlüğü](docs/ai-kullanim-gunlugu.md) (tüm haftalar; haftalık Word/PDF sürümleri raporların yanında)
 - Formlar: [öz değerlendirme](docs/formlar/oz-degerlendirme.md) · [risk analizi](docs/formlar/risk-analizi.md) · [proje takvimi](docs/formlar/proje-takvimi.md) · [proje izleme](docs/formlar/proje-izleme-formu.md) · [haftalık kontrol listesi](docs/formlar/haftalik-kontrol-listesi.md) · [GitHub kontrol listesi](docs/formlar/github-kontrol-listesi.md)
 
 ## Klasör yapısı

@@ -1,9 +1,9 @@
-"""Kullanıcı, oturum ve rol değişikliği repository'leri (Hafta 5)."""
+"""Kullanıcı, oturum, rol değişikliği ve parola sıfırlama repository'leri (Hafta 5)."""
 
 import sqlite3
 from typing import Optional
 
-from backend.models import Kullanici, Oturum, RolDegisikligi
+from backend.models import Kullanici, Oturum, ParolaSifirlama, RolDegisikligi
 
 from .temel import TemelRepository
 
@@ -62,6 +62,26 @@ class RolDegisikligiRepository(TemelRepository[RolDegisikligi]):
             LEFT JOIN depo ed ON ed.id = r.eski_depo_id
             LEFT JOIN depo yd ON yd.id = r.yeni_depo_id
             ORDER BY r.tarih DESC, r.id DESC
+            LIMIT ?
+            """,
+            (limit,),
+        ).fetchall()
+
+
+class ParolaSifirlamaRepository(TemelRepository[ParolaSifirlama]):
+    """Kayıtlar yalnızca eklenir; güncelleme/silme iş katmanında kullanılmaz."""
+
+    tablo, varlik, siralama = "parola_sifirlama", ParolaSifirlama, "tarih DESC, id DESC"
+
+    def gecmis(self, limit: int = 50) -> list[sqlite3.Row]:
+        """Son parola sıfırlamaları; kullanıcı adlarıyla (JOIN)."""
+        return self.baglanti.execute(
+            """
+            SELECT p.tarih, k.kullanici_adi, s.kullanici_adi AS sifirlayan
+            FROM parola_sifirlama p
+            JOIN kullanici k ON k.id = p.kullanici_id
+            JOIN kullanici s ON s.id = p.sifirlayan_id
+            ORDER BY p.tarih DESC, p.id DESC
             LIMIT ?
             """,
             (limit,),

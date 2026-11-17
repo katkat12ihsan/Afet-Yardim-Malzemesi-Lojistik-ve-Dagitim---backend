@@ -190,6 +190,7 @@ class Kullanici:
     kilitli_bitis: Optional[datetime] = None
     olusturma_tarihi: datetime = field(default_factory=lambda: datetime.now().replace(microsecond=0))
     son_giris: Optional[datetime] = None
+    parola_degistirmeli: bool = False         # Yönetici sıfırladıysa: girişten önce yeni parola
     id: Optional[int] = None
 
 
@@ -232,5 +233,14 @@ class RolDegisikligi:
     eski_depo_id: Optional[int]
     yeni_depo_id: Optional[int]
     degistiren_id: int                       # FK -> Kullanici (işlemi yapan Yönetici)
+    tarih: datetime = field(default_factory=lambda: datetime.now().replace(microsecond=0))
+    id: Optional[int] = None
+
+
+@dataclass
+class ParolaSifirlama:
+    """Yöneticinin bir kullanıcının parolasını sıfırladığı an (denetim izi; parola tutulmaz)."""
+    kullanici_id: int                        # FK -> Kullanici (parolası sıfırlanan)
+    sifirlayan_id: int                       # FK -> Kullanici (işlemi yapan Yönetici)
     tarih: datetime = field(default_factory=lambda: datetime.now().replace(microsecond=0))
     id: Optional[int] = None

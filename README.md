@@ -10,7 +10,7 @@ Bağış malzemelerinin envanterini yönetip ihtiyaç noktalarına dağıtımı 
 Proje dokümantasyonu (haftalık raporlar, formlar, AI günlüğü) bu depodadır.
 
 > Bilgisayar Uygulamaları I — Proje Tabanlı Öğrenme dersi projesi
-> Durum: **Hafta 8 — VİZE ara sürümü [`v0.6.0`](https://github.com/katkat12ihsan/Afet-Yardim-Malzemesi-Lojistik-ve-Dagitim---backend/tree/v0.6.0)** · kullanıcı + veritabanı + çekirdek modüller uçtan uca entegre · [Değişiklik günlüğü](CHANGELOG.md) · [Demo senaryosu](docs/Demo-Senaryosu.md)
+> Durum: **Hafta 8 — VİZE ara sürümü [`v0.6.0`](https://github.com/katkat12ihsan/Afet-Yardim-Malzemesi-Lojistik-ve-Dagitim---backend/tree/v0.6.0)** · kullanıcı + veritabanı + çekirdek modüller uçtan uca entegre · sonrası [`v0.6.1`](https://github.com/katkat12ihsan/Afet-Yardim-Malzemesi-Lojistik-ve-Dagitim---backend/tree/v0.6.1): Yönetici parola sıfırlama · [Değişiklik günlüğü](CHANGELOG.md) · [Demo senaryosu](docs/Demo-Senaryosu.md)
 
 ## Problem ve amaç
 
@@ -97,7 +97,7 @@ Gizli bilgiler (API anahtarları) koda yazılmaz; `.env.example` dosyasındaki d
 ## Klasör yapısı
 
 ```
-pyproject.toml           paket tanımı (pip install), sürüm 0.6.0
+pyproject.toml           paket tanımı (pip install), sürüm 0.6.1
 CHANGELOG.md             sürümler ve değişiklikler
 backend/                 arayüzden bağımsız çekirdek
   config.py              ayarlar
@@ -105,7 +105,7 @@ backend/                 arayüzden bağımsız çekirdek
   models/                varlık katmanı (ER -> dataclass)
   services/              iş katmanı (kimlik, yetki, envanter, bağış, eşleştirme, özet, modül planı)
   data/                  veri erişim katmanı (SQLite)
-    migrations/          numaralı şema dosyaları (001 ilk şema, 002 kullanıcı, 003 stok hareketi, 004 rol değişikliği, 005 eşleştirme)
+    migrations/          numaralı şema dosyaları (001 ilk şema, 002 kullanıcı, 003 stok hareketi, 004 rol değişikliği, 005 eşleştirme, 006 parola sıfırlama)
     repositories/        CRUD sınıfları
 tests/                   birim + entegrasyon testleri (101 test)
 docs/                    ER, mimari, raporlar, formlar, AI günlüğü, ekran görüntüleri

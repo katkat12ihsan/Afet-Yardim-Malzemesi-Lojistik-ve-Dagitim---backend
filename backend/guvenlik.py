@@ -60,6 +60,24 @@ def parola_kurallarini_kontrol_et(parola: str) -> list[str]:
     return hatalar
 
 
+# Geçici parolada karıştırılabilecek karakterler yok (0/O, 1/l/I): Yönetici
+# parolayı kullanıcıya sesli ya da kâğıtta iletir.
+_GECICI_HARFLER = "abcdefghjkmnpqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ"
+_GECICI_RAKAMLAR = "23456789"
+
+
+def gecici_parola_uret(uzunluk: int = 10) -> str:
+    """Yönetici sıfırlaması için tek kullanımlık parola (kriptografik rastgele).
+
+    Parola politikasına her zaman uyar: en az bir harf ve bir rakam içerir.
+    """
+    havuz = _GECICI_HARFLER + _GECICI_RAKAMLAR
+    while True:
+        parola = "".join(secrets.choice(havuz) for _ in range(uzunluk))
+        if not parola_kurallarini_kontrol_et(parola):
+            return parola
+
+
 def token_uret() -> str:
     """Tahmin edilemez oturum token'ı (32 bayt kriptografik rastgele)."""
     return secrets.token_urlsafe(32)

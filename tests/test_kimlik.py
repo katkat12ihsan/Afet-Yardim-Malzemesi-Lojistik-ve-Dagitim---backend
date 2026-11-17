@@ -1,16 +1,20 @@
-"""Hafta 5 - kimlik doğrulama, oturum ve yetkilendirme testleri."""
+"""Hafta 5 - kimlik doğrulama, oturum ve yetkilendirme testleri (+ parola sıfırlama)."""
 
+import shutil
 import sqlite3
+import tempfile
 import unittest
 from datetime import datetime, timedelta
+from pathlib import Path
 
 from backend import config, guvenlik
+from backend.data import database
 from backend.data.database import baglanti_ac, islem, migrasyonlari_uygula
 from backend.data.ornek_veri import ornek_veri_yukle
 from backend.data.repositories import DepoRepository, KullaniciRepository, OturumRepository
 from backend.models import Rol
 from backend.services.hatalar import (
-    DogrulamaHatasi, GecersizGiris, HesapKilitli, OturumGecersiz, YetkisizErisim,
+    DogrulamaHatasi, GecersizGiris, HesapKilitli, OturumGecersiz, ParolaDegistirilmeli, YetkisizErisim,
 )
 from backend.services.kimlik_servisi import KimlikServisi
 from backend.services.ozet_servisi import OzetServisi
@@ -214,6 +218,126 @@ class RolDuzenlemeTestleri(KimlikTesti):
         with self.assertRaises(sqlite3.IntegrityError):
             self.db.execute("INSERT INTO rol_degisikligi (kullanici_id, eski_rol, yeni_rol, degistiren_id, tarih)"
                             " VALUES (1, 'Kurum', 'Yönetici', 1, '2026-10-23T10:00:00')")
+
+
+class ParolaSifirlamaTestleri(KimlikTesti):
+    """Şifremi unuttum yerine: Yönetici parolayı sıfırlar, kullanıcı ilk girişte yeni parola belirler."""
+
+    YENI = "YeniParola9"
+
+    def setUp(self):
+        super().setUp()
+        self.yonetici = self.kimlik.giris_yap("yonetici", PAROLA)
+        self.kurum = self.kayit(kadi="kurum1")
+
+    def sifirla(self):
+        return self.kimlik.parola_sifirla(self.yonetici, self.kurum.id)
+
+    def test_gecici_parola_kurallara_uyar_ve_duz_saklanmaz(self):
+        gecici = self.sifirla()
+        self.assertFalse(guvenlik.parola_kurallarini_kontrol_et(gecici))
+        self.assertFalse(set(gecici) & set("0O1lI"))          # karıştırılan karakter yok
+        k = KullaniciRepository(self.db).getir(self.kurum.id)
+        self.assertNotIn(gecici, k.parola_hash)
+        self.assertTrue(guvenlik.parola_dogrula(gecici, k.parola_hash))
+        self.assertTrue(k.parola_degistirmeli)
+        self.assertNotEqual(gecici, self.sifirla())            # her seferinde farklı
+
+    def test_eski_parola_artik_gecmez(self):
+        self.sifirla()
+        with self.assertRaises(GecersizGiris):
+            self.kimlik.giris_yap("kurum1", PAROLA)
+
+    def test_gecici_parolayla_oturum_acilmaz(self):
+        gecici = self.sifirla()
+        with self.assertRaises(ParolaDegistirilmeli):
+            self.kimlik.giris_yap("kurum1", gecici)
+        acik = self.db.execute("SELECT COUNT(*) FROM oturum WHERE kullanici_id = ? AND cikis_zamani IS NULL",
+                               (self.kurum.id,)).fetchone()[0]
+        self.assertEqual(acik, 0)
+
+    def test_yeni_parola_belirlenince_giris_yapilir(self):
+        gecici = self.sifirla()
+        token = self.kimlik.parola_yenile("kurum1", gecici, self.YENI, self.YENI)
+        self.assertEqual(self.kimlik.oturum_dogrula(token).kullanici_adi, "kurum1")
+        self.assertFalse(KullaniciRepository(self.db).getir(self.kurum.id).parola_degistirmeli)
+        self.kimlik.giris_yap("kurum1", self.YENI)               # artık normal giriş
+        with self.assertRaises(GecersizGiris):                   # geçici parola tek kullanımlık
+            self.kimlik.giris_yap("kurum1", gecici)
+
+    def test_yeni_parola_kurallari(self):
+        gecici = self.sifirla()
+        for yeni, tekrar in (("kisa1", "kisa1"), ("SadeceHarf", "SadeceHarf"),
+                             (self.YENI, "Baska12345"), (gecici, gecici)):
+            with self.subTest(yeni=yeni), self.assertRaises(DogrulamaHatasi):
+                self.kimlik.parola_yenile("kurum1", gecici, yeni, tekrar)
+        self.assertTrue(KullaniciRepository(self.db).getir(self.kurum.id).parola_degistirmeli)
+
+    def test_yanlis_gecici_parola_kilit_sayacina_girer(self):
+        self.sifirla()
+        for _ in range(config.MAKS_BASARISIZ_GIRIS - 1):
+            with self.assertRaises(GecersizGiris):
+                self.kimlik.parola_yenile("kurum1", "Tahmin1234", self.YENI, self.YENI)
+        with self.assertRaises(HesapKilitli):
+            self.kimlik.parola_yenile("kurum1", "Tahmin1234", self.YENI, self.YENI)
+
+    def test_sifirlanmamis_hesapta_parola_yenile_calismaz(self):
+        with self.assertRaises(DogrulamaHatasi):
+            self.kimlik.parola_yenile("kurum1", PAROLA, self.YENI, self.YENI)
+
+    def test_yalnizca_yonetici_ve_kendi_parolasini_sifirlayamaz(self):
+        kurum_token = self.kimlik.giris_yap("kurum1", PAROLA)
+        diger = self.kayit(kadi="kurum2")
+        with self.assertRaises(YetkisizErisim):
+            self.kimlik.parola_sifirla(kurum_token, diger.id)
+        kendisi = self.kimlik.oturum_dogrula(self.yonetici)
+        with self.assertRaises(YetkisizErisim):
+            self.kimlik.parola_sifirla(self.yonetici, kendisi.id)
+        with self.assertRaises(DogrulamaHatasi):
+            self.kimlik.parola_sifirla(self.yonetici, 9999)
+
+    def test_sifirlama_acik_oturumu_kapatir_ve_kilidi_acar(self):
+        kurum_token = self.kimlik.giris_yap("kurum1", PAROLA)
+        for _ in range(config.MAKS_BASARISIZ_GIRIS):
+            with self.assertRaises((GecersizGiris, HesapKilitli)):
+                self.kimlik.giris_yap("kurum1", "Yanlis123")
+        gecici = self.sifirla()
+        with self.assertRaises(OturumGecersiz):
+            self.kimlik.oturum_dogrula(kurum_token)
+        with self.assertRaises(ParolaDegistirilmeli):            # kilit kalktı: HesapKilitli değil
+            self.kimlik.giris_yap("kurum1", gecici)
+
+    def test_sifirlama_gecmise_yazilir(self):
+        self.sifirla()
+        kayit = self.kimlik.parola_sifirlama_gecmisi(self.yonetici)[0]
+        self.assertEqual((kayit["kullanici_adi"], kayit["sifirlayan"]), ("kurum1", "yonetici"))
+        with self.assertRaises(sqlite3.IntegrityError):          # kendi kendine kayıt DB'de de yasak
+            self.db.execute("INSERT INTO parola_sifirlama (kullanici_id, sifirlayan_id, tarih)"
+                            " VALUES (1, 1, '2026-11-17T10:00:00')")
+
+
+class Migrasyon006Testi(unittest.TestCase):
+    def test_mevcut_kullanicilar_korunur_ve_parola_degistirmeli_degildir(self):
+        """005'e kadar kurulu bir veritabanına 006 uygulanınca hesaplar aynen girebilir."""
+        db = baglanti_ac(":memory:")
+        asil_klasor = database.MIGRASYON_KLASORU
+        with tempfile.TemporaryDirectory() as gecici:
+            for dosya in asil_klasor.glob("00[1-5]_*.sql"):      # 006 öncesini taklit et
+                shutil.copy(dosya, gecici)
+            database.MIGRASYON_KLASORU = Path(gecici)
+            try:
+                migrasyonlari_uygula(db)
+            finally:
+                database.MIGRASYON_KLASORU = asil_klasor
+        db.execute("INSERT INTO kullanici (kullanici_adi, ad_soyad, parola_hash, rol, olusturma_tarihi)"
+                   " VALUES ('eski', 'Eski Hesap', 'pbkdf2_sha256$1$00$00', 'Kurum', '2026-10-01T09:00:00')")
+        db.commit()
+
+        self.assertEqual(migrasyonlari_uygula(db), ["006_parola_sifirlama.sql"])
+        k = KullaniciRepository(db).kullanici_adi_ile_getir("eski")
+        self.assertEqual(k.ad_soyad, "Eski Hesap")
+        self.assertFalse(k.parola_degistirmeli)
+        db.close()
 
 
 if __name__ == "__main__":

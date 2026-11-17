@@ -30,3 +30,11 @@ class OturumGecersiz(IsKuraliHatasi):
 
 class YetkisizErisim(IsKuraliHatasi):
     """Kullanıcının rolü bu işlem için yetkili değil."""
+
+
+class ParolaDegistirilmeli(IsKuraliHatasi):
+    """Parola Yönetici tarafından sıfırlandı: oturum açılmadan önce yeni parola belirlenmeli.
+
+    Girilen (geçici) parola doğrudur; frontend bu hatayı yakalayıp "yeni parola
+    belirle" formunu açar ve `KimlikServisi.parola_yenile` metodunu çağırır.
+    """

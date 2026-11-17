@@ -6,6 +6,8 @@ Akış:
   oturum_dogrula(token) -> her korumalı işlemden önce: token geçerli mi?
   cikis_yap(token) -> oturum kapatılır, token bir daha kullanılamaz
   rol_degistir(token, kullanici_id, yeni_rol, depo_id) -> yalnızca Yönetici; geçmişe yazılır
+  parola_sifirla(token, kullanici_id) -> yalnızca Yönetici; geçici parola döner
+  parola_yenile(kullanici_adi, gecici, yeni, tekrar) -> sıfırlanan kullanıcı kendi parolasını belirler
 
 Frontend token'ı yalnızca bellekte tutar (dosyaya yazmaz); her istekte
 servise verir. Servis token'ın özetini veritabanında arar.
@@ -18,11 +20,13 @@ from typing import Optional
 from backend import config, guvenlik
 from backend.data.database import islem
 from backend.data.repositories import (
-    DepoRepository, KullaniciRepository, OturumRepository, RolDegisikligiRepository,
+    DepoRepository, KullaniciRepository, OturumRepository, ParolaSifirlamaRepository, RolDegisikligiRepository,
 )
-from backend.models import Kullanici, Oturum, Rol, RolDegisikligi
+from backend.models import Kullanici, Oturum, ParolaSifirlama, Rol, RolDegisikligi
 
-from .hatalar import DogrulamaHatasi, GecersizGiris, HesapKilitli, OturumGecersiz, YetkisizErisim
+from .hatalar import (
+    DogrulamaHatasi, GecersizGiris, HesapKilitli, OturumGecersiz, ParolaDegistirilmeli, YetkisizErisim,
+)
 from .yetki import yetki_gerekli
 
 # Var olmayan kullanıcı adında da parola doğrulaması yapılsın diye sahte hash.
@@ -58,11 +62,7 @@ class KimlikServisi:
             hatalar.append("Kullanıcı adı 3-30 karakter olmalı; yalnızca harf, rakam, '.' ve '_' içerebilir.")
         if not ad_soyad:
             hatalar.append("Ad soyad boş olamaz.")
-        if parola != parola_tekrar:
-            hatalar.append("Parolalar eşleşmiyor.")
-        kural_hatalari = guvenlik.parola_kurallarini_kontrol_et(parola)
-        if kural_hatalari:
-            hatalar.append("Parola " + ", ".join(kural_hatalari) + ".")
+        hatalar += self._parola_hatalari(parola, parola_tekrar)
         if rol is Rol.YONETICI and not self.ilk_kurulum_mu():
             hatalar.append("Yönetici hesabı kayıt ekranından açılamaz.")
         if rol is Rol.DEPO:
@@ -81,7 +81,23 @@ class KimlikServisi:
 
     # ---------------------------------------------------------------- GİRİŞ
     def giris_yap(self, kullanici_adi: str, parola: str) -> str:
-        """Başarılıysa oturum token'ını döndürür (token yalnızca bu an düz görülür)."""
+        """Başarılıysa oturum token'ını döndürür (token yalnızca bu an düz görülür).
+
+        Parola Yönetici tarafından sıfırlandıysa oturum AÇILMAZ, ParolaDegistirilmeli
+        fırlatılır: geçici parolayla hiçbir sayfaya girilemez, önce parola_yenile.
+        """
+        kullanici = self._kimlik_dogrula(kullanici_adi, parola)
+        if kullanici.parola_degistirmeli:
+            raise ParolaDegistirilmeli(
+                "Parolanız Yönetici tarafından sıfırlandı. Devam etmek için kendi parolanızı belirleyin.")
+        return self._oturum_ac(kullanici)
+
+    def _kimlik_dogrula(self, kullanici_adi: str, parola: str) -> Kullanici:
+        """Kullanıcı adı + parola doğru mu? Kilit ve hatalı deneme sayacı burada.
+
+        Hem giriş hem parola yenileme bu yoldan geçer: geçici parolaya da kaba
+        kuvvet denemesi yapılamaz (5 hatalı denemede kilit).
+        """
         simdi = _simdi()
         kullanici = self._kullanicilar.kullanici_adi_ile_getir(kullanici_adi.strip())
 
@@ -104,7 +120,11 @@ class KimlikServisi:
             if kilitlendi:
                 raise HesapKilitli(f"Çok fazla hatalı deneme. Hesap {config.KILIT_SURESI_DAKIKA} dakika kilitlendi.")
             raise GecersizGiris()
+        return kullanici
 
+    def _oturum_ac(self, kullanici: Kullanici) -> str:
+        """Kullanıcıyı (ve üzerindeki değişiklikleri) kaydeder, yeni oturum açar."""
+        simdi = _simdi()
         token = guvenlik.token_uret()
         kullanici.basarisiz_giris, kullanici.kilitli_bitis, kullanici.son_giris = 0, None, simdi
         oturum = Oturum(kullanici.id, guvenlik.token_ozeti(token), simdi,
@@ -190,7 +210,79 @@ class KimlikServisi:
         yetki_gerekli(self.oturum_dogrula(token), "kullanicilar")
         return RolDegisikligiRepository(self._baglanti).gecmis(limit)
 
+    # ------------------------------------------------------ PAROLA SIFIRLAMA
+    def parola_sifirla(self, token: str, kullanici_id: int) -> str:
+        """Parolasını unutan kullanıcı için geçici parola üretir ve DÖNDÜRÜR.
+
+        Uygulama internetsiz çalıştığı için "şifremi unuttum" e-posta/SMS ile
+        yapılamaz; kimliği Yönetici doğrular (yüz yüze/telefon) ve parolayı sıfırlar.
+
+        Kurallar:
+          * Yalnızca Yönetici; kendi parolasını bu yolla sıfırlayamaz.
+          * Geçici parola rastgele üretilir, yalnızca hash'i saklanır. Düz hali
+            yalnızca bu dönüş değerinde görülür: Yönetici kullanıcıya iletir.
+          * Kullanıcı geçici parolayla oturum AÇAMAZ, önce kendi parolasını
+            belirler (parola_degistirmeli = 1).
+          * Kullanıcının açık oturumları kapanır, hesap kilidi ve hatalı deneme
+            sayacı sıfırlanır (kilitli kalan kullanıcı da böylece girebilir).
+          * Parola, oturumlar ve denetim kaydı tek transaction'da yazılır.
+        """
+        yonetici = self.oturum_dogrula(token)
+        yetki_gerekli(yonetici, "kullanicilar")
+        hedef = self._kullanicilar.getir(kullanici_id)
+        if hedef is None:
+            raise DogrulamaHatasi("Kullanıcı bulunamadı.")
+        if hedef.id == yonetici.id:
+            raise YetkisizErisim("Kendi parolanızı sıfırlayamazsınız; bunu başka bir Yönetici yapmalı.")
+        if not hedef.aktif:
+            raise DogrulamaHatasi(f"{hedef.kullanici_adi} hesabı pasif; parolası sıfırlanamaz.")
+
+        gecici = guvenlik.gecici_parola_uret()
+        hedef.parola_hash = guvenlik.parola_hashle(gecici)
+        hedef.parola_degistirmeli = True
+        hedef.basarisiz_giris, hedef.kilitli_bitis = 0, None
+        with islem(self._baglanti):
+            self._kullanicilar.guncelle(hedef)
+            self._oturumlar.kullanicinin_acik_oturumlarini_kapat(hedef.id, _simdi().isoformat())
+            ParolaSifirlamaRepository(self._baglanti).ekle(ParolaSifirlama(hedef.id, yonetici.id))
+        return gecici
+
+    def parola_yenile(self, kullanici_adi: str, gecici_parola: str, yeni_parola: str,
+                      yeni_parola_tekrar: str) -> str:
+        """Parolası sıfırlanan kullanıcı kendi parolasını belirler; oturum açar, token döner.
+
+        Token yok (henüz giriş yapılmadı); kimlik geçici parolayla doğrulanır ve
+        bu doğrulama girişteki kilit/sayaç kurallarına tabidir.
+        """
+        kullanici = self._kimlik_dogrula(kullanici_adi, gecici_parola)
+        if not kullanici.parola_degistirmeli:
+            raise DogrulamaHatasi("Bu hesabın parolası sıfırlanmamış; normal giriş yapın.")
+        hatalar = self._parola_hatalari(yeni_parola, yeni_parola_tekrar)
+        if yeni_parola == gecici_parola:
+            hatalar.append("Yeni parola geçici paroladan farklı olmalı.")
+        if hatalar:
+            raise DogrulamaHatasi("\n".join(hatalar))
+        kullanici.parola_hash = guvenlik.parola_hashle(yeni_parola)
+        kullanici.parola_degistirmeli = False
+        return self._oturum_ac(kullanici)          # yeni parola ve oturum tek transaction'da
+
+    def parola_sifirlama_gecmisi(self, token: str, limit: int = 50) -> list[sqlite3.Row]:
+        """Son parola sıfırlamaları (yalnızca Yönetici)."""
+        yetki_gerekli(self.oturum_dogrula(token), "kullanicilar")
+        return ParolaSifirlamaRepository(self._baglanti).gecmis(limit)
+
     # ------------------------------------------------------------- yardımcı
+    @staticmethod
+    def _parola_hatalari(parola: str, parola_tekrar: str) -> list[str]:
+        """Kayıt ve parola yenilemede ortak parola kuralları."""
+        hatalar = []
+        if parola != parola_tekrar:
+            hatalar.append("Parolalar eşleşmiyor.")
+        kural_hatalari = guvenlik.parola_kurallarini_kontrol_et(parola)
+        if kural_hatalari:
+            hatalar.append("Parola " + ", ".join(kural_hatalari) + ".")
+        return hatalar
+
     @staticmethod
     def _sahte_hash() -> str:
         global _SAHTE_HASH

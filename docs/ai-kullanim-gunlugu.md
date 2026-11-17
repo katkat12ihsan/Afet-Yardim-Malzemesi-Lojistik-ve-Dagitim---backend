@@ -171,3 +171,14 @@ Her kayıt: tarih · araç · istem (prompt) · alınan çıktı · benim yaptı
 - **Çıktı:** `ModulBilgisi.durum` (Hazır/Kısmen/Planlandı), panelde Durum sütunu, Dağıtım menüsü → Dağıtımlar sekmesi (`ilk_sekme`), Envanter'de Rezerve sütunu; frontend `tests/test_arayuz.py` (5 test); `demo.bat`; iki depoda `CHANGELOG.md`; `docs/Demo-Senaryosu.md`; `v0.6.0` etiketi ve frontend'in `@v0.6.0`'a sabitlenmesi.
 - **Benim kararım / doğrulamam:** Sürüm numarası olarak `v0.6.0`'ı seçtim: Hafta 7 `0.5.0` idi ve bu hafta yeni özellik (durum, rezerve gösterimi) de var, yalnızca düzeltme değil. Demo verisini gerçek veritabanından ayırdım ki demo her seferinde aynı sonucu versin. `demo.bat`'ı çalıştırıp gerçek veritabanının değişmediğini dosya tarihinden kontrol ettim; demo senaryosunu baştan sona uygulamada denedim.
 - **Bu kodu açıklayabiliyor muyum? (E/H):** E
+
+## Ara eklenti (v0.6.1) — Parola sıfırlama
+
+### Kayıt 19 — "Şifremi unuttum" yerine Yönetici parola sıfırlaması
+- **Tarih:** 17.11.2026
+- **Araç:** Claude
+- **İstem:** "Giriş sayfasında şifremi unuttum neden yok?" sorusunun ardından: "Yönetici parolayı sıfırlasın, sistem geçici parola versin, kullanıcı ilk girişte kendi parolasını belirlemek zorunda olsun; oturumlar kapansın, işlem kayda geçsin; testleri yaz."
+- **Çıktı:** `006_parola_sifirlama.sql`, `KimlikServisi.parola_sifirla / parola_yenile / parola_sifirlama_gecmisi`, `guvenlik.gecici_parola_uret`, `ParolaDegistirilmeli`; `giris_yap`'ın `_kimlik_dogrula` + `_oturum_ac` olarak ayrılması; frontend'de "Parolayı Sıfırla" düğmesi, geçici parola penceresi, "Parolamı unuttum" bilgisi ve "Yeni Parola Belirle" formu; 11 backend + 1 arayüz testi.
+- **Benim kararım / doğrulamam:** E-posta ile sıfırlamayı reddettim: uygulama internetsiz çalışıyor ve kullanıcıdan e-posta alınmıyor; doğrulamasız bir "yeni parola" ekranı ise hesabı başkasına açardı. Geçici parolayla oturum açılmamasını seçtim (yalnızca menüyü kilitlemek yerine): yetki kuralında olduğu gibi kontrol backend'de. Geçici parolanın da 5 hatalı denemede kilide girdiği ve migration'ın mevcut veritabanındaki hesapları bozmadığı testlerle doğrulandı (112 backend + 6 arayüz testi geçiyor).
+- **Bu kodu açıklayabiliyor muyum? (E/H):** E
+

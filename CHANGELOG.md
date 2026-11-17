@@ -9,6 +9,20 @@ Sürüm numaraları [anlamsal sürümleme](https://semver.org/lang/tr/) (MAJOR.M
 Etiketli sürümler GitHub'da *Tags* altında görünür: `git checkout v0.6.0` o sürümün kodunu açar.
 Frontend deposunun kendi değişiklik günlüğü vardır; frontend `requirements.txt` hangi backend sürümünü kullandığını belirtir.
 
+## [0.6.1] — 17.11.2026 · Parola sıfırlama (etiket: `v0.6.1`)
+
+"Şifremi unuttum" yerine **Yönetici parola sıfırlaması**. Uygulama internetsiz çalıştığı için e-posta/SMS ile kimlik doğrulanamaz; doğrulamasız bir "yeni parola belirle" ekranı hesabı kullanıcı adını bilen herkese açardı. Kimliği Yönetici doğrular, sistem geçici parola üretir. (Vize sürümü `v0.6.0` değişmedi; 0.4.3'teki rol düzenlemesi gibi iki hafta arası eklenti.)
+
+### Eklenenler
+- `006_parola_sifirlama.sql`: `kullanici.parola_degistirmeli` kolonu (varsayılan 0, mevcut hesaplar etkilenmez) ve `parola_sifirlama` denetim tablosu (kim, kimin parolasını, ne zaman; parolanın kendisi tutulmaz; kişi kendi kendini sıfırlayamaz — CHECK).
+- `KimlikServisi.parola_sifirla(token, kullanici_id)`: yalnızca Yönetici, kendi parolası hariç. 10 karakterlik rastgele geçici parola (`guvenlik.gecici_parola_uret`, karıştırılan 0/O/1/l/I yok) döner; yalnızca hash'i saklanır. Kullanıcının açık oturumları kapanır, hesap kilidi ve hatalı deneme sayacı sıfırlanır. Tek transaction.
+- `KimlikServisi.parola_yenile(kullanici_adi, gecici, yeni, tekrar)`: geçici parolayla **oturum açılmaz** (`giris_yap` → `ParolaDegistirilmeli`); kullanıcı önce kendi parolasını belirler. Geçici parola doğrulaması girişteki kilit/sayaç kurallarına tabidir; yeni parola politikaya uymalı ve geçici paroladan farklı olmalı.
+- `KimlikServisi.parola_sifirlama_gecmisi`, `ParolaSifirlamaRepository`, `ParolaDegistirilmeli` hatası.
+- 11 test (10 parola sıfırlama + migration 006'nın mevcut veritabanına uygulanması). Toplam 112.
+
+### Değişenler
+- `giris_yap` iki adıma ayrıldı: `_kimlik_dogrula` (kilit, sayaç, parola) ve `_oturum_ac`. Parola kuralları kayıt ve yenilemede ortak (`_parola_hatalari`).
+
 ## [0.6.0] — 04.11.2026 · Hafta 8 · VİZE ara sürümü (etiket: `v0.6.0`)
 
 Kullanıcı + veritabanı + çekirdek modüller uçtan uca entegre.

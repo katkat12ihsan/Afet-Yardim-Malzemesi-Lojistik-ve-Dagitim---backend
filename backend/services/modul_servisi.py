@@ -6,11 +6,13 @@ bağımlılık yönü (Arayüz -> İş -> Veri) korunur.
 
 Hafta 8: her modülün durumu (Hazır / Kısmen / Planlandı) eklendi; ana panel
 vize ara sürümünde hangi modülün kullanılabilir olduğunu gösterir.
+Hafta 9: Rota / Dağıtım Planı "Hazır" (harita/rota API entegrasyonu).
 """
 
 from dataclasses import dataclass
 
 HAZIR, KISMEN, PLANLANDI = "Hazır", "Kısmen", "Planlandı"
+GUNCEL_HAFTA = 9                    # tamamlanan son hafta; "Hazır" modül bundan ileri olamaz
 
 
 @dataclass(frozen=True)
@@ -30,7 +32,8 @@ _MODULLER = (
     ModulBilgisi("ihtiyac", "İhtiyaç Eşleştirme", 7,
                  "Talepler ile stoğun eşleştirilmesi; fazla/eksik; dağıtım planı.", HAZIR),
     ModulBilgisi("dagitim", "Rota / Dağıtım Planı", 9,
-                 "Dağıtım listesi ve durum güncelleme hazır (Hafta 7); harita/rota Hafta 9.", KISMEN),
+                 "Dağıtımların karayolu mesafesi, süresi ve rota çizimi (OpenRouteService); "
+                 "servis yoksa kuş uçuşu tahmin.", HAZIR),
     ModulBilgisi("oneri", "Yapay Zekâ Önerisi", 10,
                  "İhtiyaç ve stok verisine göre dağıtım önceliği ve rota önerisi."),
     ModulBilgisi("takip", "Takip", 11,

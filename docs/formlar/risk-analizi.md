@@ -9,7 +9,7 @@
 | No | Risk | Kategori | Ol. | Etki | Skor | Önlem / Aksiyon |
 |---|---|---|---|---|---|---|
 | 1 | Tkinter ile karmaşık ekranlar (tablo, form, harita) beklenenden uzun sürüyor | Teknik | 2 | 3 | **6** | Ortak form/tablo bileşenleri yazmak; harita için hazır `tkintermapview` paketi; kapsamı gerekirse daraltmak |
-| 2 | Harita/rota API'sinin limiti, ücreti veya anahtar zorunluluğu (Hafta 9) | Dış | 2 | 2 | 4 | Ücretsiz OSRM/OpenStreetMap; sonuçları önbelleğe almak; API yoksa kuş uçuşu mesafeye düşmek |
+| 2 | Harita/rota API'sinin limiti, ücreti veya anahtar zorunluluğu (Hafta 9) | Dış | 2 | 2 | 4 | Ücretsiz OSRM/OpenStreetMap; sonuçları önbelleğe almak; API yoksa kuş uçuşu mesafeye düşmek — **Hafta 9'da uygulandı:** ücretsiz OpenRouteService (40/dk, 2000/gün); 7 günlük önbellek; istemci tarafı 30/dk sınır ve 429 sonrası bekleme; anahtar yok/hata/zaman aşımında kuş uçuşu × 1,3 tahmin |
 | 3 | Yapay zekâ çıktısı hatalı veya anlaşılmadan kullanılıyor | AI/Etik | 2 | 3 | **6** | AI günlüğü; her kodu açıklama; birim testiyle doğrulama |
 | 4 | Haftalık teslimlerin birikmesi | Zaman | 3 | 2 | **6** | Haftalık küçük hedefler; hafta içinde erken commit |
 | 5 | Stok tutarsızlığı (bağış/dağıtım kaydedilip stok güncellenmemesi) | Teknik | 1 | 3 | 3 | Giriş/çıkış + stok güncellemesi tek transaction; `CHECK (miktar >= 0)`; testler — **Hafta 6'da uygulandı** (stok + hareket tek transaction, CHECK kısıtları, K8 testi) |

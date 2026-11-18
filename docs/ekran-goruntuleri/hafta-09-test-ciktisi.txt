@@ -1,0 +1,164 @@
+Hafta 9 test çıktısı - 18.11.2026 09:52
+
+=== Backend (python -m unittest -v) ===
+test_B1_kalemsiz_bagis_olmaz (tests.test_bagis_eslestirme.BagisTestleri.test_B1_kalemsiz_bagis_olmaz) ... ok
+test_B2_miktar_envanter_kurallarina_uyar (tests.test_bagis_eslestirme.BagisTestleri.test_B2_miktar_envanter_kurallarina_uyar) ... ok
+test_B3_ayni_kalem_iki_kez_yazilamaz (tests.test_bagis_eslestirme.BagisTestleri.test_B3_ayni_kalem_iki_kez_yazilamaz) ... ok
+test_B4_suresi_gecmis_ve_gidada_skt_zorunlu (tests.test_bagis_eslestirme.BagisTestleri.test_B4_suresi_gecmis_ve_gidada_skt_zorunlu) ... ok
+test_B5_depo_gorevlisi_baska_depoya_bagis_giremez_kurum_giremez (tests.test_bagis_eslestirme.BagisTestleri.test_B5_depo_gorevlisi_baska_depoya_bagis_giremez_kurum_giremez) ... ok
+test_B6_bagisci_dogrulama_ve_tekrar (tests.test_bagis_eslestirme.BagisTestleri.test_B6_bagisci_dogrulama_ve_tekrar) ... ok
+test_B7_gelecek_tarihli_bagis_olmaz (tests.test_bagis_eslestirme.BagisTestleri.test_B7_gelecek_tarihli_bagis_olmaz) ... ok
+test_B8_bir_kalem_hataliysa_hicbir_sey_yazilmaz (tests.test_bagis_eslestirme.BagisTestleri.test_B8_bir_kalem_hataliysa_hicbir_sey_yazilmaz) ... ok
+test_bagis_stogu_artirir_ve_hareket_bagisi_gosterir (tests.test_bagis_eslestirme.BagisTestleri.test_bagis_stogu_artirir_ve_hareket_bagisi_gosterir) ... ok
+test_depo_gorevlisi_yalnizca_kendi_bagislarini_gorur (tests.test_bagis_eslestirme.BagisTestleri.test_depo_gorevlisi_yalnizca_kendi_bagislarini_gorur) ... ok
+test_E1_kapali_talebe_eslestirme_olmaz (tests.test_bagis_eslestirme.EslestirmeTestleri.test_E1_kapali_talebe_eslestirme_olmaz) ... ok
+test_E2_fazla_gonderim_engellenir (tests.test_bagis_eslestirme.EslestirmeTestleri.test_E2_fazla_gonderim_engellenir) ... ok
+test_E3_rezerve_dusulmus_uygun_stok_asilamaz (tests.test_bagis_eslestirme.EslestirmeTestleri.test_E3_rezerve_dusulmus_uygun_stok_asilamaz) ... ok
+test_E5_ayni_nokta_ayni_malzeme_ikinci_acik_talep_olmaz (tests.test_bagis_eslestirme.EslestirmeTestleri.test_E5_ayni_nokta_ayni_malzeme_ikinci_acik_talep_olmaz) ... ok
+test_E6_dagitimi_olan_talep_iptal_edilemez (tests.test_bagis_eslestirme.EslestirmeTestleri.test_E6_dagitimi_olan_talep_iptal_edilemez) ... ok
+test_E7_E8_dagitim_yasam_dongusu_stok_ve_talep_durumu (tests.test_bagis_eslestirme.EslestirmeTestleri.test_E7_E8_dagitim_yasam_dongusu_stok_ve_talep_durumu) ... ok
+test_eksik_durumu_karsilanamayan_miktari_raporlar (tests.test_bagis_eslestirme.EslestirmeTestleri.test_eksik_durumu_karsilanamayan_miktari_raporlar) ... ok
+test_eslestirme_kismen_sonra_tam_karsilar (tests.test_bagis_eslestirme.EslestirmeTestleri.test_eslestirme_kismen_sonra_tam_karsilar) ... ok
+test_mesafe_hesabi (tests.test_bagis_eslestirme.EslestirmeTestleri.test_mesafe_hesabi) ... ok
+test_oneri_en_yakin_depodan_baslar_ve_kalani_asmaz (tests.test_bagis_eslestirme.EslestirmeTestleri.test_oneri_en_yakin_depodan_baslar_ve_kalani_asmaz) ... ok
+test_ornek_veri_talep_durumlari_dagitimlarla_tutarli (tests.test_bagis_eslestirme.EslestirmeTestleri.test_ornek_veri_talep_durumlari_dagitimlarla_tutarli) ... ok
+test_plaka_bicimi (tests.test_bagis_eslestirme.EslestirmeTestleri.test_plaka_bicimi) ... ok
+test_stok_talep_dengesi_fazla_eksik (tests.test_bagis_eslestirme.EslestirmeTestleri.test_stok_talep_dengesi_fazla_eksik) ... ok
+test_teslim_edildi_tarih_yazar_ve_son_durumdur (tests.test_bagis_eslestirme.EslestirmeTestleri.test_teslim_edildi_tarih_yazar_ve_son_durumdur) ... ok
+test_yetki_depo_rolu_eslestirme_yapamaz (tests.test_bagis_eslestirme.EslestirmeTestleri.test_yetki_depo_rolu_eslestirme_yapamaz) ... ok
+test_eski_dagitimlar_taleplere_baglanir_ve_durumlar_hesaplanir (tests.test_bagis_eslestirme.Migrasyon005Testi.test_eski_dagitimlar_taleplere_baglanir_ve_durumlar_hesaplanir) ... ok
+test_kurulum_ve_veritabani_demosu (tests.test_entegrasyon.KomutSatiriTesti.test_kurulum_ve_veritabani_demosu) ... ok
+test_hata1_rezerve_stok_envanterden_cikarilamaz (tests.test_entegrasyon.Regresyon.test_hata1_rezerve_stok_envanterden_cikarilamaz)
+Hafta 8 hatası: planlanan dağıtımın stoğu Envanter'den çıkarılabiliyordu, dağıtım yola çıkamıyordu. ... ok
+test_hata2_talepte_gecen_malzemenin_birimi_degismez (tests.test_entegrasyon.Regresyon.test_hata2_talepte_gecen_malzemenin_birimi_degismez)
+Hafta 8 hatası: K7 yalnızca stok/hareket bakıyordu; talepte geçen malzemenin birimi değişebiliyordu. ... ok
+test_bagistan_teslime_tam_akis (tests.test_entegrasyon.UctanUcaSenaryo.test_bagistan_teslime_tam_akis)
+Vize demo senaryosunun kendisi: bağış -> talep -> eşleştirme -> yola çıkış -> teslim. ... ok
+test_rol_degisikligi_tum_modullere_yansir (tests.test_entegrasyon.UctanUcaSenaryo.test_rol_degisikligi_tum_modullere_yansir)
+Kullanıcı modülü ile diğer modüller: rol değişince eski oturum kapanır, yeni yetki geçerli olur. ... ok
+test_yola_cikista_stok_yetmezse_hicbir_sey_degismez (tests.test_entegrasyon.UctanUcaSenaryo.test_yola_cikista_stok_yetmezse_hicbir_sey_degismez) ... ok
+test_003_mevcut_stoklar_icin_acilis_hareketi_olusturur (tests.test_envanter.MigrasyonTesti.test_003_mevcut_stoklar_icin_acilis_hareketi_olusturur)
+Hafta 5'te kurulmuş bir veritabanı 003'ü aldığında stok = hareket toplamı olmalı. ... ok
+test_turkce_alfabe_sirasi (tests.test_envanter.SiralamaTesti.test_turkce_alfabe_sirasi) ... ok
+test_K1_stok_eksiye_dusemez_ve_hicbir_sey_yazilmaz (tests.test_envanter.StokHareketiTestleri.test_K1_stok_eksiye_dusemez_ve_hicbir_sey_yazilmaz) ... ok
+test_K2_adet_birimi_kesirli_olamaz (tests.test_envanter.StokHareketiTestleri.test_K2_adet_birimi_kesirli_olamaz) ... ok
+test_K3_sifir_negatif_ve_metin_miktar_reddedilir (tests.test_envanter.StokHareketiTestleri.test_K3_sifir_negatif_ve_metin_miktar_reddedilir) ... ok
+test_K4_sayim_aciklama_zorunlu_ve_fark_kaydedilir (tests.test_envanter.StokHareketiTestleri.test_K4_sayim_aciklama_zorunlu_ve_fark_kaydedilir) ... ok
+test_K8_stok_her_zaman_hareketlerin_toplamina_esit (tests.test_envanter.StokHareketiTestleri.test_K8_stok_her_zaman_hareketlerin_toplamina_esit) ... ok
+test_cikis_stogu_azaltir (tests.test_envanter.StokHareketiTestleri.test_cikis_stogu_azaltir) ... ok
+test_giris_stogu_artirir_ve_hareket_kaydeder (tests.test_envanter.StokHareketiTestleri.test_giris_stogu_artirir_ve_hareket_kaydeder) ... ok
+test_hareket_tablosu_tutarsiz_kaydi_reddeder (tests.test_envanter.StokHareketiTestleri.test_hareket_tablosu_tutarsiz_kaydi_reddeder) ... ok
+test_ilk_giris_stok_satiri_olusturur (tests.test_envanter.StokHareketiTestleri.test_ilk_giris_stok_satiri_olusturur) ... ok
+test_kritik_seviye_ve_durum (tests.test_envanter.StokSeviyesiTestleri.test_kritik_seviye_ve_durum) ... ok
+test_panel_kritik_sayisi_depo_gorevlisinin_deposuyla_sinirli (tests.test_envanter.StokSeviyesiTestleri.test_panel_kritik_sayisi_depo_gorevlisinin_deposuyla_sinirli) ... ok
+test_stok_listesi_tum_malzemeleri_icerir_ve_filtrelenir (tests.test_envanter.StokSeviyesiTestleri.test_stok_listesi_tum_malzemeleri_icerir_ve_filtrelenir) ... ok
+test_K7_stogu_olan_malzeme_silinemez_birimi_degismez (tests.test_envanter.TanimTestleri.test_K7_stogu_olan_malzeme_silinemez_birimi_degismez) ... ok
+test_ayni_adli_malzeme_ve_kategori_eklenemez (tests.test_envanter.TanimTestleri.test_ayni_adli_malzeme_ve_kategori_eklenemez) ... ok
+test_gecersiz_birim_reddedilir (tests.test_envanter.TanimTestleri.test_gecersiz_birim_reddedilir) ... ok
+test_kullanilmayan_malzeme_silinir_dolu_kategori_silinemez (tests.test_envanter.TanimTestleri.test_kullanilmayan_malzeme_silinir_dolu_kategori_silinemez) ... ok
+test_K5_depo_gorevlisi_baska_depoya_dokunamaz (tests.test_envanter.YetkiVeSahiplikTestleri.test_K5_depo_gorevlisi_baska_depoya_dokunamaz) ... ok
+test_K6_tanimlari_yalnizca_yonetici_degistirir (tests.test_envanter.YetkiVeSahiplikTestleri.test_K6_tanimlari_yalnizca_yonetici_degistirir) ... ok
+test_kurum_rolu_envantere_giremez (tests.test_envanter.YetkiVeSahiplikTestleri.test_kurum_rolu_envantere_giremez) ... ok
+test_yonetici_tum_depolari_gorur (tests.test_envanter.YetkiVeSahiplikTestleri.test_yonetici_tum_depolari_gorur) ... ok
+test_modul_anahtarlari_benzersiz (tests.test_iskelet.ModulServisiTestleri.test_modul_anahtarlari_benzersiz) ... ok
+test_modul_durumlari_gecerli_ve_hazir_moduller_tamamlanmis_haftalardan (tests.test_iskelet.ModulServisiTestleri.test_modul_durumlari_gecerli_ve_hazir_moduller_tamamlanmis_haftalardan) ... ok
+test_tanimsiz_modul_hata_verir (tests.test_iskelet.ModulServisiTestleri.test_tanimsiz_modul_hata_verir) ... ok
+test_yeni_kayitlarin_varsayilan_durumu (tests.test_iskelet.VarlikTestleri.test_yeni_kayitlarin_varsayilan_durumu) ... ok
+test_basarili_giris_token_doner_ve_token_duz_saklanmaz (tests.test_kimlik.GirisVeOturumTestleri.test_basarili_giris_token_doner_ve_token_duz_saklanmaz) ... ok
+test_bes_hatali_denemede_hesap_kilitlenir (tests.test_kimlik.GirisVeOturumTestleri.test_bes_hatali_denemede_hesap_kilitlenir) ... ok
+test_cikis_sonrasi_token_gecersiz (tests.test_kimlik.GirisVeOturumTestleri.test_cikis_sonrasi_token_gecersiz) ... ok
+test_suresi_dolan_oturum_gecersiz (tests.test_kimlik.GirisVeOturumTestleri.test_suresi_dolan_oturum_gecersiz) ... ok
+test_uydurma_token_gecersiz (tests.test_kimlik.GirisVeOturumTestleri.test_uydurma_token_gecersiz) ... ok
+test_yanlis_parola_ve_olmayan_kullanici_ayni_mesaj (tests.test_kimlik.GirisVeOturumTestleri.test_yanlis_parola_ve_olmayan_kullanici_ayni_mesaj) ... ok
+test_depo_rolu_depo_secmeli (tests.test_kimlik.KayitTestleri.test_depo_rolu_depo_secmeli) ... ok
+test_ikinci_yonetici_kayit_ekranindan_acilamaz (tests.test_kimlik.KayitTestleri.test_ikinci_yonetici_kayit_ekranindan_acilamaz) ... ok
+test_kullanici_adi_buyuk_kucuk_harf_duyarsiz_benzersiz (tests.test_kimlik.KayitTestleri.test_kullanici_adi_buyuk_kucuk_harf_duyarsiz_benzersiz) ... ok
+test_parolalar_eslesmeli (tests.test_kimlik.KayitTestleri.test_parolalar_eslesmeli) ... ok
+test_turkce_klavyeyle_yazilan_kullanici_adiyla_giris (tests.test_kimlik.KayitTestleri.test_turkce_klavyeyle_yazilan_kullanici_adiyla_giris)
+Hata kaydı: 'katkat_ihsan' hesabına Türkçe klavyede 'Katkat_İhsan' yazınca girilemiyordu. ... ok
+test_zayif_parola_reddedilir (tests.test_kimlik.KayitTestleri.test_zayif_parola_reddedilir) ... ok
+test_mevcut_kullanicilar_korunur_ve_parola_degistirmeli_degildir (tests.test_kimlik.Migrasyon006Testi.test_mevcut_kullanicilar_korunur_ve_parola_degistirmeli_degildir)
+005'e kadar kurulu bir veritabanına 006 uygulanınca hesaplar aynen girebilir. ... ok
+test_ayni_parola_farkli_tuz_farkli_hash (tests.test_kimlik.ParolaGuvenligiTestleri.test_ayni_parola_farkli_tuz_farkli_hash) ... ok
+test_parola_dogrulama (tests.test_kimlik.ParolaGuvenligiTestleri.test_parola_dogrulama) ... ok
+test_parola_duz_metin_saklanmaz (tests.test_kimlik.ParolaGuvenligiTestleri.test_parola_duz_metin_saklanmaz) ... ok
+test_parola_hash_ekrana_basilmaz (tests.test_kimlik.ParolaGuvenligiTestleri.test_parola_hash_ekrana_basilmaz) ... ok
+test_eski_parola_artik_gecmez (tests.test_kimlik.ParolaSifirlamaTestleri.test_eski_parola_artik_gecmez) ... ok
+test_gecici_parola_kurallara_uyar_ve_duz_saklanmaz (tests.test_kimlik.ParolaSifirlamaTestleri.test_gecici_parola_kurallara_uyar_ve_duz_saklanmaz) ... ok
+test_gecici_parolayla_oturum_acilmaz (tests.test_kimlik.ParolaSifirlamaTestleri.test_gecici_parolayla_oturum_acilmaz) ... ok
+test_sifirlama_acik_oturumu_kapatir_ve_kilidi_acar (tests.test_kimlik.ParolaSifirlamaTestleri.test_sifirlama_acik_oturumu_kapatir_ve_kilidi_acar) ... ok
+test_sifirlama_gecmise_yazilir (tests.test_kimlik.ParolaSifirlamaTestleri.test_sifirlama_gecmise_yazilir) ... ok
+test_sifirlanmamis_hesapta_parola_yenile_calismaz (tests.test_kimlik.ParolaSifirlamaTestleri.test_sifirlanmamis_hesapta_parola_yenile_calismaz) ... ok
+test_yalnizca_yonetici_ve_kendi_parolasini_sifirlayamaz (tests.test_kimlik.ParolaSifirlamaTestleri.test_yalnizca_yonetici_ve_kendi_parolasini_sifirlayamaz) ... ok
+test_yanlis_gecici_parola_kilit_sayacina_girer (tests.test_kimlik.ParolaSifirlamaTestleri.test_yanlis_gecici_parola_kilit_sayacina_girer) ... ok
+test_yeni_parola_belirlenince_giris_yapilir (tests.test_kimlik.ParolaSifirlamaTestleri.test_yeni_parola_belirlenince_giris_yapilir) ... ok
+test_yeni_parola_kurallari (tests.test_kimlik.ParolaSifirlamaTestleri.test_yeni_parola_kurallari) ... ok
+test_degisiklik_yoksa_hata_ve_kayit_yok (tests.test_kimlik.RolDuzenlemeTestleri.test_degisiklik_yoksa_hata_ve_kayit_yok) ... ok
+test_depo_rolu_icin_depo_zorunlu_diger_rollerde_depo_bosalir (tests.test_kimlik.RolDuzenlemeTestleri.test_depo_rolu_icin_depo_zorunlu_diger_rollerde_depo_bosalir) ... ok
+test_gecmis_tablosu_kendi_kendine_kaydi_reddeder (tests.test_kimlik.RolDuzenlemeTestleri.test_gecmis_tablosu_kendi_kendine_kaydi_reddeder) ... ok
+test_kendi_rolunu_degistiremez (tests.test_kimlik.RolDuzenlemeTestleri.test_kendi_rolunu_degistiremez) ... ok
+test_rolu_degisenin_acik_oturumu_kapanir (tests.test_kimlik.RolDuzenlemeTestleri.test_rolu_degisenin_acik_oturumu_kapanir) ... ok
+test_yonetici_disindaki_rol_degistiremez (tests.test_kimlik.RolDuzenlemeTestleri.test_yonetici_disindaki_rol_degistiremez) ... ok
+test_yonetici_rol_degistirir_ve_gecmise_yazilir (tests.test_kimlik.RolDuzenlemeTestleri.test_yonetici_rol_degistirir_ve_gecmise_yazilir) ... ok
+test_depo_gorevlisi_dagitim_modulune_giremez (tests.test_kimlik.YetkiTestleri.test_depo_gorevlisi_dagitim_modulune_giremez) ... ok
+test_kullanici_listesi_yalnizca_yonetici (tests.test_kimlik.YetkiTestleri.test_kullanici_listesi_yalnizca_yonetici) ... ok
+test_kurum_envanter_modulune_giremez (tests.test_kimlik.YetkiTestleri.test_kurum_envanter_modulune_giremez) ... ok
+test_oturumsuz_panel_ozeti_alinamaz (tests.test_kimlik.YetkiTestleri.test_oturumsuz_panel_ozeti_alinamaz) ... ok
+test_anahtar_depoda_yok (tests.test_rota.AnahtarSaklamaTestleri.test_anahtar_depoda_yok)
+Depodaki hiçbir izlenen dosyada gerçek anahtar biçiminde değer yok; .env gitignore'da. ... ok
+test_env_dosyasi_okunur (tests.test_rota.AnahtarSaklamaTestleri.test_env_dosyasi_okunur) ... ok
+test_ortam_degiskeni_env_dosyasindan_once_gelir (tests.test_rota.AnahtarSaklamaTestleri.test_ortam_degiskeni_env_dosyasindan_once_gelir) ... ok
+test_gercek_http_403 (tests.test_rota.GercekUrllibTestleri.test_gercek_http_403) ... ok
+test_gercek_zaman_asimi (tests.test_rota.GercekUrllibTestleri.test_gercek_zaman_asimi) ... ok
+test_404_hata_mesaji_ayrintiya_alinir (tests.test_rota.HataYonetimiTestleri.test_404_hata_mesaji_ayrintiya_alinir) ... ok
+test_429_sonrasi_60_saniye_beklenir (tests.test_rota.HataYonetimiTestleri.test_429_sonrasi_60_saniye_beklenir) ... ok
+test_anahtar_yoksa_servise_gidilmez (tests.test_rota.HataYonetimiTestleri.test_anahtar_yoksa_servise_gidilmez) ... ok
+test_gecersiz_anahtar_bir_kez_denenir (tests.test_rota.HataYonetimiTestleri.test_gecersiz_anahtar_bir_kez_denenir) ... ok
+test_istemci_tarafi_dakikalik_sinir (tests.test_rota.HataYonetimiTestleri.test_istemci_tarafi_dakikalik_sinir) ... ok
+test_zaman_asimi_baglanti_ve_servis_hatalari (tests.test_rota.HataYonetimiTestleri.test_zaman_asimi_baglanti_ve_servis_hatalari) ... ok
+test_anahtar_loglara_ve_mesajlara_sizmaz (tests.test_rota.IstekVeYanitTestleri.test_anahtar_loglara_ve_mesajlara_sizmaz) ... ok
+test_bozuk_yanitlar (tests.test_rota.IstekVeYanitTestleri.test_bozuk_yanitlar) ... ok
+test_istek_bicimi_ve_yanit_ayristirma (tests.test_rota.IstekVeYanitTestleri.test_istek_bicimi_ve_yanit_ayristirma) ... ok
+test_anahtar_yoksa_kus_ucusu_tahmin (tests.test_rota.RotaServisiTestleri.test_anahtar_yoksa_kus_ucusu_tahmin) ... ok
+test_eski_onbellek_ve_degisen_koordinat_yeniden_sorulur (tests.test_rota.RotaServisiTestleri.test_eski_onbellek_ve_degisen_koordinat_yeniden_sorulur) ... ok
+test_rota_listesi_servise_gitmez_onbellegi_gosterir (tests.test_rota.RotaServisiTestleri.test_rota_listesi_servise_gitmez_onbellegi_gosterir) ... ok
+test_servis_hatasinda_tahmin_doner_ve_onbellege_yazilmaz (tests.test_rota.RotaServisiTestleri.test_servis_hatasinda_tahmin_doner_ve_onbellege_yazilmaz) ... ok
+test_servisten_gelen_rota_onbellege_yazilir_ve_tekrar_sorulmaz (tests.test_rota.RotaServisiTestleri.test_servisten_gelen_rota_onbellege_yazilir_ve_tekrar_sorulmaz) ... ok
+test_sure_yazimi (tests.test_rota.RotaServisiTestleri.test_sure_yazimi) ... ok
+test_yeniden_hesapla_onbellegi_atlar (tests.test_rota.RotaServisiTestleri.test_yeniden_hesapla_onbellegi_atlar) ... ok
+test_yetki_ve_dogrulama (tests.test_rota.RotaServisiTestleri.test_yetki_ve_dogrulama) ... ok
+test_enum_ve_tarih_donusumu (tests.test_veritabani.CrudTestleri.test_enum_ve_tarih_donusumu) ... ok
+test_malzeme_crud (tests.test_veritabani.CrudTestleri.test_malzeme_crud) ... ok
+test_stok_upsert_bilesik_anahtar (tests.test_veritabani.CrudTestleri.test_stok_upsert_bilesik_anahtar) ... ok
+test_bagis_silinince_kalemleri_silinir (tests.test_veritabani.KisitTestleri.test_bagis_silinince_kalemleri_silinir) ... ok
+test_hata_olursa_transaction_geri_alinir (tests.test_veritabani.KisitTestleri.test_hata_olursa_transaction_geri_alinir) ... ok
+test_kullanimdaki_malzeme_silinemez (tests.test_veritabani.KisitTestleri.test_kullanimdaki_malzeme_silinemez) ... ok
+test_negatif_miktar_reddedilir (tests.test_veritabani.KisitTestleri.test_negatif_miktar_reddedilir) ... ok
+test_olmayan_malzemeye_kalem_eklenemez (tests.test_veritabani.KisitTestleri.test_olmayan_malzemeye_kalem_eklenemez) ... ok
+test_stok_eksiye_dusemez (tests.test_veritabani.KisitTestleri.test_stok_eksiye_dusemez) ... ok
+test_teslim_edildi_icin_teslim_tarihi_zorunlu (tests.test_veritabani.KisitTestleri.test_teslim_edildi_icin_teslim_tarihi_zorunlu) ... ok
+test_migration_tekrar_uygulanmaz (tests.test_veritabani.MigrasyonTestleri.test_migration_tekrar_uygulanmaz) ... ok
+test_tum_tablolar_olustu (tests.test_veritabani.MigrasyonTestleri.test_tum_tablolar_olustu) ... ok
+test_yabanci_anahtar_kontrolu_acik (tests.test_veritabani.MigrasyonTestleri.test_yabanci_anahtar_kontrolu_acik) ... ok
+test_ikinci_yukleme_atlanir (tests.test_veritabani.OrnekVeriTestleri.test_ikinci_yukleme_atlanir) ... ok
+test_stok_eksi_degil_ve_bagislarla_tutarli (tests.test_veritabani.OrnekVeriTestleri.test_stok_eksi_degil_ve_bagislarla_tutarli) ... ok
+test_panel_ozeti (tests.test_veritabani.OzetServisiTesti.test_panel_ozeti) ... ok
+
+----------------------------------------------------------------------
+Ran 134 tests in 4.294s
+
+OK
+
+=== Frontend (.venv\Scripts\python.exe -m unittest -v) ===
+test_giris_penceresi_acilir (tests.test_arayuz.ArayuzTesti.test_giris_penceresi_acilir) ... ok
+test_her_rolde_her_sayfa_ve_sekme_hatasiz_acilir (tests.test_arayuz.ArayuzTesti.test_her_rolde_her_sayfa_ve_sekme_hatasiz_acilir) ... ok
+test_menude_yetkisiz_moduller_kilitli (tests.test_arayuz.ArayuzTesti.test_menude_yetkisiz_moduller_kilitli) ... ok
+test_panelde_modul_durumlari_gorunur (tests.test_arayuz.ArayuzTesti.test_panelde_modul_durumlari_gorunur) ... ok
+test_parola_sifirlama_ve_ilk_giriste_yeni_parola (tests.test_arayuz.ArayuzTesti.test_parola_sifirlama_ve_ilk_giriste_yeni_parola)
+Yönetici sıfırlar -> geçici parola bir kez görünür -> kullanıcı girişte kendi parolasını belirler. ... ok
+test_rota_sayfasi_secilen_dagitimin_rotasini_cizer (tests.test_arayuz.ArayuzTesti.test_rota_sayfasi_secilen_dagitimin_rotasini_cizer) ... ok
+
+----------------------------------------------------------------------
+Ran 6 tests in 2.863s
+
+OK

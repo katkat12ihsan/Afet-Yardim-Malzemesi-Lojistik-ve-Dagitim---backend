@@ -135,3 +135,25 @@ Mimariyi, bir işlemin hangi modülden hangisine gittiğini ve bu haftaki düzel
 
 **Bir sonraki adım için planım:**
 Hafta 9: harita/rota API'si. Depodan ihtiyaç noktasına gerçek yol mesafesini almak, API çalışmazsa kuş uçuşu mesafeye geri dönmek.
+
+---
+
+## Hafta 9
+
+**Bu hafta tamamladığım işler:**
+Dağıtımların deposundan ihtiyaç noktasına karayolu mesafesini ve süresini OpenRouteService'ten alıyorum. Rota / Dağıtım Planı artık kendi sayfası: dağıtım seçilince mesafe, süre ve rota çizgisi görünüyor. Servis çalışmazsa (anahtar yok, internet yok, zaman aşımı, hız sınırı...) uygulama durmuyor, kuş uçuşu tahmin gösterip nedenini yazıyor. Aynı rota tekrar sorulmasın diye önbellek ekledim. API anahtarı kodda ve depoda yok.
+
+**Yeni öğrendiğim kavram/teknoloji:**
+REST isteği (başlık, gövde, HTTP kodları), API anahtarıyla kimlik doğrulama, hız sınırı (429) ve zaman aşımı. Bir de testte gerçek servis yerine sahte bir gönderici kullanmak: böylece 403, 429, 500 ve zaman aşımı gibi durumları istediğim an deneyebiliyorum.
+
+**Yapay zekâdan nerede ve nasıl yararlandım:**
+Claude ile OpenRouteService belgesindeki istek/yanıt biçimini çözümledim, örnek yanıtı inceledim ve hata türlerini çıkardım. İstemciyi, servisi ve testleri birlikte yazdık; hangi hatada ne yapılacağına ve anahtarın nerede saklanacağına ben karar verdim. Ayrıntılar AI günlüğünde (Kayıt 20–21).
+
+**En çok zorlandığım nokta ve nasıl aştım:**
+Koordinat sırası: ORS önce boylamı istiyor, bizim uygulamada her yerde önce enlem var. Ters gönderilince nokta Bingöl yerine Giresun civarına düşüyor. Çeviriyi tek bir yerde (istemcide) yaptım ve testle sabitledim. İkinci zorluk zaman aşımını gerçekten test etmekti: bilgisayarın içinde yanıt vermeyen küçük bir sunucu açarak denedim.
+
+**Kendi kodumu açıklama düzeyim (1–5) ve gerekçesi:** 4
+İsteğin yolculuğunu, her hata türünde ne olduğunu, önbelleği ve anahtarın nerede durduğunu anlatabiliyorum; `rota()` metodunu satır satır hazırladım. Canvas'ta koordinatı piksele çeviren kısmı daha az iyi biliyorum.
+
+**Bir sonraki adım için planım:**
+Hafta 10: yapay zekâ bileşeni. İhtiyaç önceliği, nüfus ve stok verisine göre dağıtım önceliği ve rota önerisi; yapay zekâ çıktısını doğrulamak ve kural tabanlı öneriyle karşılaştırmak.

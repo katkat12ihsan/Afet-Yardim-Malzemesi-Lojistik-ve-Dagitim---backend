@@ -38,8 +38,9 @@ def env_dosyasi_oku(yol: Path) -> dict[str, str]:
         degerler[anahtar.strip()] = deger
     return degerler
 
+
 UYGULAMA_ADI = "Afet Yardım Malzemesi Lojistik ve Dağıtım"
-SURUM = "0.6.1 (vize sürümü + parola sıfırlama)"
+SURUM = "0.7.0 (Hafta 9 - harita/rota API)"
 
 # Backend ayrı bir paket olarak (pip ile) kurulabildiği için veritabanı proje
 # klasöründe değil, kullanıcının ev klasöründe tutulur. Böylece frontend hangi

@@ -333,7 +333,7 @@ class Migrasyon006Testi(unittest.TestCase):
                    " VALUES ('eski', 'Eski Hesap', 'pbkdf2_sha256$1$00$00', 'Kurum', '2026-10-01T09:00:00')")
         db.commit()
 
-        self.assertEqual(migrasyonlari_uygula(db), ["006_parola_sifirlama.sql"])
+        self.assertEqual(migrasyonlari_uygula(db)[0], "006_parola_sifirlama.sql")   # 006 ve sonrası
         k = KullaniciRepository(db).kullanici_adi_ile_getir("eski")
         self.assertEqual(k.ad_soyad, "Eski Hesap")
         self.assertFalse(k.parola_degistirmeli)

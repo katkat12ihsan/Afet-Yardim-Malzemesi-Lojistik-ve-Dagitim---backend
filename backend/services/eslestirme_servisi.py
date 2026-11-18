@@ -8,7 +8,9 @@ Kavramlar:
 
 Eşleştirme önerisi: Talebin kalanı için uygun stoğu olan depolar, ihtiyaç noktasına
 EN YAKIN olandan başlanarak (koordinatlardan kuş uçuşu km) sırayla kullanılır.
-Hafta 9'da gerçek yol mesafesi (rota API), Hafta 10'da yapay zekâ önceliği eklenecek.
+Hafta 9: planlanan dağıtımın gerçek yol mesafesi rota API'sinden (rota_servisi.py);
+sıralama bilerek kuş uçuşu kalır (her öneri depo sayısı kadar istek demek, hız sınırı).
+Hafta 10'da yapay zekâ önceliği eklenecek.
 
 Dağıtım yaşam döngüsü (durum güncelleme):
   Planlandı --yola çık--> Yolda --teslim et--> Teslim edildi

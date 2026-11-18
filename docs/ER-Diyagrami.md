@@ -27,6 +27,8 @@ erDiagram
     KULLANICI ||--o{ PAROLA_SIFIRLAMA : "sıfırlar"
     MALZEME  ||--o{ DAGITIM_KALEMI : "dağıtılır"
     IHTIYAC_TALEBI |o--o{ DAGITIM_KALEMI : "karşılanır (Hafta 7)"
+    DEPO     ||--o{ ROTA_ONBELLEK : "çıkış noktası (Hafta 9)"
+    IHTIYAC_NOKTASI ||--o{ ROTA_ONBELLEK : "varış noktası"
 
     KATEGORI {
         int id PK
@@ -123,6 +125,15 @@ erDiagram
         int sifirlayan_id FK
         datetime tarih
     }
+    ROTA_ONBELLEK {
+        int depo_id PK, FK
+        int ihtiyac_noktasi_id PK, FK
+        string koordinatlar
+        float mesafe_km
+        float sure_dk
+        string geometri
+        datetime tarih
+    }
     STOK_HAREKETI {
         int id PK
         int depo_id FK
@@ -207,5 +218,6 @@ erDiagram
 - **Kullanıcı ve Oturum tabloları** Hafta 5'te `002_kullanici.sql` migration'ı ile eklendi (görsel SVG ilk 11 tabloyu gösterir). Depo rolündeki kullanıcı `depo_id` ile bir depoya bağlıdır; bir kullanıcının birden çok oturumu olabilir (1-N). Ayrıntı: [Guvenlik-Notu.md](Guvenlik-Notu.md).
 - **Stok Hareketi tablosu** Hafta 6'da `003_stok_hareketi.sql` ile eklendi: stoğu değiştiren her işlemin silinmeyen kaydı (denetim izi). Depo, malzeme ve kullanıcıya 1-N bağlıdır. Ayrıntı: [Envanter.md](Envanter.md).
 - **Rol Değişikliği tablosu** `004_rol_degisikligi.sql` ile eklendi: Yönetici'nin yaptığı her rol/depo değişikliğinin silinmeyen kaydı. Kullanıcıya iki ayrı ilişkiyle bağlıdır: rolü değişen (`kullanici_id`) ve değiştiren (`degistiren_id`). Ayrıntı: [Guvenlik-Notu.md](Guvenlik-Notu.md).
+- **Rota önbelleği** Hafta 9'da `007_rota_onbellek.sql` ile eklendi: depo → ihtiyaç noktası karayolu rotası (mesafe, süre, rota çizgisi JSON). Birincil anahtar iki kolonlu `(depo_id, ihtiyac_noktasi_id)`: her çift için tek kayıt, yeniden sorulunca güncellenir (UPSERT). Koordinatlar da saklanır; depo ya da nokta taşınırsa kayıt geçersiz sayılır. Ayrıntı: [Rota-API.md](Rota-API.md).
 - **Parola sıfırlama** `006_parola_sifirlama.sql` ile eklendi: `kullanici.parola_degistirmeli` (Yönetici sıfırladıysa kullanıcı girişte yeni parola belirler) ve her sıfırlamanın silinmeyen kaydı. Rol değişikliği gibi kullanıcıya iki ilişkiyle bağlı: parolası sıfırlanan (`kullanici_id`) ve sıfırlayan Yönetici (`sifirlayan_id`). Parolanın kendisi bu tabloda da tutulmaz.
 - **Dağıtım kalemi → ihtiyaç talebi** bağı Hafta 7'de `005_eslestirme.sql` ile eklendi: her dağıtım kalemi hangi talebi karşıladığını bilir; talebin karşılanan/kalan miktarı ve durumu bundan hesaplanır. Ayrıntı: [Bagis-ve-Eslestirme.md](Bagis-ve-Eslestirme.md).

@@ -13,10 +13,10 @@
 | Commit'ler küçük ve anlamlı | [x] (backend / frontend / test / docs ayrı) |
 | Commit mesajları açıklayıcı | [x] |
 | Her haftanın çalışması ilgili hafta içinde yüklendi | [ ] Hafta 3 ve 4 aynı gün yüklendi; Hafta 5'ten itibaren her hafta kendi haftasında |
-| Gizli anahtar/parola/API anahtarı depoda yok (ortam değişkeni) | [x] |
+| Gizli anahtar/parola/API anahtarı depoda yok (ortam değişkeni) | [x] Hafta 9: harita anahtarı ortam değişkeni ya da depo dışındaki `~/AfetLojistik/.env`; depoda yalnızca boş `.env.example` (testli) |
 | Düzenli klasör/katman yapısı | [x] |
-| (Varsa) dal (branch) kullanımı anlamlı | [x] Her hafta ayrı dal (`hafta-05`, `hafta-06`, `rol-duzenleme`, `hafta-07`, `hafta-08`); iki depoda da main'e birleştirildi |
-| Sürüm etiketi (Git tag) ve değişiklik günlüğü | [x] Vize ara sürümü `v0.6.0` (iki depoda, açıklamalı etiket); `CHANGELOG.md` (semantic versioning); frontend backend'i `@v0.6.0`'dan kurar |
+| (Varsa) dal (branch) kullanımı anlamlı | [x] Her hafta ayrı dal (`hafta-05`, `hafta-06`, `rol-duzenleme`, `hafta-07`, `hafta-08`, `parola-sifirlama`, `hafta-09`); iki depoda da main'e birleştirildi |
+| Sürüm etiketi (Git tag) ve değişiklik günlüğü | [x] `v0.6.0` (vize), `v0.6.1` (parola sıfırlama), `v0.7.0` (Hafta 9); iki depoda açıklamalı etiket; `CHANGELOG.md` (semantic versioning); frontend backend'i `@v0.7.0`'dan kurar |
 
 Depo bağlantıları:
 - Backend: https://github.com/katkat12ihsan/Afet-Yardim-Malzemesi-Lojistik-ve-Dagitim---backend

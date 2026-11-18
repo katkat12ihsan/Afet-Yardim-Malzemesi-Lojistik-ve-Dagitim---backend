@@ -26,7 +26,7 @@ class ModulServisiTestleri(unittest.TestCase):
         for m in modul_servisi.modulleri_getir():
             self.assertIn(m.durum, (modul_servisi.HAZIR, modul_servisi.KISMEN, modul_servisi.PLANLANDI))
             if m.durum == modul_servisi.HAZIR:
-                self.assertLessEqual(m.hafta, 8, m)
+                self.assertLessEqual(m.hafta, modul_servisi.GUNCEL_HAFTA, m)
 
     def test_tanimsiz_modul_hata_verir(self):
         with self.assertRaises(KeyError):

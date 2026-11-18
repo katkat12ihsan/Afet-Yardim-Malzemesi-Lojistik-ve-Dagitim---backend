@@ -182,3 +182,20 @@ Her kayıt: tarih · araç · istem (prompt) · alınan çıktı · benim yaptı
 - **Benim kararım / doğrulamam:** E-posta ile sıfırlamayı reddettim: uygulama internetsiz çalışıyor ve kullanıcıdan e-posta alınmıyor; doğrulamasız bir "yeni parola" ekranı ise hesabı başkasına açardı. Geçici parolayla oturum açılmamasını seçtim (yalnızca menüyü kilitlemek yerine): yetki kuralında olduğu gibi kontrol backend'de. Geçici parolanın da 5 hatalı denemede kilide girdiği ve migration'ın mevcut veritabanındaki hesapları bozmadığı testlerle doğrulandı (112 backend + 6 arayüz testi geçiyor).
 - **Bu kodu açıklayabiliyor muyum? (E/H):** E
 
+## Hafta 9 — Harici API Entegrasyonu: Harita / Rota
+
+### Kayıt 20 — API belgesini çözümleme ve istemci
+- **Tarih:** 18.11.2026
+- **Araç:** Claude
+- **İstem:** "OpenRouteService directions API'sinin istek/yanıt biçimini çözümle: kimlik doğrulama, koordinat sırası, hata kodları ve hız sınırı. Ek paket kullanmadan (urllib) bir istemci yaz; anahtar ortam değişkeninden gelsin, zaman aşımı olsun, her hata ayrı bir türe çevrilsin."
+- **Çıktı:** `backend/entegrasyon/harita_api.py` (`OrsIstemcisi`, `yaniti_ayristir`, `HaritaApiHatasi`, 9 hata türü, istemci tarafı hız sınırı, 429 sonrası bekleme); `config.ayar` ve `.env` okuyucu; `.env.example`.
+- **Benim kararım / doğrulamam:** Servis olarak ORS'u seçtim (Google ödeme bilgisi istiyor, OSRM demo sunucusunda anahtar yok). Anahtarı URL yerine başlığa koymayı ve `.env`'i proje klasörü yerine veri klasöründe aramayı ben istedim: depoya hiç girmesin. python-dotenv yerine kendi küçük okuyucumuzu seçtim (ek bağımlılık olmasın). Gerçek ORS sunucusuna geçersiz anahtarla istek gönderildi; 403 yanıtı `anahtar_gecersiz` olarak yakalandı. Geçerli anahtarla canlı deneme anahtarı tanımlayınca yapılacak.
+- **Bu kodu açıklayabiliyor muyum? (E/H):** E (satır satır: `sozlu-hazirlik/hafta-09.md`)
+
+### Kayıt 21 — Rota servisi, geri dönüş, önbellek, ekran ve testler
+- **Tarih:** 18.11.2026
+- **Araç:** Claude
+- **İstem:** "Dağıtım için rota servisi yaz: önce önbellek, sonra API; API hata verirse uygulama durmasın, kuş uçuşu tahmin göstersin ve nedenini söylesin. Rota / Dağıtım Planı için ayrı bir sayfa yap, rotayı çiz. Gerçek servise gitmeden her hata durumunu test et."
+- **Çıktı:** `backend/services/rota_servisi.py`, `007_rota_onbellek.sql`, `RotaOnbellekRepository`; frontend `rota_sayfasi.py` (liste, mesafe/süre, Canvas çizimi, uyarı, durum düğmeleri); `tests/test_rota.py` (22 test, sahte gönderici ve yerel sunucuyla gerçek zaman aşımı), arayüz testi.
+- **Benim kararım / doğrulamam:** Tahmini önbelleğe yazmamaya karar verdim (servis düzelince gerçek rota gelsin). Eşleştirme sıralamasını bilerek kuş uçuşu bıraktım: her öneri depo sayısı kadar istek demek. Harita karosu (tkintermapview) yerine Canvas çizimini seçtim; ek paket ve ikinci bir dış servis gerekmesin. Bir test Windows'ta kapalı porta bağlanmanın 2 sn sürmesi yüzünden zaman aşımı veriyordu; işletim sistemine bağlı olduğu için kaldırdım, bağlantı hatası sahte gönderiyle deneniyor. Tahmini mesafe elle hesaplanıp (53,6 km × 1,3 = 69,7 km) ekranla karşılaştırıldı. 134 backend + 6 arayüz testi geçiyor.
+- **Bu kodu açıklayabiliyor muyum? (E/H):** E

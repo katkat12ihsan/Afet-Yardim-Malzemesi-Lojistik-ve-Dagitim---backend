@@ -14,15 +14,18 @@ flowchart TB
     subgraph BL["İş Katmanı — backend/services"]
         S1[Envanter / Bağış / İhtiyaç eşleştirme<br/>Dağıtım planı / Rapor servisleri]
     end
+    subgraph INT["Entegrasyon — backend/entegrasyon"]
+        H1[harita_api.py: OpenRouteService<br/>REST, zaman aşımı, hata türleri]
+    end
     subgraph DAL["Veri Erişim Katmanı — backend/data"]
         D1[database.py: bağlantı<br/>repository sınıfları: CRUD]
     end
     DB[(SQLite<br/>afet_lojistik.db)]
     M[[Varlık Katmanı — backend/models<br/>Malzeme, Bağış, Depo, İhtiyaçNoktası, Dağıtım ...]]
-    EXT[/Harici servisler: Harita-Rota API · LLM API/]
+    EXT[/Harici servisler: Harita-Rota API · LLM API Hafta 10/]
 
     K --> AP --> S1 --> D1 --> DB
-    S1 -. Hafta 9-10 .-> EXT
+    S1 --> H1 -- HTTPS --> EXT
     AP -.- M
     S1 -.- M
     D1 -.- M
@@ -38,6 +41,7 @@ Görsel sürüm: [mimari-sema.svg](mimari-sema.svg)
 | İş | `backend/services` | Doğrulama, stok yeterli mi?, ihtiyaç–stok eşleştirme, öncelik/rota önerisi | Tkinter'a bağımlı olmak |
 | Veri erişim | `backend/data` | Veritabanı bağlantısı, CRUD sorguları | İş kararı vermek |
 | Varlık | `backend/models` | ER diyagramındaki tabloların Python karşılığı (dataclass) | Başka katmana bağımlı olmak |
+| Entegrasyon (H9) | `backend/entegrasyon` | Dış servisle konuşmak: istek, yanıtı ayrıştırma, hataları tek türe çevirme | İş kararı vermek (rota alınamazsa ne yapılacağı serviste), veritabanına yazmak |
 
 **Frontend / backend ayrımı:** Sunum katmanı `frontend/` klasöründe; iş, veri erişim ve varlık katmanları `backend/` klasöründe. Frontend yalnızca backend'in servislerini çağırır, backend frontend'i hiç tanımaz.
 
@@ -59,6 +63,7 @@ Afet-Yardim-Malzemesi-Lojistik-ve-Dagitim---backend/
 │   ├── config.py            # Ayarlar; gizli anahtarlar ortam değişkeninden
 │   ├── guvenlik.py          # Parola hash, token
 │   ├── models/entities.py   # Varlık katmanı (ER → dataclass)
+│   ├── entegrasyon/         # Harici servisler (H9: harita/rota API)
 │   ├── services/            # İş katmanı
 │   └── data/                # Veri erişim katmanı (SQLite, migration'lar, repository'ler)
 ├── tests/                   # Birim testleri (unittest)
@@ -71,7 +76,7 @@ Afet-Yardim-Malzemesi-Lojistik-ve-Dagitim---frontend/
 │   ├── main_window.py       # Ana pencere, rol bazlı menü (Tkinter)
 │   └── *_sayfasi.py         # Envanter, Bağış, İhtiyaç/Dağıtım, Kullanıcılar sayfaları
 ├── demo.bat                 # Vize demosu: ayrı demo veritabanı, temiz örnek veri
-└── requirements.txt         # afet-lojistik-backend @ git+...backend.git@v0.6.0
+└── requirements.txt         # afet-lojistik-backend @ git+...backend.git@v0.7.0
 ```
 
 > Hafta 3–5 boyunca proje tek depoda geliştirildi ([eski tek depo](https://github.com/katkat12ihsan/Afet-Yardim-Malzemesi-Lojistik-ve-Dagitim)); Hafta 6 öncesinde commit geçmişi korunarak iki depoya ayrıldı.
@@ -92,6 +97,7 @@ Vize haftasında modüller uçtan uca birleştirildi. Her modül kendi servis s�
 | Envanter (6) | `EnvanterServisi` | malzeme, kategori, **stok, stok_hareketi** | Kimlik (oturum, rol, depo sahipliği); dağıtım kalemleri (rezerve, K9) |
 | Bağış (7) | `BagisServisi` | bagisci, bagis, bagis_kalemi | Envanter (`stok_hareketi_uygula`, `miktari_dogrula`, `depo_sahipligi`) |
 | Eşleştirme ve dağıtım (7) | `EslestirmeServisi` | ihtiyac_talebi, dagitim, dagitim_kalemi | Envanter (stok, çıkış/iade yolu); depo ve ihtiyaç noktası koordinatları |
+| Rota (9) | `RotaServisi` | rota_onbellek | Dağıtım, depo ve nokta koordinatları; **harita servisi** (`OrsIstemcisi`) |
 | Panel (3–8) | `OzetServisi`, `modul_servisi` | — (yalnızca okur) | talep durumları, kritik stok, modül durumu |
 
 ```mermaid
@@ -118,3 +124,19 @@ flowchart LR
 5. Başarılıysa talep durumu yeniden hesaplanır; arayüz tabloyu yeniler, panel sayısı değişir.
 
 **Entegrasyon testi yaklaşımı:** Birim testleri bir servisi tek başına dener. `tests/test_entegrasyon.py` ise uygulamanın `main.py`'de kurduğu servis zincirinin aynısını bellek içi veritabanıyla kurar ve senaryoyu baştan sona çalıştırır. Frontend deposundaki `tests/test_arayuz.py` her rolle her sayfayı ve sekmeyi gerçekten açar. Hafta 8'de bulunan iki hata için birer **regresyon testi** yazıldı; hata geri gelirse test kırmızı olur.
+
+## Harici servis entegrasyonu (Hafta 9)
+
+Harita/rota servisi ayrı bir **entegrasyon** katmanında (`backend/entegrasyon/harita_api.py`). İş katmanı HTTP'yi, JSON alan adlarını ve HTTP kodlarını bilmez; yalnızca `ApiRotasi` ya da `HaritaApiHatasi(tur)` görür. Servis değişirse (ör. OpenRouteService yerine başka bir sağlayıcı) yalnızca bu dosya değişir.
+
+```mermaid
+flowchart LR
+    R[rota_sayfasi.py] -->|dagitim_rotasi| S[RotaServisi]
+    S -->|önbellekte var mı?| C[(rota_onbellek)]
+    S -->|yoksa| I[OrsIstemcisi]
+    I -->|POST + Authorization, 6 sn| ORS[/OpenRouteService/]
+    I -. HaritaApiHatasi .-> S
+    S -. hata: kuş uçuşu × 1,3 .-> R
+```
+
+Ayrıntı: [Rota-API.md](Rota-API.md).

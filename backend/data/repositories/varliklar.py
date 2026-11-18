@@ -154,7 +154,7 @@ class DagitimRepository(TemelRepository[Dagitim]):
         return self.baglanti.execute(
             """
             SELECT g.id, g.durum, g.planlanan_tarih, g.teslim_tarihi, g.arac_plaka,
-                   g.depo_id, d.ad AS depo, n.ad AS nokta,
+                   g.depo_id, g.ihtiyac_noktasi_id, d.ad AS depo, n.ad AS nokta,
                    GROUP_CONCAT(m.ad || ' ' || dk.miktar || ' ' || m.birim, ', ') AS kalemler
             FROM dagitim g
             JOIN depo d            ON d.id = g.depo_id

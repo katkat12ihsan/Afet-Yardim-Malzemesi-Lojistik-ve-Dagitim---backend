@@ -9,6 +9,22 @@ Sürüm numaraları [anlamsal sürümleme](https://semver.org/lang/tr/) (MAJOR.M
 Etiketli sürümler GitHub'da *Tags* altında görünür: `git checkout v0.6.0` o sürümün kodunu açar.
 Frontend deposunun kendi değişiklik günlüğü vardır; frontend `requirements.txt` hangi backend sürümünü kullandığını belirtir.
 
+## [0.7.0] — 18.11.2026 · Hafta 9 · Harici API: Harita / Rota (etiket: `v0.7.0`)
+
+Dağıtımın deposundan ihtiyaç noktasına karayolu mesafesi, süresi ve rotası OpenRouteService'ten. Ayrıntı: [docs/Rota-API.md](docs/Rota-API.md).
+
+### Eklenenler
+- `backend/entegrasyon/harita_api.py`: `OrsIstemcisi` (REST POST, anahtar `Authorization` başlığında, 6 sn zaman aşımı), `yaniti_ayristir` (GeoJSON → km, dakika, rota noktaları; doğrulama), `HaritaApiHatasi` ve 9 hata türü (anahtar yok/geçersiz, hız sınırı, zaman aşımı, bağlantı, rota yok, servis hatası, bozuk yanıt). İstemci tarafı hız sınırı (dakikada 30) ve 429 sonrası 60 sn bekleme; geçersiz anahtar oturumda bir kez denenir.
+- `backend/services/rota_servisi.py`: `RotaServisi.dagitim_rotasi` (yetki, önbellek, servis hatasında kuş uçuşu × 1,3 tahmine geri dönüş ve nedeni), `rota_listesi` (servise gitmez), `servis_durumu`, `sure_yaz`.
+- `007_rota_onbellek.sql`, `RotaOnbellekRepository`: servisten gelen rota 7 gün ve aynı koordinatlarla geçerli; tahmin saklanmaz.
+- `config.ayar` ve `env_dosyasi_oku`: ayar önce ortam değişkeninden, sonra depo dışındaki `~/AfetLojistik/.env` dosyasından (ek paket yok). `HARITA_ZAMAN_ASIMI_SN`, `HARITA_DAKIKALIK_ISTEK`, `ROTA_ONBELLEK_GUN`.
+- `tests/test_rota.py`: 22 test (sahte gönderici ve sahte saatle her hata türü; yerel HTTP sunucusuyla gerçek zaman aşımı ve 403; önbellek; geri dönüş; yetki; anahtarın depoda ve mesajlarda olmaması). Toplam 134.
+
+### Değişenler
+- Rota / Dağıtım Planı modülü **Hazır** (`modul_servisi.GUNCEL_HAFTA = 9`).
+- `DagitimRepository.liste` ihtiyaç noktası kimliğini de döndürür.
+- `.env.example` açıklamaları; `.env` dosyasının otomatik okunması (Hafta 8'de "python-dotenv ile" planlanmıştı; ek bağımlılık yerine 20 satırlık kendi okuyucumuz yazıldı).
+
 ## [0.6.1] — 17.11.2026 · Parola sıfırlama (etiket: `v0.6.1`)
 
 "Şifremi unuttum" yerine **Yönetici parola sıfırlaması**. Uygulama internetsiz çalıştığı için e-posta/SMS ile kimlik doğrulanamaz; doğrulamasız bir "yeni parola belirle" ekranı hesabı kullanıcı adını bilen herkese açardı. Kimliği Yönetici doğrular, sistem geçici parola üretir. (Vize sürümü `v0.6.0` değişmedi; 0.4.3'teki rol düzenlemesi gibi iki hafta arası eklenti.)

@@ -10,7 +10,7 @@ Bağış malzemelerinin envanterini yönetip ihtiyaç noktalarına dağıtımı 
 Proje dokümantasyonu (haftalık raporlar, formlar, AI günlüğü) bu depodadır.
 
 > Bilgisayar Uygulamaları I — Proje Tabanlı Öğrenme dersi projesi
-> Durum: **Hafta 8 — VİZE ara sürümü [`v0.6.0`](https://github.com/katkat12ihsan/Afet-Yardim-Malzemesi-Lojistik-ve-Dagitim---backend/tree/v0.6.0)** · kullanıcı + veritabanı + çekirdek modüller uçtan uca entegre · sonrası [`v0.6.1`](https://github.com/katkat12ihsan/Afet-Yardim-Malzemesi-Lojistik-ve-Dagitim---backend/tree/v0.6.1): Yönetici parola sıfırlama · [Değişiklik günlüğü](CHANGELOG.md) · [Demo senaryosu](docs/Demo-Senaryosu.md)
+> Durum: **Hafta 9 — Harita / Rota API [`v0.7.0`](https://github.com/katkat12ihsan/Afet-Yardim-Malzemesi-Lojistik-ve-Dagitim---backend/tree/v0.7.0)** · karayolu mesafesi ve süresi OpenRouteService'ten, servis yoksa kuş uçuşu tahmin · vize sürümü [`v0.6.0`](https://github.com/katkat12ihsan/Afet-Yardim-Malzemesi-Lojistik-ve-Dagitim---backend/tree/v0.6.0) · [Değişiklik günlüğü](CHANGELOG.md) · [Demo senaryosu](docs/Demo-Senaryosu.md)
 
 ## Problem ve amaç
 
@@ -26,7 +26,7 @@ Bağış malzemeleri envanteri ve dağıtımı düzensiz olduğunda israf ve eks
 | Envanter yönetimi | 6 ✅ |
 | Bağış girişi ve ihtiyaç eşleştirme | 7 ✅ |
 | **Vize: ara sürüm `v0.6.0`, uçtan uca entegrasyon** | 8 ✅ |
-| Harita / rota API entegrasyonu | 9 |
+| Harita / rota API entegrasyonu | 9 ✅ |
 | Yapay zekâ: dağıtım önceliği ve rota önerisi | 10 |
 | Takip ve şeffaflık modülü | 11 |
 | Dağıtım raporu ve bildirimler | 12 |
@@ -70,7 +70,7 @@ Veritabanı demosu (sorgular + kısıt denemeleri, kalıcı değişiklik yapmaz)
 python -m backend.data.sorgu_ornekleri
 ```
 
-Testler (101 test: birim + uçtan uca entegrasyon + regresyon):
+Testler (134 test: birim + uçtan uca entegrasyon + regresyon + harita API; internet ve API anahtarı gerekmez):
 
 ```bash
 python -m unittest
@@ -78,7 +78,13 @@ python -m unittest
 
 Belirli bir sürümün kodu: `git checkout v0.6.0` (vize ara sürümü). Sürümler ve değişiklikler: [CHANGELOG.md](CHANGELOG.md).
 
-Gizli bilgiler (API anahtarları) koda yazılmaz; `.env.example` dosyasındaki değişkenler ortam değişkeni olarak verilir. `.env` dosyası depoya yüklenmez.
+Gizli bilgiler (API anahtarları) koda yazılmaz. Harita API anahtarı (OpenRouteService, ücretsiz) **ortam değişkeni** olarak ya da depo dışındaki `C:\Users\<kullanıcı>\AfetLojistik\.env` dosyasında verilir (şablon: `.env.example`):
+
+```bat
+setx HARITA_API_ANAHTARI "anahtariniz"
+```
+
+Anahtar yoksa uygulama yine çalışır; mesafeler kuş uçuşu tahmin olarak gösterilir. `.env` dosyası depoya yüklenmez.
 
 ## Dokümantasyon
 
@@ -88,6 +94,7 @@ Gizli bilgiler (API anahtarları) koda yazılmaz; `.env.example` dosyasındaki d
 - [Güvenlik notu: parola, oturum, rol tabanlı erişim, rol düzenleme](docs/Guvenlik-Notu.md)
 - [Envanter Yönetimi: veri modeli, iş kuralları K1–K9, akış](docs/Envanter.md)
 - [Bağış Girişi ve İhtiyaç Eşleştirme: B1–B8, E1–E9, fazla/eksik, dağıtım durumu](docs/Bagis-ve-Eslestirme.md)
+- [Rota / Dağıtım Planı: harita/rota API, hata yönetimi, hız sınırı, önbellek, anahtar saklama](docs/Rota-API.md)
 - [Vize demo senaryosu (7 dakika)](docs/Demo-Senaryosu.md) · [Değişiklik günlüğü](CHANGELOG.md)
 - [Sözlü sınav hazırlıkları](docs/sozlu-hazirlik/)
 - [Haftalık raporlar](docs/haftalik-raporlar/): her hafta için ilerleme raporu ve AI kullanım günlüğü, [Word](docs/haftalik-raporlar/word/) ve [PDF](docs/haftalik-raporlar/pdf/) olarak
@@ -97,17 +104,18 @@ Gizli bilgiler (API anahtarları) koda yazılmaz; `.env.example` dosyasındaki d
 ## Klasör yapısı
 
 ```
-pyproject.toml           paket tanımı (pip install), sürüm 0.6.1
+pyproject.toml           paket tanımı (pip install), sürüm 0.7.0
 CHANGELOG.md             sürümler ve değişiklikler
 backend/                 arayüzden bağımsız çekirdek
-  config.py              ayarlar
+  config.py              ayarlar (ortam değişkeni > ~/AfetLojistik/.env > varsayılan)
   guvenlik.py            parola hash (PBKDF2), token
   models/                varlık katmanı (ER -> dataclass)
-  services/              iş katmanı (kimlik, yetki, envanter, bağış, eşleştirme, özet, modül planı)
+  entegrasyon/           harici servisler (Hafta 9: OpenRouteService rota istemcisi)
+  services/              iş katmanı (kimlik, yetki, envanter, bağış, eşleştirme, rota, özet, modül planı)
   data/                  veri erişim katmanı (SQLite)
-    migrations/          numaralı şema dosyaları (001 ilk şema, 002 kullanıcı, 003 stok hareketi, 004 rol değişikliği, 005 eşleştirme, 006 parola sıfırlama)
+    migrations/          numaralı şema dosyaları (001 ilk şema, 002 kullanıcı, 003 stok hareketi, 004 rol değişikliği, 005 eşleştirme, 006 parola sıfırlama, 007 rota önbelleği)
     repositories/        CRUD sınıfları
-tests/                   birim + entegrasyon testleri (101 test)
+tests/                   birim + entegrasyon testleri (134 test)
 docs/                    ER, mimari, raporlar, formlar, AI günlüğü, ekran görüntüleri
 ```
 

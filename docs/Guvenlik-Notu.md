@@ -15,7 +15,7 @@
 | Rol kısıtları | Yönetici kayıt ekranından açılamaz (yalnızca sistemde hiç kullanıcı yokken ilk hesap); Depo rolü bir depoya bağlı olmak zorunda (veritabanı CHECK) | `kayit_ol`, `002_kullanici.sql` |
 | Hassas alanların sızması | `Kullanici.parola_hash` ve `Oturum.token_hash` `repr` dışında tutulur (log/print'te görünmez); Kullanıcılar sayfasında gösterilmez | `models/entities.py` |
 | SQL injection | Tüm değerler `?` parametresiyle gönderilir | `repositories/temel.py` |
-| Gizli bilgiler | API anahtarları ortam değişkeninde; `.env` ve veritabanı dosyası `.gitignore`'da | `config.py`, `.gitignore` |
+| Gizli bilgiler (API anahtarı, Hafta 9) | Anahtar ortam değişkeninden ya da **depo dışındaki** `~/AfetLojistik/.env` dosyasından okunur (hiçbir depo klasöründe değil); `.env` ve veritabanı dosyası ayrıca `.gitignore`'da; depoda yalnızca boş `.env.example`. Anahtar URL'ye değil `Authorization` başlığına konur; `repr`, hata mesajı ve log kayıtlarına girmez (testli) | `config.py`, `entegrasyon/harita_api.py`, `.gitignore` |
 
 ## Rol – modül yetki tablosu
 
